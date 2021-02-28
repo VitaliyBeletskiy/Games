@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--  my colors  -->
+    <color name="background_main">#D0ADA7</color>
+    <color name="background_field">#E8D6CB</color>
+<!--    <color name="background_rules">#E8D6CB</color>-->
+    <color name="button">#AD6A6C</color>
+    <color name="text">#3F2E46</color>
+    <color name="picker">#B58DB6</color>
 </resources>
