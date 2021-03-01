@@ -5,8 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.beletskiy.bullscows.R
-import com.beletskiy.bullscows.TAG
+import com.beletskiy.bullscows.utils.TAG
 import com.beletskiy.bullscows.game.Attempt
 import com.beletskiy.bullscows.game.GameController
 import com.beletskiy.bullscows.utils.RepeatingNumbersException
@@ -15,6 +14,14 @@ import java.lang.IllegalArgumentException
 class GameViewModel : ViewModel() {
 
     private val gameController = GameController()
+
+    //<editor-fold desc="Pickers">
+    // FIXME: to try to change to collection of four
+    val picker1 = MutableLiveData(1)
+    val picker2 = MutableLiveData(2)
+    val picker3 = MutableLiveData(3)
+    val picker4 = MutableLiveData(4)
+    //</editor-fold>
 
     /// contains users's attempts to guess the secret number
     private val _attemptList = MutableLiveData<ArrayList<Attempt>>()
@@ -45,23 +52,30 @@ class GameViewModel : ViewModel() {
         _eventRepeatingNumbers.value = false
         _eventAttemptAddedAtPosition.value = 0
         _pickersContainerVisible.value = View.VISIBLE
-        _gameIsOver.value =  false
+        _gameIsOver.value = false
         _attemptList.value = ArrayList()
     }
 
     /// called when TRY button tapped. Takes values of four NumberPickers
-    fun onTryTapped(val1: Int, val2: Int, val3: Int, val4: Int) {
-        Log.i(TAG, "Pickers(1-4): $val1 $val2 $val3 $val4")
-        Log.i(TAG, "onTryTapped: _attemptList.size = ${_attemptList.value?.size}")
+    fun onTryTapped() {
+        Log.i(
+            TAG,
+            "Pickers(1-4): ${picker1.value} ${picker2.value} ${picker3.value} ${picker4.value}"
+        )
 
         // validate user input
         val attemptValues: List<Int> = try {
-            gameController.isUserInputValid(val1, val2, val3, val4)
+            gameController.isUserInputValid(
+                picker1.value!!,
+                picker2.value!!,
+                picker3.value!!,
+                picker4.value!!
+            )
         } catch (_: RepeatingNumbersException) {
             _eventRepeatingNumbers.value = true
             return
         } catch (_: IllegalArgumentException) {
-            // TODO: fatal error?
+            // FIXME: fatal error?
             Log.i(TAG, "onTryTapped: IllegalArgumentException")
             return
         }
@@ -80,15 +94,19 @@ class GameViewModel : ViewModel() {
             // blocking user input - hides pickers' container
             _pickersContainerVisible.value = View.INVISIBLE
             // to change GameFragment caption
-            _gameIsOver.value =  true
+            _gameIsOver.value = true
         }
     }
 
     /// called when RESET button tapped
     fun onResetTapped() {
+        picker1.value = 1
+        picker2.value = 2
+        picker3.value = 3
+        picker4.value = 4
         _attemptList.value = ArrayList()
         _pickersContainerVisible.value = View.VISIBLE
-        _gameIsOver.value =  false
+        _gameIsOver.value = false
         gameController.reset()
     }
 

@@ -5,4 +5,7 @@
     <string name="repeating_numbers_warning">Repeating numbers are not allowed.</string>
     <string name="caption_game_is_not_over">Bulls &amp; Cows</string>
     <string name="caption_when_game_is_over">You win!!!</string>
+    <string name="button_rules">button rules</string>
+    <string name="button_restart">button restart</string>
+    <string name="button_try_text">Try</string>
 </resources>

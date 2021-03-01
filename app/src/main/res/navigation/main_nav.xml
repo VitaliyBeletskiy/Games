@@ -11,12 +11,9 @@
             android:id="@+id/action_gameFragment_to_rulesFragment"
             app:destination="@id/rulesFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/rulesFragment"
         android:name="com.beletskiy.bullscows.fragment_rules.RulesFragment"
-        android:label="RulesFragment" >
-        <action
-            android:id="@+id/action_rulesFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
-    </fragment>
+        android:label="RulesFragment" />
 </navigation>

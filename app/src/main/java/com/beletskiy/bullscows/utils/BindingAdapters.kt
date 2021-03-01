@@ -1,12 +1,11 @@
-package com.beletskiy.bullscows.fragment_game
+package com.beletskiy.bullscows.utils
 
-import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.beletskiy.bullscows.R
+import com.beletskiy.bullscows.fragment_game.AttemptAdapter
 import com.beletskiy.bullscows.game.Attempt
 
 @BindingAdapter("attemptImage")

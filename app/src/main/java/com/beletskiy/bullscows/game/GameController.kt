@@ -1,8 +1,5 @@
 package com.beletskiy.bullscows.game
 
-import android.util.Log
-import com.beletskiy.bullscows.TAG
-
 /**
  * this class implements game logic
  */
@@ -88,6 +85,5 @@ class GameController {
      */
     private fun generateNewSecretNumber() {
         secretNumber = (0..9).shuffled().take(4)
-        Log.i(TAG, "Secret number = ${secretNumber}")
     }
 }

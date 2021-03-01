@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -36,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
-                    android:contentDescription="button rules"
+                    android:contentDescription="@string/button_rules"
                     app:srcCompat="@drawable/ic_rules" />
 
                 <TextView
@@ -54,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:contentDescription="button restart"
+                    android:contentDescription="@string/button_restart"
                     app:srcCompat="@drawable/ic_restart" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -74,42 +73,59 @@
             android:id="@+id/picker_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
             android:orientation="horizontal"
             android:visibility="@{gameViewModel.pickersContainerVisible}"
             app:layout_constraintBottom_toBottomOf="parent">
-            <!--            android:visibility="@{gameViewModel.pickersContainerVisible}"-->
-            <!--            app:isVisible ="@{gameViewModel.pickersContainerVisible}"-->
 
             <NumberPicker
                 android:id="@+id/numberPicker1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:value="@={gameViewModel.picker1}"
+                app:maxValue="@{9}"
+                app:minValue="@{0}" />
 
             <NumberPicker
                 android:id="@+id/numberPicker2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="1"
+                android:value="@={gameViewModel.picker2}"
+                app:maxValue="@{9}"
+                app:minValue="@{0}" />
 
             <NumberPicker
                 android:id="@+id/numberPicker3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="1"
+                android:value="@={gameViewModel.picker3}"
+                app:maxValue="@{9}"
+                app:minValue="@{0}" />
 
             <NumberPicker
                 android:id="@+id/numberPicker4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="1"
+                android:value="@={gameViewModel.picker4}"
+                app:maxValue="@{9}"
+                app:minValue="@{0}" />
 
             <Button
                 android:id="@+id/button_try"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/small_margin"
                 android:layout_weight="1"
-                android:text="Try" />
+                android:onClick="@{() -> gameViewModel.onTryTapped()}"
+                android:text="@string/button_try_text" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

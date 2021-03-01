@@ -2,4 +2,5 @@
 <resources>
     <dimen name="item_image_size">40dp</dimen>
     <dimen name="item_result_size">20dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
 </resources>

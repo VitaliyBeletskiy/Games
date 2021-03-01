@@ -40,7 +40,7 @@ class AttemptViewHolder(private val binding: ItemAttemptBinding) : RecyclerView.
     }
 }
 
-class AttemptDiffItemCallback() : DiffUtil.ItemCallback<Attempt>() {
+class AttemptDiffItemCallback : DiffUtil.ItemCallback<Attempt>() {
 
     override fun areItemsTheSame(oldItem: Attempt, newItem: Attempt): Boolean {
         return oldItem.attemptNumber == newItem.attemptNumber
