@@ -92,43 +92,29 @@
 
             <NumberPicker
                 android:id="@+id/numberPicker1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/background_field"
+                style="@style/picker_style"
+                android:layout_marginStart="0dp"
                 android:value="@={gameViewModel.picker1}"
                 app:maxValue="@{9}"
                 app:minValue="@{0}" />
 
             <NumberPicker
                 android:id="@+id/numberPicker2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_weight="1"
-                android:background="@color/background_field"
+                style="@style/picker_style"
                 android:value="@={gameViewModel.picker2}"
                 app:maxValue="@{9}"
                 app:minValue="@{0}" />
 
             <NumberPicker
                 android:id="@+id/numberPicker3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_weight="1"
-                android:background="@color/background_field"
+                style="@style/picker_style"
                 android:value="@={gameViewModel.picker3}"
                 app:maxValue="@{9}"
                 app:minValue="@{0}" />
 
             <NumberPicker
                 android:id="@+id/numberPicker4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_weight="1"
-                android:background="@color/background_field"
+                style="@style/picker_style"
                 android:value="@={gameViewModel.picker4}"
                 app:maxValue="@{9}"
                 app:minValue="@{0}" />
