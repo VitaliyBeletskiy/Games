@@ -19,6 +19,7 @@
         <item name="android:layout_marginStart">@dimen/small_margin</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@color/background_field</item>
+        <item name="android:descendantFocusability">blocksDescendants</item>
     </style>
 
 </resources>

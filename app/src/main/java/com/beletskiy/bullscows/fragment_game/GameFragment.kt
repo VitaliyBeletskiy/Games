@@ -63,10 +63,10 @@ class GameFragment : Fragment() {
 
     /// sets up Fragment's Toolbar
     private fun setupToolbar() {
-        binding.buttonRules.setOnClickListener {
+        binding.toolbarLayout.buttonRules.setOnClickListener {
             this.findNavController().navigate(R.id.action_gameFragment_to_rulesFragment)
         }
-        binding.buttonRestart.setOnClickListener {
+        binding.toolbarLayout.buttonRestart.setOnClickListener {
             gameViewModel.onResetTapped()
         }
     }
