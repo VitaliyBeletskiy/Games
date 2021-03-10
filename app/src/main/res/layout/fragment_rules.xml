@@ -27,7 +27,6 @@
             android:layout_gravity="center"
             android:text="@string/Rules_caption"
             tools:ignore="RelativeOverlap" />
-
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
@@ -40,5 +39,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rulesToolbar"
         tools:text="@string/rules_text" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher_cow"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_cow_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.BullsCows">
         <activity android:name=".MainActivity">
             <intent-filter>

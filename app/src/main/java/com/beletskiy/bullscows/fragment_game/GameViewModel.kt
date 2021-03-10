@@ -1,11 +1,9 @@
 package com.beletskiy.bullscows.fragment_game
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.beletskiy.bullscows.utils.TAG
 import com.beletskiy.bullscows.game.Attempt
 import com.beletskiy.bullscows.game.GameController
 import com.beletskiy.bullscows.utils.RepeatingNumbersException
@@ -16,7 +14,6 @@ class GameViewModel : ViewModel() {
     private val gameController = GameController()
 
     //<editor-fold desc="Pickers">
-    // FIXME: to try to change to collection of four
     val picker1 = MutableLiveData(1)
     val picker2 = MutableLiveData(2)
     val picker3 = MutableLiveData(3)
@@ -58,10 +55,6 @@ class GameViewModel : ViewModel() {
 
     /// called when TRY button tapped. Takes values of four NumberPickers
     fun onTryTapped() {
-        Log.i(
-            TAG,
-            "Pickers(1-4): ${picker1.value} ${picker2.value} ${picker3.value} ${picker4.value}"
-        )
 
         // validate user input
         val attemptValues: List<Int> = try {
@@ -74,9 +67,7 @@ class GameViewModel : ViewModel() {
         } catch (_: RepeatingNumbersException) {
             _eventRepeatingNumbers.value = true
             return
-        } catch (_: IllegalArgumentException) {
-            // FIXME: fatal error?
-            Log.i(TAG, "onTryTapped: IllegalArgumentException")
+        } catch (ex: IllegalArgumentException) {
             return
         }
 
@@ -90,7 +81,6 @@ class GameViewModel : ViewModel() {
 
         // check if game is over
         if (gameController.isGameOver(newAttempt)) {
-            Log.i(TAG, "isGameOver = true ")
             // blocking user input - hides pickers' container
             _pickersContainerVisible.value = View.INVISIBLE
             // to change GameFragment caption

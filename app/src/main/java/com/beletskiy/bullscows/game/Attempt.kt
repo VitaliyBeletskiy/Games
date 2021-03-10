@@ -1,7 +1,7 @@
 package com.beletskiy.bullscows.game
 
 data class Attempt(
-    val attemptNumber: Int,  // пришлось ввести. Для DiffUtil и для более простого DataBinding.
+    val attemptNumber: Int,
     val attemptValues: List<Int>,
     val attemptResults: List<Result>
 ) {

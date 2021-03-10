@@ -113,7 +113,5 @@
                 app:resultImage="@{attempt.attemptResults[3]}"
                 tools:srcCompat="@drawable/ic_nothing" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

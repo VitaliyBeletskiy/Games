@@ -35,7 +35,6 @@ class GameController {
      * gets 4 numbers from user input, evaluate them and return [Attempt] with results
      */
     fun evaluateAttempt(attemptValues: List<Int>): Attempt {
-        // TODO: 22/02/2021 check that we got exactly 4 non-repeating numbers from 0..9 as a parameter
 
         val result = ArrayList<Attempt.Result>()
 
