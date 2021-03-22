@@ -9,4 +9,5 @@
 </p>
 
 **Demo:**
-<img src="images/demo.gif" alt="demo"/>
+
+<img src="images/demo.gif" alt="demo" width="250"/>
