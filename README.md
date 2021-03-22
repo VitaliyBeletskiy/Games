@@ -2,10 +2,10 @@
 
 **Just Bulls & Cows is a simple logical game. The goal of the game is to guess the the secret number with a minimal number of attempts.**
 <p float="left">
-  <img src="images/JustBullsAndCows_01.jpg" alt="JustBullsAndCows" width="200"/>
-  <img src="images/JustBullsAndCows_02.jpg" alt="JustBullsAndCows" width="200"/>
-  <img src="images/JustBullsAndCows_03.jpg" alt="JustBullsAndCows" width="200"/>
-  <img src="images/JustBullsAndCows_04.jpg" alt="JustBullsAndCows" width="200"/>
+  <img src="images/JustBullsAndCows_1.jpg" alt="JustBullsAndCows" width="200"/>
+  <img src="images/JustBullsAndCows_2.jpg" alt="JustBullsAndCows" width="200"/>
+  <img src="images/JustBullsAndCows_3.jpg" alt="JustBullsAndCows" width="200"/>
+  <img src="images/JustBullsAndCows_4.jpg" alt="JustBullsAndCows" width="200"/>
 </p>
 
 **Demo:**
