@@ -35,7 +35,7 @@
                 android:layout_alignParentStart="true"
                 android:contentDescription="@string/button_restart_description"
                 android:scaleType="fitCenter"
-                android:tint="@color/text"
+                app:tint="@color/text"
                 app:srcCompat="@drawable/ic_restart" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_alignParentEnd="true"
                 android:contentDescription="@string/button_rules_description"
                 android:scaleType="fitCenter"
-                android:tint="@color/text"
+                app:tint="@color/text"
                 app:srcCompat="@drawable/ic_rules" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
