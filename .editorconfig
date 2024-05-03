@@ -1,0 +1,8 @@
+[*.{kt,kts}]
+#ktlint_experimental = disabled
+#ktlint_standard_final-newline = disabled
+ktlint_standard_no-empty-first-line-in-class-body = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_blank-line-before-declaration = disabled
+ktlint_standard_string-template-indent = disabled
+ktlint_standard_multiline-expression-wrapping = disabled
