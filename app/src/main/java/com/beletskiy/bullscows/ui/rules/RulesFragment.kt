@@ -1,4 +1,4 @@
-package com.beletskiy.bullscows.fragment_rules
+package com.beletskiy.bullscows.ui.rules
 
 import android.os.Bundle
 import android.text.Spannable
@@ -19,19 +19,21 @@ class RulesFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRulesBinding.inflate(inflater, container, false)
-        binding.rulesToolbar.setNavigationIcon(R.drawable.ic__back)
-        binding.rulesToolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.rulesToolbar.setNavigationIcon(R.drawable.ic__back)
+        binding.rulesToolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         setRulesText()
     }
@@ -41,9 +43,8 @@ class RulesFragment : Fragment() {
         _binding = null
     }
 
-    /// reads Rules text from string resources and adds it to TextView
+    // reads Rules text from string resources and adds it to TextView
     private fun setRulesText() {
-
         val textView = binding.textViewRules
         val spannableText = SpannableString(resources.getString(R.string.rules_text))
 
@@ -52,7 +53,7 @@ class RulesFragment : Fragment() {
             .addImage("img2", R.drawable.ic_cow)
     }
 
-    /// replaces imgTag inside SpannableString with drawable with id = imgId
+    // replaces imgTag inside SpannableString with drawable with id = imgId
     private fun SpannableString.addImage(imgTag: String, imgId: Int): SpannableString {
         val startIndex = this.indexOf(imgTag)
         val endIndex = startIndex + 4
@@ -64,7 +65,7 @@ class RulesFragment : Fragment() {
             imageSpan,
             startIndex,
             endIndex,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE,
         )
         return this
     }

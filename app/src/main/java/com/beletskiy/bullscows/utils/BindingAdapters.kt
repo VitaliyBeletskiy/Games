@@ -5,12 +5,13 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.beletskiy.bullscows.R
-import com.beletskiy.bullscows.fragment_game.AttemptAdapter
-import com.beletskiy.bullscows.game.Attempt
+import com.beletskiy.bullscows.game.Guess
+import com.beletskiy.bullscows.game.Result
+import com.beletskiy.bullscows.ui.game.GuessAdapter
 
-@BindingAdapter("attemptImage")
-fun ImageView.setAttemptImage(attemptValue: Int?) {
-    attemptValue?.let {
+@BindingAdapter("userInputImage")
+fun ImageView.setUserInputImage(userInputValue: Int?) {
+    userInputValue?.let {
         setImageResource(
             when (it) {
                 0 -> R.drawable.ic_0
@@ -24,33 +25,33 @@ fun ImageView.setAttemptImage(attemptValue: Int?) {
                 8 -> R.drawable.ic_8
                 9 -> R.drawable.ic_9
                 else -> R.drawable.ic_0
-            }
+            },
         )
     }
 }
 
 @BindingAdapter("resultImage")
-fun ImageView.setResultImage(result: Attempt.Result?) {
+fun ImageView.setResultImage(result: Result?) {
     result?.let {
         setImageResource(
             when (it) {
-                Attempt.Result.BULL -> R.drawable.ic_bull
-                Attempt.Result.COW -> R.drawable.ic_cow
-                Attempt.Result.NOTHING -> R.drawable.ic_nothing
-            }
+                Result.BULL -> R.drawable.ic_bull
+                Result.COW -> R.drawable.ic_cow
+                Result.NOTHING -> R.drawable.ic_nothing
+            },
         )
     }
 }
 
-@BindingAdapter("attemptListData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: ArrayList<Attempt>?) {
-    val adapter = recyclerView.adapter as AttemptAdapter
+@BindingAdapter("guessListData")
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<Guess>) {
+    val adapter = recyclerView.adapter as GuessAdapter
     adapter.submitList(data)
 }
 
 @BindingAdapter("caption")
 fun setGameFragmentCaption(textView: TextView, isGameOver: Boolean?) {
-    if (null != isGameOver && isGameOver) {
+    if (isGameOver == true) {
         textView.setText(R.string.caption_when_game_is_over)
     } else {
         textView.setText(R.string.caption_game_is_not_over)

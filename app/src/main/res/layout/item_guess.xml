@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="attempt"
-            type="com.beletskiy.bullscows.game.Attempt" />
+            name="guess"
+            type="com.beletskiy.bullscows.game.Guess" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,13 +17,13 @@
         android:layout_marginVertical="8dp">
 
         <TextView
-            android:id="@+id/attempt_number"
+            android:id="@+id/guess_number"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@drawable/round_bg"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:text="@{String.valueOf(attempt.attemptNumber)}"
+            android:text="@{String.valueOf(guess.number)}"
             android:textColor="@color/text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/numbers_container"
@@ -38,14 +38,14 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/results_container"
-            app:layout_constraintStart_toEndOf="@id/attempt_number"
+            app:layout_constraintStart_toEndOf="@id/guess_number"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/image1"
                 android:layout_width="@dimen/item_image_size"
                 android:layout_height="@dimen/item_image_size"
-                app:attemptImage="@{attempt.attemptValues[0]}"
+                app:userInputImage ="@{guess.userInput[0]}"
                 tools:srcCompat="@drawable/ic_1" />
 
             <ImageView
@@ -53,7 +53,7 @@
                 android:layout_width="@dimen/item_image_size"
                 android:layout_height="@dimen/item_image_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:attemptImage="@{attempt.attemptValues[1]}"
+                app:userInputImage="@{guess.userInput[1]}"
                 tools:srcCompat="@drawable/ic_2" />
 
             <ImageView
@@ -61,7 +61,7 @@
                 android:layout_width="@dimen/item_image_size"
                 android:layout_height="@dimen/item_image_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:attemptImage="@{attempt.attemptValues[2]}"
+                app:userInputImage="@{guess.userInput[2]}"
                 tools:srcCompat="@drawable/ic_3" />
 
             <ImageView
@@ -69,7 +69,7 @@
                 android:layout_width="@dimen/item_image_size"
                 android:layout_height="@dimen/item_image_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:attemptImage="@{attempt.attemptValues[3]}"
+                app:userInputImage="@{guess.userInput[3]}"
                 tools:srcCompat="@drawable/ic_4" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -86,7 +86,7 @@
                 android:id="@+id/result1"
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
-                app:resultImage="@{attempt.attemptResults[0]}"
+                app:resultImage="@{guess.results[0]}"
                 tools:srcCompat="@drawable/ic_bull" />
 
             <ImageView
@@ -94,7 +94,7 @@
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:resultImage="@{attempt.attemptResults[1]}"
+                app:resultImage="@{guess.results[1]}"
                 tools:srcCompat="@drawable/ic_cow" />
 
             <ImageView
@@ -102,7 +102,7 @@
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:resultImage="@{attempt.attemptResults[2]}"
+                app:resultImage="@{guess.results[2]}"
                 tools:srcCompat="@drawable/ic_nothing" />
 
             <ImageView
@@ -110,7 +110,7 @@
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:resultImage="@{attempt.attemptResults[3]}"
+                app:resultImage="@{guess.results[3]}"
                 tools:srcCompat="@drawable/ic_nothing" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>

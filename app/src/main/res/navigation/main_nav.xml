@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
     app:startDestination="@id/gameFragment">
 
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.beletskiy.bullscows.fragment_game.GameFragment"
-        android:label="GameFragment">
+        android:name="com.beletskiy.bullscows.ui.game.GameFragment"
+        android:label="GameFragment"
+        tools:layout="@layout/fragment_game">
         <action
             android:id="@+id/action_gameFragment_to_rulesFragment"
             app:destination="@id/rulesFragment"
@@ -16,9 +18,9 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-
     <fragment
         android:id="@+id/rulesFragment"
-        android:name="com.beletskiy.bullscows.fragment_rules.RulesFragment"
-        android:label="RulesFragment" />
+        android:name="com.beletskiy.bullscows.ui.rules.RulesFragment"
+        android:label="fragment_rules"
+        tools:layout="@layout/fragment_rules" />
 </navigation>

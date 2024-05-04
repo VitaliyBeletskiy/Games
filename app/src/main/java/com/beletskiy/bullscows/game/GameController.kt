@@ -1,11 +1,13 @@
 package com.beletskiy.bullscows.game
 
+import com.beletskiy.bullscows.utils.DuplicateNumbersException
+
 /**
  * this class implements game logic
  */
 class GameController {
     private lateinit var secretNumber: List<Int>
-    private var attemptNumber = 0
+    private var guessNumber = 0
 
     init {
         generateNewSecretNumber()
@@ -19,46 +21,40 @@ class GameController {
      * - throw custom RepeatingNumbersException it there are repeating Int
      */
     fun isUserInputValid(vararg args: Int): List<Int> {
-        if (4 != args.size) {
-            throw IllegalArgumentException("There must be four Int.")
-        }
-        val numbersSorted = args.sorted()
-        for (i in 0..args.size - 2) {
-            if (numbersSorted[i] == numbersSorted[i + 1]) {
-                throw com.beletskiy.bullscows.utils.RepeatingNumbersException("There are repeating numbers.")
-            }
+        require(4 == args.size) { "There must be four Int." }
+        if (args.toSet().size != args.size) {
+            throw DuplicateNumbersException("There are repeating numbers.")
         }
         return args.toList()
     }
 
     /**
-     * gets 4 numbers from user input, evaluate them and return [Attempt] with results
+     * gets 4 numbers from user input, evaluate them and return [Guess] with results
      */
-    fun evaluateAttempt(attemptValues: List<Int>): Attempt {
+    fun evaluateUserInput(userInput: List<Int>): Guess {
+        val result = ArrayList<Result>()
 
-        val result = ArrayList<Attempt.Result>()
-
-        for (i in attemptValues.indices) {
+        for (i in userInput.indices) {
             when {
                 // if both value and position match
-                attemptValues[i] == secretNumber[i] -> {
-                    result.add(Attempt.Result.BULL)
+                userInput[i] == secretNumber[i] -> {
+                    result.add(Result.BULL)
                 }
                 // if secretNumber contains this value in any position
-                secretNumber.contains(attemptValues[i]) -> {
-                    result.add(Attempt.Result.COW)
+                secretNumber.contains(userInput[i]) -> {
+                    result.add(Result.COW)
                 }
                 // secretNumber doesn't contain this value
                 else -> {
-                    result.add(Attempt.Result.NOTHING)
+                    result.add(Result.NOTHING)
                 }
             }
         }
         // BULLs first, then COWs, then NOTHINGs
         result.sortDescending()
 
-        attemptNumber++
-        return Attempt(attemptNumber, attemptValues, result)
+        guessNumber++
+        return Guess(guessNumber, userInput, result)
     }
 
     /**
@@ -66,18 +62,13 @@ class GameController {
      */
     fun reset() {
         generateNewSecretNumber()
-        attemptNumber = 0
+        guessNumber = 0
     }
 
     /**
      * checks if the game is over = result is all BULLs
      */
-    fun isGameOver(attempt: Attempt): Boolean {
-        for (item in attempt.attemptResults) {
-            if (item != Attempt.Result.BULL) return false
-        }
-        return true
-    }
+    fun isGameOver(guess: Guess) = guess.results.all { it == Result.BULL }
 
     /**
      * generates new [secretNumber] - four non-repeating numbers from 0 to 9
