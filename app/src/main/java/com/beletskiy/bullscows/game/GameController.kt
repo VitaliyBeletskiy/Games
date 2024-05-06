@@ -1,37 +1,39 @@
 package com.beletskiy.bullscows.game
 
-import com.beletskiy.bullscows.utils.DuplicateNumbersException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * this class implements game logic
+ *
+ * Properties:
+ * isGameOver: Flow<Boolean>
+ *
+ * Methods:
+ * restart()
+ * evaluateUserInput(userInput: List<Int>)
  */
 class GameController {
     private lateinit var secretNumber: List<Int>
     private var guessNumber = 0
+
+    private val _guesses = MutableStateFlow(emptyList<Guess>())
+    val guesses = _guesses.asStateFlow()
 
     init {
         generateNewSecretNumber()
     }
 
     /**
-     * gets user input - some number of Int
-     * returns:
-     * - list of these Int if they are four and non-repeating
-     * - throw IllegalArgumentException if they are not four
-     * - throw custom RepeatingNumbersException it there are repeating Int
+     * Receives VALID user input (four non-repeating numbers from 0 to 9),
+     * updates Guess list,
+     * returns true if game is over, false otherwise.
      */
-    fun isUserInputValid(vararg args: Int): List<Int> {
-        require(4 == args.size) { "There must be four Int." }
-        if (args.toSet().size != args.size) {
-            throw DuplicateNumbersException("There are repeating numbers.")
-        }
-        return args.toList()
-    }
+    fun evaluateUserInput(userInput: List<Int>): Boolean {
+        require(userInput.size == 4) { "User input must contain 4 numbers" }
+        require(userInput.size == userInput.distinct().size) { "User input must contain unique numbers" }
 
-    /**
-     * gets 4 numbers from user input, evaluate them and return [Guess] with results
-     */
-    fun evaluateUserInput(userInput: List<Int>): Guess {
         val result = ArrayList<Result>()
 
         for (i in userInput.indices) {
@@ -52,23 +54,19 @@ class GameController {
         }
         // BULLs first, then COWs, then NOTHINGs
         result.sortDescending()
-
         guessNumber++
-        return Guess(guessNumber, userInput, result)
+        _guesses.update { it + Guess(guessNumber, userInput, result) }
+        return result.all { it == Result.BULL }
     }
 
     /**
-     * resets the game
+     * restarts the game
      */
-    fun reset() {
+    fun restart() {
         generateNewSecretNumber()
         guessNumber = 0
+        _guesses.update { emptyList() }
     }
-
-    /**
-     * checks if the game is over = result is all BULLs
-     */
-    fun isGameOver(guess: Guess) = guess.results.all { it == Result.BULL }
 
     /**
      * generates new [secretNumber] - four non-repeating numbers from 0 to 9

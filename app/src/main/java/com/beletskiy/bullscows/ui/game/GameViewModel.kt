@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.beletskiy.bullscows.game.GameController
 import com.beletskiy.bullscows.game.Guess
 import com.beletskiy.bullscows.utils.DuplicateNumbersException
@@ -17,9 +18,7 @@ class GameViewModel : ViewModel() {
     val picker3 = MutableLiveData(3)
     val picker4 = MutableLiveData(4)
 
-    private val _guessList = MutableLiveData<List<Guess>>(emptyList())
-    val guessList: LiveData<List<Guess>>
-        get() = _guessList
+    val guessList: LiveData<List<Guess>> = gameController.guesses.asLiveData()
 
     // to trigger code in case of "DuplicateNumbers" event
     private val _eventDuplicateNumbers = MutableLiveData<Boolean>()
@@ -40,19 +39,19 @@ class GameViewModel : ViewModel() {
         _eventDuplicateNumbers.value = false
         _pickersContainerVisible.value = View.VISIBLE
         _gameIsOver.value = false
-        _guessList.value = ArrayList()
     }
 
     // called when TRY button tapped. Takes values of four NumberPickers
     fun onTryTapped() {
+        val pickers = listOf(
+            picker1.value!!,
+            picker2.value!!,
+            picker3.value!!,
+            picker4.value!!,
+        )
         // validate user input
         val userInput: List<Int> = try {
-            gameController.isUserInputValid(
-                picker1.value!!,
-                picker2.value!!,
-                picker3.value!!,
-                picker4.value!!,
-            )
+            validateUserInput(pickers)
         } catch (_: DuplicateNumbersException) {
             _eventDuplicateNumbers.value = true
             return
@@ -60,19 +59,20 @@ class GameViewModel : ViewModel() {
             return
         }
 
-        val newGuessList = _guessList.value?.toMutableList() ?: mutableListOf()
-        // evaluate user input, create a new Guess and add it to the list
-        val newGuess = gameController.evaluateUserInput(userInput)
-        newGuessList.add(newGuess)
-        _guessList.value = newGuessList
-
-        // check if game is over
-        if (gameController.isGameOver(newGuess)) {
+        if (gameController.evaluateUserInput(userInput)) {
             // blocking user input - hides pickers' container
             _pickersContainerVisible.value = View.INVISIBLE
             // to change GameFragment caption
             _gameIsOver.value = true
         }
+    }
+
+    private fun validateUserInput(userInput: List<Int>): List<Int> {
+        require(4 == userInput.size) { "There must be four Int." }
+        if (userInput.toSet().size != userInput.size) {
+            throw DuplicateNumbersException("There are repeating numbers.")
+        }
+        return userInput
     }
 
     // called when RESET button tapped
@@ -81,10 +81,9 @@ class GameViewModel : ViewModel() {
         picker2.value = 2
         picker3.value = 3
         picker4.value = 4
-        _guessList.value = ArrayList()
         _pickersContainerVisible.value = View.VISIBLE
         _gameIsOver.value = false
-        gameController.reset()
+        gameController.restart()
     }
 
     // when event "DuplicateNumbers" complete resets variable value to default
