@@ -4,14 +4,13 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import com.beletskiy.bullscows.game.GameController
 import com.beletskiy.bullscows.game.Guess
+import com.beletskiy.bullscows.game.IGameController
 import com.beletskiy.bullscows.utils.DuplicateNumbersException
 
-class GameViewModel : ViewModel() {
-
-    private val gameController = GameController()
+class GameViewModel(private val gameController: IGameController) : ViewModel() {
 
     val picker1 = MutableLiveData(1)
     val picker2 = MutableLiveData(2)
@@ -89,5 +88,16 @@ class GameViewModel : ViewModel() {
     // when event "DuplicateNumbers" complete resets variable value to default
     fun onDuplicateNumbersComplete() {
         _eventDuplicateNumbers.value = false
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+class GameViewModelFactory(private val gameController: IGameController) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
+            return GameViewModel(gameController) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

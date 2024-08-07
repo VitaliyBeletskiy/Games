@@ -1,6 +1,7 @@
 package com.beletskiy.bullscows.game
 
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -8,18 +9,29 @@ import kotlinx.coroutines.flow.update
  * this class implements game logic
  *
  * Properties:
- * isGameOver: Flow<Boolean>
+ * guesses: StateFlow<List<Guess>>
  *
  * Methods:
  * restart()
  * evaluateUserInput(userInput: List<Int>)
  */
-class GameController {
+
+interface IGameController {
+    val guesses: StateFlow<List<Guess>>
+    fun restart()
+    fun evaluateUserInput(userInput: List<Int>): Boolean
+
+    companion object {
+        fun getInstance() = GameControllerImpl()
+    }
+}
+
+class GameControllerImpl : IGameController {
     private lateinit var secretNumber: List<Int>
     private var guessNumber = 0
 
     private val _guesses = MutableStateFlow(emptyList<Guess>())
-    val guesses = _guesses.asStateFlow()
+    override val guesses = _guesses.asStateFlow()
 
     init {
         generateNewSecretNumber()
@@ -30,7 +42,7 @@ class GameController {
      * updates Guess list,
      * returns true if game is over, false otherwise.
      */
-    fun evaluateUserInput(userInput: List<Int>): Boolean {
+    override fun evaluateUserInput(userInput: List<Int>): Boolean {
         require(userInput.size == 4) { "User input must contain 4 numbers" }
         require(userInput.size == userInput.distinct().size) { "User input must contain unique numbers" }
 
@@ -62,7 +74,7 @@ class GameController {
     /**
      * restarts the game
      */
-    fun restart() {
+    override fun restart() {
         generateNewSecretNumber()
         guessNumber = 0
         _guesses.update { emptyList() }

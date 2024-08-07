@@ -9,12 +9,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.beletskiy.bullscows.R
 import com.beletskiy.bullscows.databinding.FragmentGameBinding
+import com.beletskiy.bullscows.game.IGameController
 import com.google.android.material.snackbar.Snackbar
 
 class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
-    private val gameViewModel: GameViewModel by viewModels()
+    private val gameViewModel: GameViewModel by viewModels {
+        GameViewModelFactory(IGameController.getInstance())
+    }
     private val guessAdapter = GuessAdapter()
 
     override fun onCreateView(

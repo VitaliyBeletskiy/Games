@@ -6,14 +6,14 @@ plugins {
 
 android {
     namespace = "com.beletskiy.bullscows"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.beletskiy.bullscows"
-        minSdk = 19
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -45,6 +45,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":game"))
+
     // Kotlin
     implementation(libs.core.ktx)
 

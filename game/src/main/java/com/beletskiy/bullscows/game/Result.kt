@@ -1,6 +1,6 @@
 package com.beletskiy.bullscows.game
 
-enum class Result() {
+enum class Result {
     NOTHING(),
     COW(),
     BULL(),
