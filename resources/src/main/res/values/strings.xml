@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Just Bulls &amp; Cows</string>
     <string name="repeating_numbers_warning">Repeating numbers are not allowed.</string>

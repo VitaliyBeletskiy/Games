@@ -1,23 +1,24 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    kotlin("kapt")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.beletskiy.bullscows"
+    namespace = "com.beletskiy.bullscows.compose"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.beletskiy.bullscows"
+        applicationId = "com.beletskiy.bullscows.compose"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        vectorDrawables.useSupportLibrary = true
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -29,12 +30,6 @@ android {
             )
         }
     }
-
-    buildFeatures {
-        dataBinding = true
-        viewBinding = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -42,28 +37,38 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
     implementation(project(":game"))
     implementation(project(":resources"))
 
-    // Kotlin
     implementation(libs.core.ktx)
 
-    // App compat and UI things
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.constraintlayout)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
-    // Lifecycle: ViewModel + LiveData
-    implementation(libs.bundles.lifecycle)
-
-    // Navigation
-    implementation(libs.bundles.navigation)
-
-    // Testing
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
-    testImplementation(libs.junit)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
