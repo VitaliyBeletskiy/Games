@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.1"
+agp = "8.5.2"
 androidx-junit = "1.2.1"
 appcompat = "1.7.0"
 constraintlayout = "2.1.4"
@@ -12,6 +12,7 @@ material = "1.12.0"
 navigation = "2.7.7"
 activityCompose = "1.9.1"
 composeBom = "2024.06.00"
+composeNavigation = "2.7.7"
 
 # Config Versions
 compileSdk = "34"
@@ -43,6 +44,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
