@@ -19,7 +19,7 @@ class GuessAdapter : ListAdapter<Guess, GuessViewHolder>(GuessDiffItemCallback()
     }
 }
 
-class GuessViewHolder(private val binding: ItemGuessBinding) : RecyclerView.ViewHolder(binding.root) {
+class GuessViewHolder private constructor(private val binding: ItemGuessBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Guess) {
         binding.guess = item
