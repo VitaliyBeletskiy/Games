@@ -1,5 +1,6 @@
 package com.beletskiy.bullscows.game
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,16 +11,18 @@ import kotlinx.coroutines.flow.update
  *
  * Properties:
  * guesses: StateFlow<List<Guess>>
+ * isGameOver: StateFlow<Boolean>
  *
  * Methods:
  * restart()
- * evaluateUserInput(userInput: List<Int>)
+ * evaluateUserInput(userInput: List<Int>): Result
  */
 
 interface IGameController {
     val guesses: StateFlow<List<Guess>>
+    val isGameOver: StateFlow<Boolean>
     fun restart()
-    fun evaluateUserInput(userInput: List<Int>): Boolean
+    fun evaluateUserInput(userInput: List<Int>): Result
 
     companion object {
         fun getInstance() = GameControllerImpl()
@@ -33,42 +36,53 @@ class GameControllerImpl : IGameController {
     private val _guesses = MutableStateFlow(emptyList<Guess>())
     override val guesses = _guesses.asStateFlow()
 
+    private val _isGameOver = MutableStateFlow(false)
+    override val isGameOver = _isGameOver.asStateFlow()
+
     init {
-        generateNewSecretNumber()
+        restart()
     }
 
     /**
-     * Receives VALID user input (four non-repeating numbers from 0 to 9),
-     * updates Guess list,
-     * returns true if game is over, false otherwise.
+     * Receives user input,
+     * updates Guess list and game state (isGameOver),
+     * returns [Result.Success] if input is valid, [Result.Failure] otherwise.
      */
-    override fun evaluateUserInput(userInput: List<Int>): Boolean {
-        require(userInput.size == 4) { "User input must contain 4 numbers" }
-        require(userInput.size == userInput.distinct().size) { "User input must contain unique numbers" }
+    override fun evaluateUserInput(userInput: List<Int>): Result {
+        if (userInput.size != 4) {
+            return Result.Failure(IllegalGuessSizeException())
+        }
+        if (userInput.size != userInput.distinct().size) {
+            return Result.Failure(RepetitiveNumbersException())
+        }
+        if (userInput.any { it !in 0..9 }) {
+            return Result.Failure(IllegalNumberException())
+        }
 
-        val result = ArrayList<Result>()
+        val guessResult = ArrayList<GuessResult>()
 
         for (i in userInput.indices) {
             when {
                 // if both value and position match
                 userInput[i] == secretNumber[i] -> {
-                    result.add(Result.BULL)
+                    guessResult.add(GuessResult.BULL)
                 }
                 // if secretNumber contains this value in any position
                 secretNumber.contains(userInput[i]) -> {
-                    result.add(Result.COW)
+                    guessResult.add(GuessResult.COW)
                 }
                 // secretNumber doesn't contain this value
                 else -> {
-                    result.add(Result.NOTHING)
+                    guessResult.add(GuessResult.NOTHING)
                 }
             }
         }
         // BULLs first, then COWs, then NOTHINGs
-        result.sortDescending()
+        guessResult.sortDescending()
         guessNumber++
-        _guesses.update { it + Guess(guessNumber, userInput, result) }
-        return result.all { it == Result.BULL }
+        _guesses.update { it + Guess(guessNumber, userInput, guessResult) }
+        _isGameOver.update { guessResult.all { it == GuessResult.BULL } }
+        return Result.Success
     }
 
     /**
@@ -78,6 +92,7 @@ class GameControllerImpl : IGameController {
         generateNewSecretNumber()
         guessNumber = 0
         _guesses.update { emptyList() }
+        _isGameOver.update { false }
     }
 
     /**
@@ -85,5 +100,6 @@ class GameControllerImpl : IGameController {
      */
     private fun generateNewSecretNumber() {
         secretNumber = (0..9).shuffled().take(4)
+        Log.d("vitDebug", "generateNewSecretNumber: $secretNumber")
     }
 }

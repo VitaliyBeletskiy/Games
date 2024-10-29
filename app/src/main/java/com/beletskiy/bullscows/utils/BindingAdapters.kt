@@ -6,7 +6,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.beletskiy.bullscows.R
 import com.beletskiy.bullscows.game.Guess
-import com.beletskiy.bullscows.game.Result
+import com.beletskiy.bullscows.game.GuessResult
 import com.beletskiy.bullscows.ui.game.GuessAdapter
 
 @BindingAdapter("userInputImage")
@@ -31,13 +31,13 @@ fun ImageView.setUserInputImage(userInputValue: Int?) {
 }
 
 @BindingAdapter("resultImage")
-fun ImageView.setResultImage(result: Result?) {
-    result?.let {
+fun ImageView.setResultImage(guessResult: GuessResult?) {
+    guessResult?.let {
         setImageResource(
             when (it) {
-                Result.BULL -> R.drawable.ic_bull
-                Result.COW -> R.drawable.ic_cow
-                Result.NOTHING -> R.drawable.ic_nothing
+                GuessResult.BULL -> R.drawable.ic_bull
+                GuessResult.COW -> R.drawable.ic_cow
+                GuessResult.NOTHING -> R.drawable.ic_nothing
             },
         )
     }

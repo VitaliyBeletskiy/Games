@@ -23,7 +23,7 @@
             android:background="@drawable/round_bg"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:text="@{String.valueOf(guess.number)}"
+            android:text="@{String.valueOf(guess.ordinal)}"
             android:textColor="@color/text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/numbers_container"
@@ -86,7 +86,7 @@
                 android:id="@+id/result1"
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
-                app:resultImage="@{guess.results[0]}"
+                app:resultImage="@{guess.guessResults[0]}"
                 tools:srcCompat="@drawable/ic_bull" />
 
             <ImageView
@@ -94,7 +94,7 @@
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:resultImage="@{guess.results[1]}"
+                app:resultImage="@{guess.guessResults[1]}"
                 tools:srcCompat="@drawable/ic_cow" />
 
             <ImageView
@@ -102,7 +102,7 @@
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:resultImage="@{guess.results[2]}"
+                app:resultImage="@{guess.guessResults[2]}"
                 tools:srcCompat="@drawable/ic_nothing" />
 
             <ImageView
@@ -110,7 +110,7 @@
                 android:layout_width="@dimen/item_result_size"
                 android:layout_height="@dimen/item_result_size"
                 android:layout_marginStart="@dimen/small_margin"
-                app:resultImage="@{guess.results[3]}"
+                app:resultImage="@{guess.guessResults[3]}"
                 tools:srcCompat="@drawable/ic_nothing" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>

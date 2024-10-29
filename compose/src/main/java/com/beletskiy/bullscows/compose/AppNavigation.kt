@@ -1,40 +1,39 @@
 package com.beletskiy.bullscows.compose
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.beletskiy.bullscows.compose.ui.game.GameScreen
+import com.beletskiy.bullscows.compose.ui.game.GameViewModel
 import com.beletskiy.bullscows.compose.ui.rules.RulesScreen
 
-interface BullsCowsDestination {
-    val route: String
-}
+enum class AppScreens() {
+    GameScreen,
+    RulesScreen(),
+    ;
 
-object GameScreenDestination : BullsCowsDestination {
-    override val route = "gameScreen"
-}
-
-object RulesScreenDestination : BullsCowsDestination {
-    override val route = "rulesScreen"
+    companion object {
+        fun fromRoute(route: String?): AppScreens = when (route?.substringBefore("/")) {
+            GameScreen.name -> GameScreen
+            RulesScreen.name -> RulesScreen
+            null -> GameScreen
+            else -> throw IllegalArgumentException("Route $route is not recognized")
+        }
+    }
 }
 
 @Composable
-fun AppNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-) {
-    NavHost(
-        navController = navController,
-        startDestination = GameScreenDestination.route,
-        modifier = modifier,
-    ) {
-        composable(route = GameScreenDestination.route) {
-            GameScreen()
+fun AppNavigation() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = AppScreens.GameScreen.name) {
+        composable(AppScreens.GameScreen.name) {
+            GameScreen(navController = navController, viewModel = hiltViewModel<GameViewModel>())
         }
-        composable(route = RulesScreenDestination.route) {
-            RulesScreen()
+
+        composable(AppScreens.RulesScreen.name) {
+            RulesScreen(navController = navController)
         }
     }
 }
