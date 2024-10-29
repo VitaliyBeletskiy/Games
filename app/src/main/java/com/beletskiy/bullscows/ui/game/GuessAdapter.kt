@@ -38,7 +38,7 @@ class GuessViewHolder private constructor(private val binding: ItemGuessBinding)
 class GuessDiffItemCallback : DiffUtil.ItemCallback<Guess>() {
 
     override fun areItemsTheSame(oldItem: Guess, newItem: Guess): Boolean {
-        return oldItem.number == newItem.number
+        return oldItem.ordinal == newItem.ordinal
     }
 
     override fun areContentsTheSame(oldItem: Guess, newItem: Guess): Boolean {

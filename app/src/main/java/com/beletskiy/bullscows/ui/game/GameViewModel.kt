@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.beletskiy.bullscows.game.Guess
 import com.beletskiy.bullscows.game.IGameController
+import com.beletskiy.bullscows.game.ifFailure
 import com.beletskiy.bullscows.utils.DuplicateNumbersException
+import kotlinx.coroutines.flow.map
 
 class GameViewModel(private val gameController: IGameController) : ViewModel() {
 
@@ -20,25 +22,21 @@ class GameViewModel(private val gameController: IGameController) : ViewModel() {
     val guessList: LiveData<List<Guess>> = gameController.guesses.asLiveData()
 
     // to trigger code in case of "DuplicateNumbers" event
-    private val _eventDuplicateNumbers = MutableLiveData<Boolean>()
+    private val _eventDuplicateNumbers = MutableLiveData(false)
     val eventDuplicateNumbers: LiveData<Boolean>
         get() = _eventDuplicateNumbers
 
     // shows/hides pickers' container in GameFragment
-    private val _pickersContainerVisible = MutableLiveData<Int>()
-    val pickersContainerVisible: LiveData<Int>
-        get() = _pickersContainerVisible
+    val pickersContainerVisible = gameController.isGameOver.map {
+        if (it) {
+            View.INVISIBLE
+        } else {
+            View.VISIBLE
+        }
+    }.asLiveData(timeoutInMs = 5_000)
 
     // controls GameFragment caption
-    private val _gameIsOver = MutableLiveData<Boolean>()
-    val gameIsOver: LiveData<Boolean>
-        get() = _gameIsOver
-
-    init {
-        _eventDuplicateNumbers.value = false
-        _pickersContainerVisible.value = View.VISIBLE
-        _gameIsOver.value = false
-    }
+    val gameIsOver: LiveData<Boolean> = gameController.isGameOver.asLiveData(timeoutInMs = 5_000)
 
     // called when TRY button tapped. Takes values of four NumberPickers
     fun onTryTapped() {
@@ -48,30 +46,12 @@ class GameViewModel(private val gameController: IGameController) : ViewModel() {
             picker3.value!!,
             picker4.value!!,
         )
-        // validate user input
-        val userInput: List<Int> = try {
-            validateUserInput(pickers)
-        } catch (_: DuplicateNumbersException) {
-            _eventDuplicateNumbers.value = true
-            return
-        } catch (e: IllegalArgumentException) {
-            return
-        }
 
-        if (gameController.evaluateUserInput(userInput)) {
-            // blocking user input - hides pickers' container
-            _pickersContainerVisible.value = View.INVISIBLE
-            // to change GameFragment caption
-            _gameIsOver.value = true
+        gameController.evaluateUserInput(pickers).ifFailure {
+            if (it is DuplicateNumbersException) {
+                _eventDuplicateNumbers.value = true
+            }
         }
-    }
-
-    private fun validateUserInput(userInput: List<Int>): List<Int> {
-        require(4 == userInput.size) { "There must be four Int." }
-        if (userInput.toSet().size != userInput.size) {
-            throw DuplicateNumbersException("There are repeating numbers.")
-        }
-        return userInput
     }
 
     // called when RESET button tapped
@@ -80,8 +60,6 @@ class GameViewModel(private val gameController: IGameController) : ViewModel() {
         picker2.value = 2
         picker3.value = 3
         picker4.value = 4
-        _pickersContainerVisible.value = View.VISIBLE
-        _gameIsOver.value = false
         gameController.restart()
     }
 
@@ -92,7 +70,8 @@ class GameViewModel(private val gameController: IGameController) : ViewModel() {
 }
 
 @Suppress("UNCHECKED_CAST")
-class GameViewModelFactory(private val gameController: IGameController) : ViewModelProvider.Factory {
+class GameViewModelFactory(private val gameController: IGameController) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameViewModel::class.java)) {

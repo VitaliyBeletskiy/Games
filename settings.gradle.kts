@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "Bulls&Cows"
 include(":app")
 include(":game")
+include(":compose")
+include(":resources")
