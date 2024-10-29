@@ -1,6 +1,5 @@
 package com.beletskiy.bullscows.game
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -100,6 +99,5 @@ class GameControllerImpl : IGameController {
      */
     private fun generateNewSecretNumber() {
         secretNumber = (0..9).shuffled().take(4)
-        Log.d("vitDebug", "generateNewSecretNumber: $secretNumber")
     }
 }
