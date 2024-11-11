@@ -19,8 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Bulls&Cows"
-include(":app")
+rootProject.name = "Just Bulls & Cows"
+include(":app_compose")
+include(":app_views")
 include(":game")
-include(":compose")
 include(":resources")
