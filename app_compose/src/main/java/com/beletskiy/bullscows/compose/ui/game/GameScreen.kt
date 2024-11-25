@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -44,6 +45,8 @@ import com.beletskiy.bullscows.compose.ui.components.RoundButton
 import com.beletskiy.bullscows.compose.ui.components.SquareButtonWithNumber
 import com.beletskiy.bullscows.game.Guess
 import kotlinx.coroutines.delay
+
+private const val LIST_ANIMATION_DELAY = 100L
 
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameViewModel) {
@@ -97,9 +100,7 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
 
         uiState.message?.let { message ->
             val text = when (message) {
-                Message.MUST_CONTAIN_FOUR_NUMBERS_WARNING -> stringResource(id = R.string.must_contain_four_numbers)
                 Message.MUST_CONTAIN_UNIQUE_NUMBERS_WARNING -> stringResource(id = R.string.must_contain_unique_numbers)
-                Message.MUST_CONTAIN_NUMBERS_0_9_WARNING -> stringResource(id = R.string.must_contain_numbers_0_9)
             }
 
             Toast.makeText(LocalContext.current, text, Toast.LENGTH_SHORT).show()
@@ -116,7 +117,7 @@ private fun GuessList(modifier: Modifier = Modifier, guesses: List<Guess>) {
 
     LaunchedEffect(guesses.size) {
         if (guesses.isNotEmpty()) {
-            delay(100)
+            delay(LIST_ANIMATION_DELAY)
             listState.animateScrollToItem(guesses.size - 1)
         }
     }
@@ -167,9 +168,9 @@ private fun GuessOrdinalView(ordinal: String) {
 
 @Composable
 private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
-    val pickedNumbers = remember { mutableListOf(1, 2, 3, 4) }
-    val currentPicker = remember { mutableIntStateOf(0) }
-    val openDialogWithNumbers = remember { mutableStateOf(false) }
+    val pickedNumbers = rememberSaveable { mutableListOf(1, 2, 3, 4) }
+    val currentPicker = rememberSaveable { mutableIntStateOf(0) }
+    val openDialogWithNumbers = rememberSaveable { mutableStateOf(false) }
     when {
         openDialogWithNumbers.value -> {
             DialogWithNumbers(

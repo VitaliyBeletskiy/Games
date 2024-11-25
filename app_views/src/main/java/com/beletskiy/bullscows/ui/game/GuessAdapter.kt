@@ -10,16 +10,17 @@ import com.beletskiy.bullscows.game.Guess
 
 class GuessAdapter : ListAdapter<Guess, GuessViewHolder>(GuessDiffItemCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuessViewHolder {
-        return GuessViewHolder.from(parent)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuessViewHolder =
+        GuessViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: GuessViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }
 
-class GuessViewHolder private constructor(private val binding: ItemGuessBinding) : RecyclerView.ViewHolder(binding.root) {
+class GuessViewHolder private constructor(
+    private val binding: ItemGuessBinding,
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Guess) {
         binding.guess = item
@@ -37,11 +38,9 @@ class GuessViewHolder private constructor(private val binding: ItemGuessBinding)
 
 class GuessDiffItemCallback : DiffUtil.ItemCallback<Guess>() {
 
-    override fun areItemsTheSame(oldItem: Guess, newItem: Guess): Boolean {
-        return oldItem.ordinal == newItem.ordinal
-    }
+    override fun areItemsTheSame(oldItem: Guess, newItem: Guess): Boolean =
+        oldItem.ordinal == newItem.ordinal
 
-    override fun areContentsTheSame(oldItem: Guess, newItem: Guess): Boolean {
-        return oldItem == newItem
-    }
+    override fun areContentsTheSame(oldItem: Guess, newItem: Guess): Boolean =
+        oldItem == newItem
 }

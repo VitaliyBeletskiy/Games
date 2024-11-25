@@ -9,9 +9,9 @@ import com.beletskiy.bullscows.compose.ui.game.GameScreen
 import com.beletskiy.bullscows.compose.ui.game.GameViewModel
 import com.beletskiy.bullscows.compose.ui.rules.RulesScreen
 
-enum class AppScreens() {
+enum class AppScreens {
     GameScreen,
-    RulesScreen(),
+    RulesScreen,
     ;
 
     companion object {

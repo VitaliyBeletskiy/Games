@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.beletskiy.bullscows.game.Guess
 import com.beletskiy.bullscows.game.IGameController
-import com.beletskiy.bullscows.game.IllegalGuessSizeException
-import com.beletskiy.bullscows.game.IllegalNumberException
 import com.beletskiy.bullscows.game.RepetitiveNumbersException
 import com.beletskiy.bullscows.game.ifFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,9 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class Message {
-    MUST_CONTAIN_FOUR_NUMBERS_WARNING,
     MUST_CONTAIN_UNIQUE_NUMBERS_WARNING,
-    MUST_CONTAIN_NUMBERS_0_9_WARNING,
 }
 
 data class GameUiState(
@@ -58,16 +54,12 @@ class GameViewModel @Inject constructor(private val gameController: IGameControl
     fun evaluateUserInput(userInput: List<Int>) {
         gameController.evaluateUserInput(userInput).ifFailure { exception ->
             when (exception) {
-                is IllegalGuessSizeException -> {
-                    showMessage(Message.MUST_CONTAIN_FOUR_NUMBERS_WARNING)
-                }
-
                 is RepetitiveNumbersException -> {
                     showMessage(Message.MUST_CONTAIN_UNIQUE_NUMBERS_WARNING)
                 }
 
-                is IllegalNumberException -> {
-                    showMessage(Message.MUST_CONTAIN_NUMBERS_0_9_WARNING)
+                else -> {
+                    throw exception
                 }
             }
         }

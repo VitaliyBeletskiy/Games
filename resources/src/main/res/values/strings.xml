@@ -9,7 +9,5 @@
     <string name="button_try_text">Try</string>
     <string name="rules_text">"""The goal of the game is to uncover the secret number with a minimal number of attempts (try with less than ten).\nThe game indicates the number of matches in your proposition.\n\n- All digits in the secret number are different.\n- If your guess has matching digits on the exact places, they are Bulls img1\n- If you have digits from the secret number, but not on the right places, they are Cows img2"""</string>
     <string name="rules_caption">Rules</string>
-    <string name="must_contain_four_numbers">Your guess must contain 4 numbers</string>
     <string name="must_contain_unique_numbers">Your guess must contain unique numbers</string>
-    <string name="must_contain_numbers_0_9">Your guess must contain numbers from 0 to 9</string>
 </resources>
