@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.update
  * restart()
  * evaluateUserInput(userInput: List<Int>): Result
  */
-
 interface IGameController {
     val guesses: StateFlow<List<Guess>>
     val isGameOver: StateFlow<Boolean>
@@ -28,9 +27,16 @@ interface IGameController {
     }
 }
 
+internal const val MIN_NUMBER = 0
+internal const val MAX_NUMBER = 9
+internal const val SECRET_NUMBER_SIZE = 4
+
 class GameControllerImpl : IGameController {
-    private lateinit var secretNumber: List<Int>
-    private var guessNumber = 0
+
+    private val allowedRange = MIN_NUMBER..MAX_NUMBER
+
+    internal lateinit var secretNumber: List<Int>
+    internal var guessNumber = 0
 
     private val _guesses = MutableStateFlow(emptyList<Guess>())
     override val guesses = _guesses.asStateFlow()
@@ -48,14 +54,17 @@ class GameControllerImpl : IGameController {
      * returns [Result.Success] if input is valid, [Result.Failure] otherwise.
      */
     override fun evaluateUserInput(userInput: List<Int>): Result {
-        if (userInput.size != 4) {
-            return Result.Failure(IllegalGuessSizeException())
-        }
+        //region Fail fast validations
+        require(
+            userInput.size == SECRET_NUMBER_SIZE,
+        ) { "A guess must contain 4 numbers" }
+        require(
+            userInput.all { it in allowedRange },
+        ) { "A guess must contain numbers from 0 to 9" }
+        //endregion
+
         if (userInput.size != userInput.distinct().size) {
             return Result.Failure(RepetitiveNumbersException())
-        }
-        if (userInput.any { it !in 0..9 }) {
-            return Result.Failure(IllegalNumberException())
         }
 
         val guessResult = ArrayList<GuessResult>()
@@ -99,6 +108,6 @@ class GameControllerImpl : IGameController {
      * Generates a new secret number, which is a list of four unique digits.
      */
     private fun generateNewSecretNumber() {
-        secretNumber = (0..9).shuffled().take(4)
+        secretNumber = (allowedRange).shuffled().take(SECRET_NUMBER_SIZE)
     }
 }
