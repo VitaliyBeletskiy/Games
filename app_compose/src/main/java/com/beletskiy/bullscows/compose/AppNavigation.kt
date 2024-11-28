@@ -2,6 +2,7 @@ package com.beletskiy.bullscows.compose
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -25,8 +26,7 @@ enum class AppScreens {
 }
 
 @Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
+fun AppNavigation(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = AppScreens.GameScreen.name) {
         composable(AppScreens.GameScreen.name) {
             GameScreen(navController = navController, viewModel = hiltViewModel<GameViewModel>())

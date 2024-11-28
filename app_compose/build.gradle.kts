@@ -58,31 +58,33 @@ dependencies {
     implementation(project(":resources"))
 
     implementation(libs.core.ktx)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.compose.navigation)
 
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    // Compose
+    implementation(platform(libs.androidx.compose.bom)) // Compose BOM
+    implementation(libs.androidx.material3) // Material Design 3
+    implementation(libs.androidx.ui) // main APIs for the underlying toolkit systems
+    implementation(libs.androidx.ui.tooling.preview) // Android Studio Preview support
+    implementation(libs.androidx.activity.compose) // Optional - Integration with activities
+    implementation(libs.androidx.ui.graphics) // ???
+    implementation(libs.compose.navigation) // Compose Navigation
 
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.navigation.compose) // Hilt and Navigation
 
+    // Unit Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     testImplementation(libs.turbine)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    // Instrumented Testing
+    androidTestImplementation(platform(libs.androidx.compose.bom)) // Compose BOM
+    androidTestImplementation(libs.androidx.ui.test.junit4) // UI Tests
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.espresso.core)
+
+    debugImplementation(libs.androidx.ui.tooling) // Android Studio Preview support
+    debugImplementation(libs.androidx.ui.test.manifest) // UI Tests
 }
