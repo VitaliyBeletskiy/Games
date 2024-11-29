@@ -43,7 +43,7 @@ fun AppBar(
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = stringResource(id = R.string.description_back),
                 )
             }
         },
@@ -52,13 +52,13 @@ fun AppBar(
                 IconButton(onClick = onRestart) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_restart),
-                        contentDescription = "Restart",
+                        contentDescription = stringResource(id = R.string.description_restart),
                     )
                 }
                 IconButton(onClick = { navController.navigate(AppScreens.RulesScreen.name) }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_rules),
-                        contentDescription = "Rules",
+                        contentDescription = stringResource(id = R.string.description_rules),
                     )
                 }
             }

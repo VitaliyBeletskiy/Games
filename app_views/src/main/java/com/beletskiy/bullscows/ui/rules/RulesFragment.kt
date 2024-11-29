@@ -30,7 +30,7 @@ class RulesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rulesToolbar.setNavigationIcon(R.drawable.ic__back)
+        binding.rulesToolbar.setNavigationIcon(R.drawable.ic_back)
         binding.rulesToolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }

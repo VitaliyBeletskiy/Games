@@ -37,6 +37,4 @@ dependencies {
     implementation(libs.core.ktx)
 
     testImplementation(libs.junit)
-//    androidTestImplementation(libs.androidx.junit)
-//    androidTestImplementation(libs.espresso.core)
 }
