@@ -29,11 +29,15 @@ enum class AppScreens {
 fun AppNavigation(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = AppScreens.GameScreen.name) {
         composable(AppScreens.GameScreen.name) {
-            GameScreen(navController = navController, viewModel = hiltViewModel<GameViewModel>())
+            GameScreen(
+                  viewModel = hiltViewModel<GameViewModel>(),
+                onNavigateUp = { navController.navigateUp() },
+                onNavigateToRules = { navController.navigate(AppScreens.RulesScreen.name) },
+            )
         }
 
         composable(AppScreens.RulesScreen.name) {
-            RulesScreen(navController = navController)
+            RulesScreen(onNavigateUp = { navController.navigateUp() })
         }
     }
 }

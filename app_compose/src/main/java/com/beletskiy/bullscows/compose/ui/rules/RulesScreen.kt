@@ -20,17 +20,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.beletskiy.bullscows.compose.AppScreens
 import com.beletskiy.bullscows.compose.R
 import com.beletskiy.bullscows.compose.ui.components.AppBar
 
 @Composable
-fun RulesScreen(navController: NavController) {
+fun RulesScreen(onNavigateUp: () -> Unit = {}) {
     Scaffold(
         topBar = {
-            AppBar(navController = navController, screen = AppScreens.RulesScreen)
+            AppBar(screen = AppScreens.RulesScreen, onNavigateUp = onNavigateUp)
         },
         modifier = Modifier.fillMaxSize(),
         containerColor = colorResource(id = R.color.background_field),
@@ -90,5 +88,5 @@ private fun makeAnnotatedStringForRules(): AnnotatedString {
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
 fun RulesScreenPreview() {
-    RulesScreen(navController = rememberNavController())
+    RulesScreen()
 }

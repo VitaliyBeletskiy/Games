@@ -33,8 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.beletskiy.bullscows.compose.AppScreens
 import com.beletskiy.bullscows.compose.R
 import com.beletskiy.bullscows.compose.ui.components.AppBar
@@ -49,7 +47,11 @@ import kotlinx.coroutines.delay
 private const val LIST_ANIMATION_DELAY = 100L
 
 @Composable
-fun GameScreen(navController: NavController, viewModel: GameViewModel) {
+fun GameScreen(
+    viewModel: GameViewModel,
+    onNavigateUp: () -> Unit = {},
+    onNavigateToRules: () -> Unit = {},
+) {
     val uiState by viewModel.gameUiState.collectAsState()
     val openRestartDialog = remember { mutableStateOf(false) }
 
@@ -70,16 +72,17 @@ fun GameScreen(navController: NavController, viewModel: GameViewModel) {
     Scaffold(
         topBar = {
             AppBar(
-                navController = navController,
                 screen = AppScreens.GameScreen,
                 isGameOver = uiState.isGameOver,
+                onNavigateUp = onNavigateUp,
+                onNavigateToRules = onNavigateToRules,
             ) {
-                if (viewModel.canRestartSilently) {
-                    viewModel.restart()
-                } else {
-                    openRestartDialog.value = true
-                }
+            if (viewModel.canRestartSilently) {
+                viewModel.restart()
+            } else {
+                openRestartDialog.value = true
             }
+        }
         },
         modifier = Modifier.fillMaxSize(),
         containerColor = colorResource(id = R.color.background_field),
@@ -220,5 +223,5 @@ private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
 private fun GameScreenPreview() {
-    GameScreen(navController = rememberNavController(), hiltViewModel<GameViewModel>())
+    GameScreen(hiltViewModel<GameViewModel>())
 }

@@ -14,16 +14,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavController
 import com.beletskiy.bullscows.compose.AppScreens
 import com.beletskiy.bullscows.compose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
-    navController: NavController,
     screen: AppScreens,
     isGameOver: Boolean = false,
+    onNavigateUp: () -> Unit = {},
+    onNavigateToRules: () -> Unit = {},
     onRestart: () -> Unit = {},
 ) {
     val title = when {
@@ -40,7 +40,7 @@ fun AppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
         navigationIcon = {
             if (screen == AppScreens.GameScreen) return@TopAppBar
-            IconButton(onClick = { navController.navigateUp() }) {
+            IconButton(onClick = onNavigateUp) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.description_back),
@@ -55,7 +55,7 @@ fun AppBar(
                         contentDescription = stringResource(id = R.string.description_restart),
                     )
                 }
-                IconButton(onClick = { navController.navigate(AppScreens.RulesScreen.name) }) {
+                IconButton(onClick = onNavigateToRules) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_rules),
                         contentDescription = stringResource(id = R.string.description_rules),
