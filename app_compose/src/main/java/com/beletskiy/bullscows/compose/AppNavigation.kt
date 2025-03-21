@@ -30,7 +30,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = AppScreens.GameScreen.name) {
         composable(AppScreens.GameScreen.name) {
             GameScreen(
-                  viewModel = hiltViewModel<GameViewModel>(),
+                viewModel = hiltViewModel<GameViewModel>(),
                 onNavigateUp = { navController.navigateUp() },
                 onNavigateToRules = { navController.navigate(AppScreens.RulesScreen.name) },
             )
