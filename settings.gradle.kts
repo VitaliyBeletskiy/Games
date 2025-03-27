@@ -21,5 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Games"
 include(":app")
-include(":bulls-and-cows")
+include(":feature-bulls-and-cows-ui")
+include(":feature-bulls-and-cows-data")
+include(":feature-tic-tac-toe-ui")
+include(":feature-fifteen-ui")
 include(":resources")

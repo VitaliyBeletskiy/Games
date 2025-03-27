@@ -17,7 +17,8 @@ android {
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
 
-        testInstrumentationRunner = "com.beletskiy.games.GamesTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "com.beletskiy.games.GamesTestRunner" temporarily commented
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -32,19 +33,20 @@ android {
             )
         }
     }
+    val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = javaVersion.toString()
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -54,7 +56,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":bulls-and-cows"))
+    implementation(project(":feature-bulls-and-cows-ui"))
+    implementation(project(":feature-tic-tac-toe-ui"))
+    implementation(project(":feature-fifteen-ui"))
     implementation(project(":resources"))
 
     implementation(libs.core.ktx)
