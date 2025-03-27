@@ -27,7 +27,7 @@ fun SquareButtonWithNumber(
         val drawable = numberToDrawable(number)
         Image(
             painterResource(drawable),
-            contentDescription = "Number",
+            contentDescription = number.toString(),
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize(),
         )

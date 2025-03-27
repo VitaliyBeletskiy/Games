@@ -20,7 +20,7 @@ import com.beletskiy.bac.ui.R
 private val buttonModifier = Modifier.padding(vertical = 4.dp)
 
 @Composable
-fun DialogWithNumbers(
+fun NumberPickerDialog(
     onDismissRequest: () -> Unit = {},
     onNumberClicked: (Int) -> Unit = {},
 ) {
@@ -113,6 +113,6 @@ fun DialogWithNumbers(
 
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
-private fun DialogWithNumbersPreview(modifier: Modifier = Modifier) {
-    DialogWithNumbers()
+private fun DialogWithNumbersPreview() {
+    NumberPickerDialog()
 }

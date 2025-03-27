@@ -37,18 +37,10 @@ import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
 import com.beletskiy.bac.ui.ui.components.AppBar
 import com.beletskiy.bac.ui.ui.components.ConfirmationDialog
-import com.beletskiy.bac.ui.ui.components.DialogWithNumbers
+import com.beletskiy.bac.ui.ui.components.GuessButton
+import com.beletskiy.bac.ui.ui.components.NumberPickerDialog
 import com.beletskiy.bac.ui.ui.components.GuessResultsView
-import com.beletskiy.bac.ui.ui.components.RoundButton
 import com.beletskiy.bac.ui.ui.components.SquareButtonWithNumber
-//import com.beletskiy.games.AppScreens
-//import com.beletskiy.games.R
-//import com.beletskiy.games.ui.components.AppBar
-//import com.beletskiy.games.ui.components.ConfirmationDialog
-//import com.beletskiy.games.ui.components.DialogWithNumbers
-//import com.beletskiy.games.ui.components.GuessResultsView
-//import com.beletskiy.games.ui.components.RoundButton
-//import com.beletskiy.games.ui.components.SquareButtonWithNumber
 import com.beletskiy.bullscows.Guess
 import kotlinx.coroutines.delay
 
@@ -184,7 +176,7 @@ private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
     val openDialogWithNumbers = rememberSaveable { mutableStateOf(false) }
     when {
         openDialogWithNumbers.value -> {
-            DialogWithNumbers(
+            NumberPickerDialog(
                 onDismissRequest = { openDialogWithNumbers.value = false },
                 onNumberClicked = { chosenNumber ->
                     openDialogWithNumbers.value = false
@@ -221,7 +213,7 @@ private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
                 currentPicker.intValue = 3
                 openDialogWithNumbers.value = true
             }
-            RoundButton(Modifier.weight(1f)) {
+            GuessButton(Modifier.weight(1f)) {
                 onTryClick.invoke(pickedNumbers.toList())
             }
         }
@@ -231,5 +223,5 @@ private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
 private fun GameScreenPreview() {
-    GameScreen(hiltViewModel< GameViewModel>())
+    GameScreen(hiltViewModel<GameViewModel>())
 }
