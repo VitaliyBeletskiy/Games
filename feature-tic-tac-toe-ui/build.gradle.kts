@@ -2,14 +2,16 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.beletskiy.ttt.ui"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -35,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature-tic-tac-toe-data"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -43,10 +46,16 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom)) // Compose BOM
     implementation(libs.androidx.material3) // Material Design 3
     implementation(libs.androidx.ui) // main APIs for the underlying toolkit systems
+    implementation(libs.androidx.ui.tooling) // Android Studio Preview support
     implementation(libs.androidx.ui.tooling.preview) // Android Studio Preview support
     implementation(libs.androidx.activity.compose) // Optional - Integration with activities
     implementation(libs.androidx.ui.graphics) // ???
     implementation(libs.compose.navigation) // Compose Navigation
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose) // Hilt and Navigation
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
