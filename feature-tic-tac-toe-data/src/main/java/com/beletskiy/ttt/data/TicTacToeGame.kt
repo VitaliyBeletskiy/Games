@@ -1,8 +1,8 @@
 package com.beletskiy.ttt.data
 
 interface ITicTacToeGame {
-    fun newGame(player: Player? = null): GameStatus
-    fun makeMove(row: Int, column: Int): GameStatus?
+    fun newGame(mark: Mark? = null): GameState
+    fun makeMove(row: Int, column: Int): GameState?
 
     companion object {
         fun getInstance() = TicTacToeGameImpl()
@@ -10,54 +10,48 @@ interface ITicTacToeGame {
 }
 
 class TicTacToeGameImpl : ITicTacToeGame {
-    private val board = Array(BOARD_SIZE) { Array(BOARD_SIZE) { null as Player? } }
-    private var currentPlayer = Player.X
+    private val board = Array(BOARD_SIZE) { Array(BOARD_SIZE) { null as Mark? } }
+    private var currentMark = Mark.X
     private var isGameOver = false
 
-    override fun newGame(player: Player?): GameStatus {
-        currentPlayer = player ?: Player.X
+    override fun newGame(mark: Mark?): GameState {
+        currentMark = mark ?: Mark.X
         board.forEach { it.fill(null) }
         isGameOver = false
-        return GameStatus(currentPlayer = currentPlayer)
+        return GameState(currentMark = currentMark)
     }
 
-    @Suppress("ReturnCount")
-    override fun makeMove(row: Int, column: Int): GameStatus? {
+    override fun makeMove(row: Int, column: Int): GameState? {
         if (isGameOver || board[row][column] != null) {
             return null
         }
 
-        board[row][column] = currentPlayer
+        board[row][column] = currentMark
+        val winner = if (checkIfWin(currentMark)) currentMark else null
+        val isDraw = checkIfDraw()
+        isGameOver = winner != null || isDraw
+        currentMark = currentMark.other()
 
-        if (checkIfWin(currentPlayer)) {
-            isGameOver = true
-            return GameStatus(
-                currentPlayer = currentPlayer,
-                board = board.toList(),
-                winner = currentPlayer,
-                isDraw = false
-            )
-        }
-        if (checkIfDraw()) {
-            isGameOver = true
-            return GameStatus(currentPlayer = currentPlayer, board = board.toList(), isDraw = true)
-        }
-        currentPlayer = currentPlayer.other()
-
-        return GameStatus(currentPlayer = currentPlayer, board = board.toList())
+        return GameState(
+            currentMark = currentMark,
+            board = board.toList(),
+            winner = winner,
+            isDraw = isDraw,
+            isGameOver = isGameOver,
+        )
     }
 
     @Suppress("ReturnCount")
-    private fun checkIfWin(player: Player): Boolean {
+    private fun checkIfWin(mark: Mark): Boolean {
         // Check rows
-        if (board.any { row -> row.all { it == player } }) return true
+        if (board.any { row -> row.all { it == mark } }) return true
         // Check columns
         for (col in 0..2) {
-            if ((0..2).all { row -> board[row][col] == player }) return true
+            if ((0..2).all { row -> board[row][col] == mark }) return true
         }
         // Check diagonals
-        if ((0..2).all { board[it][it] == player }) return true
-        if ((0..2).all { board[it][2 - it] == player }) return true
+        if ((0..2).all { board[it][it] == mark }) return true
+        if ((0..2).all { board[it][2 - it] == mark }) return true
 
         return false
     }
@@ -66,6 +60,6 @@ class TicTacToeGameImpl : ITicTacToeGame {
         return board.all { row -> row.all { it != null } }
     }
 
-    private fun Array<Array<Player?>>.toList(): List<List<Player?>> =
+    private fun Array<Array<Mark?>>.toList(): List<List<Mark?>> =
         this.map { it.toList() }
 }

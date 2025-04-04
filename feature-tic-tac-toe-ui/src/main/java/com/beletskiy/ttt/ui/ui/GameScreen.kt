@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.beletskiy.ttt.ui.ui
 
 import androidx.compose.animation.core.Animatable
@@ -9,17 +11,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,13 +44,15 @@ import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beletskiy.ttt.data.FakeTicTacToeGame
-import com.beletskiy.ttt.data.Player
+import com.beletskiy.ttt.data.Mark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -65,41 +76,113 @@ fun GameScreen(viewModel: GameViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
-            Row(
+            PlayerScoreView(
+                player1 = uiState.player1,
+                player2 = uiState.player2,
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Player 1")
-                    Text("0")
-                }
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Player 2")
-                    Text("0")
-                }
-            }
-
-            Text(
-                text = "Player 1's turn (X)",
-                modifier = Modifier.padding(16.dp),
             )
 
-            BoardView(
-                board = uiState.board,
-                modifier = Modifier.padding(8.dp)
-            ) { row, column ->
-                viewModel.takeTurn(row, column)
+            if (uiState.isGameOver) {
+                GameOverView(
+                    winner = uiState.winnerSlot?.let { uiState.getPlayer(it) },
+                    isDraw = uiState.isDraw,
+                ) {
+                    viewModel.newGame()
+                }
+            } else {
+                PlayerTurnView(
+                    player = uiState.getPlayer(uiState.currentPlayerSlot),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            /* We use key() {} because, for a new game, we need a completely new Board
+             * with a new animation. Otherwise, the animation will be equal 1f and won't work. */
+            key(uiState.gameSessionId) {
+                BoardView(
+                    board = uiState.board,
+                    isGameOver = uiState.isGameOver,
+                    modifier = Modifier.padding(8.dp)
+                ) { row, column ->
+                    viewModel.takeTurn(row, column)
+                }
             }
         }
     }
 }
 
 @Composable
+fun GameOverView(
+    winner: UiPlayer?,
+    isDraw: Boolean,
+    modifier: Modifier = Modifier,
+    onNewGameClick: () -> Unit = {},
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = if (isDraw) "It's a draw!" else "${winner?.name} won!",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(end = 8.dp)
+        )
+        IconButton(
+            onClick = onNewGameClick,
+        ) {
+            Icon(Icons.Default.Refresh, contentDescription = "New Game")
+        }
+    }
+}
+
+@Composable
+fun PlayerTurnView(
+    player: UiPlayer,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = "${player.name}'s turn",
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun PlayerScoreView(
+    player1: UiPlayer,
+    player2: UiPlayer,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+    ) {
+        Text(
+            text = player1.name,
+            fontSize = 24.sp,
+        )
+        Text(
+            text = "${player1.score} : ${player2.score}",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = player1.name,
+            fontSize = 24.sp,
+        )
+    }
+}
+
+@Suppress("detekt:CyclomaticComplexMethod", "detekt:LongMethod")
+@Composable
 fun BoardView(
-    board: List<List<Player?>>,
+    board: List<List<Mark?>>,
+    isGameOver: Boolean,
     modifier: Modifier = Modifier,
     onCellClicked: (row: Int, column: Int) -> Unit = { _, _ -> },
 ) {
@@ -107,8 +190,8 @@ fun BoardView(
     val scope = rememberCoroutineScope()
     var animations = rememberSaveable { emptyAnimations() }
 
-    // If the animation is cancelled half-way because of config changes (or other reasons),
-    // we just snap it to 1f, that is to its final value
+    /* If the animation is cancelled half-way because of config changes (or other reasons),
+     * we just snap it to 1f, that is to its final value. */
     LaunchedEffect(Unit) {
         delay(50) // it can sometimes make the transition less jarring in highly dynamic UIs
         for (i in 0..2) {
@@ -129,6 +212,7 @@ fun BoardView(
                 .size(dimension)
                 .pointerInput(true) {
                     detectTapGestures { clickOffset ->
+                        if (isGameOver) return@detectTapGestures
                         val (row, column) = detectClickedCell(size, clickOffset)
                         clickedCell = row to column
                         onCellClicked(row, column)
@@ -176,7 +260,7 @@ fun BoardView(
                     val y2 = (1f - padding + rowIdx) * cellSize
                     val diameter = (1f - 2 * padding) * cellSize
 
-                    if (player == Player.O) {
+                    if (player == Mark.O) {
                         drawArc(
                             color = Color.Green,
                             startAngle = 0f,
@@ -189,7 +273,7 @@ fun BoardView(
                                 cap = StrokeCap.Round
                             )
                         )
-                    } else if (player == Player.X) {
+                    } else if (player == Mark.X) {
                         val path1 = Path().apply {
                             moveTo(x1, y1)
                             lineTo(x2, y2)
@@ -278,4 +362,13 @@ fun PreviewGameScreen() {
     val fakeGame = FakeTicTacToeGame()
     val previewViewModel = GameViewModel(fakeGame)
     GameScreen(viewModel = previewViewModel)
+}
+
+@Preview
+@Composable
+fun GameOverViewScreen() {
+    GameOverView(
+        winner = UiPlayer("Player1", PlayerSlot.PLAYER1),
+        isDraw = false,
+    )
 }

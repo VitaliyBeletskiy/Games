@@ -12,77 +12,77 @@ class TicTacToeGameTest {
         ticTacToeGame = TicTacToeGameImpl()
     }
 
+    //region newGame tests
     @Test
-    fun `when newGame() is called then currentPlayer is X`() {
-        val gameStatus = ticTacToeGame.newGame()
-        assert(gameStatus.currentPlayer == Player.X)
+    fun `when newGame() is called then currentMark is X`() {
+        val gameState = ticTacToeGame.newGame()
+        assert(gameState.currentMark == Mark.X)
     }
 
     @Test
-    fun `when newGame(Player_O) is called then currentPlayer is O`() {
-        val gameStatus = ticTacToeGame.newGame(Player.O)
-        assert(gameStatus.currentPlayer == Player.O)
+    fun `when newGame(Player_O) is called then currentMark is O`() {
+        val gameState = ticTacToeGame.newGame(Mark.O)
+        assert(gameState.currentMark == Mark.O)
     }
 
     @Test
-    fun `when newGame(Player_X) is called then currentPlayer is X`() {
-        val gameStatus = ticTacToeGame.newGame(Player.O)
-        assert(gameStatus.currentPlayer == Player.O)
+    fun `when newGame(Player_X) is called then currentMark is X`() {
+        val gameState = ticTacToeGame.newGame(Mark.O)
+        assert(gameState.currentMark == Mark.O)
     }
 
     @Test
     fun `when newGame() is called then board is empty`() {
-        val gameStatus = ticTacToeGame.newGame()
-        assert(gameStatus.board.all { row -> row.all { it == null } })
+        val gameState = ticTacToeGame.newGame()
+        assert(gameState.board.all { row -> row.all { it == null } })
     }
 
     @Test
     fun `when newGame() is called then winner is null`() {
-        val gameStatus = ticTacToeGame.newGame()
-        assert(gameStatus.winner == null)
+        val gameState = ticTacToeGame.newGame()
+        assert(gameState.winner == null)
     }
 
     @Test
     fun `when newGame() is called then isDraw is false`() {
-        val gameStatus = ticTacToeGame.newGame()
-        assert(gameStatus.isDraw == false)
+        val gameState = ticTacToeGame.newGame()
+        assert(gameState.isDraw == false)
     }
 
+    @Test
+    fun `when newGame() is called then isGameOver is false`() {
+        val gameState = ticTacToeGame.newGame()
+        assert(gameState.isGameOver == false)
+    }
+    //endregion
+
+    //region makeMove tests
     @Test
     fun `when makeMove() is called then board is updated`() {
         ticTacToeGame.newGame()
-        val gameStatus = ticTacToeGame.makeMove(0, 0)
-        assert(gameStatus?.board?.get(0)?.get(0) == Player.X)
+        val gameState = ticTacToeGame.makeMove(0, 0)
+        assert(gameState?.board?.get(0)?.get(0) == Mark.X)
     }
 
     @Test
-    fun `when makeMove() is called then currentPlayer is updated`() {
+    fun `when makeMove() is called then currentMark is updated`() {
         ticTacToeGame.newGame()
-        val gameStatus = ticTacToeGame.makeMove(0, 0)
-        assert(gameStatus?.currentPlayer == Player.O)
+        val gameState = ticTacToeGame.makeMove(0, 0)
+        assert(gameState?.currentMark == Mark.O)
     }
 
     @Test
     fun `when makeMove() is called on occupied cell then board is not updated`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 0)
-        val gameStatus = ticTacToeGame.makeMove(0, 0)
-        assert(gameStatus == null)
+        val gameState = ticTacToeGame.makeMove(0, 0)
+        assert(gameState == null)
     }
+    //endregion
 
+    //region when it's Draw
     @Test
-    fun `when makeMove() is called and player wins then winner is set`() {
-        ticTacToeGame.newGame()
-        ticTacToeGame.makeMove(0, 0) // X
-        ticTacToeGame.makeMove(1, 1) // O
-        ticTacToeGame.makeMove(0, 1) // X
-        ticTacToeGame.makeMove(1, 2) // O
-        val gameStatus = ticTacToeGame.makeMove(0, 2) // X
-        assert(gameStatus?.winner == Player.X)
-    }
-
-    @Test
-    fun `when makeMove() is called and all cells are filled then isDraw is true`() {
+    fun `when all cells are filled and no one wins then isDraw is true`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 0) // X
         ticTacToeGame.makeMove(0, 1) // O
@@ -92,63 +92,103 @@ class TicTacToeGameTest {
         ticTacToeGame.makeMove(2, 0) // O
         ticTacToeGame.makeMove(0, 2) // X
         ticTacToeGame.makeMove(1, 2) // O
-        val gameStatus = ticTacToeGame.makeMove(2, 2) // X
-        assert(gameStatus?.isDraw == true)
+        val gameState = ticTacToeGame.makeMove(2, 2) // X
+        assert(gameState?.isDraw == true)
     }
 
     @Test
-    fun `when makeMove() is called and player wins then isDraw is false`() {
+    fun `when all cells are filled and no one wins then isGameOver is true`() {
+        ticTacToeGame.newGame()
+        ticTacToeGame.makeMove(0, 0) // X
+        ticTacToeGame.makeMove(0, 1) // O
+        ticTacToeGame.makeMove(1, 0) // X
+        ticTacToeGame.makeMove(1, 1) // O
+        ticTacToeGame.makeMove(2, 1) // X
+        ticTacToeGame.makeMove(2, 0) // O
+        ticTacToeGame.makeMove(0, 2) // X
+        ticTacToeGame.makeMove(1, 2) // O
+        val gameState = ticTacToeGame.makeMove(2, 2) // X
+        assert(gameState?.isGameOver == true)
+    }
+    //endregion
+
+    //region when it's Win
+    @Test
+    fun `when makeMove() is called and it's a win then winner is set`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 0) // X
         ticTacToeGame.makeMove(1, 1) // O
         ticTacToeGame.makeMove(0, 1) // X
         ticTacToeGame.makeMove(1, 2) // O
-        val gameStatus = ticTacToeGame.makeMove(0, 2) // X
-        assert(gameStatus?.isDraw == false)
+        val gameState = ticTacToeGame.makeMove(0, 2) // X
+        assert(gameState?.winner == Mark.X)
     }
 
     @Test
-    fun `when makeMove() is called and player wins then board is not updated`() {
+    fun `when it's a win then isDraw is false`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 0) // X
         ticTacToeGame.makeMove(1, 1) // O
         ticTacToeGame.makeMove(0, 1) // X
         ticTacToeGame.makeMove(1, 2) // O
-        val gameStatus = ticTacToeGame.makeMove(0, 2) // X
-        assert(gameStatus?.board?.get(0)?.get(2) == Player.X)
+        val gameState = ticTacToeGame.makeMove(0, 2) // X
+        assert(gameState?.isDraw == false)
     }
 
     @Test
-    fun `when makeMove() is called and player wins then winner is not null`() {
+    fun `when it's a win then board is not updated`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 0) // X
         ticTacToeGame.makeMove(1, 1) // O
         ticTacToeGame.makeMove(0, 1) // X
         ticTacToeGame.makeMove(1, 2) // O
-        val gameStatus = ticTacToeGame.makeMove(0, 2) // X
-        assert(gameStatus?.winner != null)
+        val gameState = ticTacToeGame.makeMove(0, 2) // X
+        assert(gameState?.board?.get(0)?.get(2) == Mark.X)
     }
 
     @Test
-    fun `when makeMove() is called and X player wins then winner is X`() {
+    fun `when it's a win then winner is not null`() {
+        ticTacToeGame.newGame()
+        ticTacToeGame.makeMove(0, 0) // X
+        ticTacToeGame.makeMove(1, 1) // O
+        ticTacToeGame.makeMove(0, 1) // X
+        ticTacToeGame.makeMove(1, 2) // O
+        val gameState = ticTacToeGame.makeMove(0, 2) // X
+        assert(gameState?.winner != null)
+    }
+
+    @Test
+    fun `when the X-mark wins then winner is X`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 0) // X
         ticTacToeGame.makeMove(1, 0) // O
         ticTacToeGame.makeMove(0, 1) // X
         ticTacToeGame.makeMove(1, 1) // O
-        val gameStatus = ticTacToeGame.makeMove(0, 2) // X
-        assert(gameStatus?.winner == Player.X)
+        val gameState = ticTacToeGame.makeMove(0, 2) // X
+        assert(gameState?.winner == Mark.X)
     }
 
     @Test
-    fun `when makeMove() is called and O player wins then winner is O`() {
+    fun `when the O-mark wins then winner is O`() {
         ticTacToeGame.newGame()
         ticTacToeGame.makeMove(0, 1) // X
         ticTacToeGame.makeMove(0, 0) // O
         ticTacToeGame.makeMove(0, 2) // X
         ticTacToeGame.makeMove(1, 1) // O
         ticTacToeGame.makeMove(1, 2) // X
-        val gameStatus = ticTacToeGame.makeMove(2, 2) // O
-        assert(gameStatus?.winner == Player.O)
+        val gameState = ticTacToeGame.makeMove(2, 2) // O
+        assert(gameState?.winner == Mark.O)
     }
+
+    @Test
+    fun `when it's a win then isGameOver is true`() {
+        ticTacToeGame.newGame()
+        ticTacToeGame.makeMove(0, 0) // X
+        ticTacToeGame.makeMove(1, 0) // O
+        ticTacToeGame.makeMove(0, 1) // X
+        ticTacToeGame.makeMove(1, 1) // O
+        val gameState = ticTacToeGame.makeMove(0, 2) // X
+        assert(gameState?.isGameOver == true)
+    }
+    //endregion
 }
