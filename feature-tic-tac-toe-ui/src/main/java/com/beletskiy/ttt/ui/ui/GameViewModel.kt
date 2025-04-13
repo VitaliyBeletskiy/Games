@@ -97,12 +97,12 @@ class GameViewModel @Inject constructor(private val ticTacToeGame: ITicTacToeGam
         }
     }
 
-    fun renamePlayer(playerSlot: PlayerSlot, name: String) {
+    fun renamePlayers(player1Name: String, player2Name: String) {
         _gameUiState.update {
-            when (playerSlot) {
-                PlayerSlot.PLAYER1 -> it.copy(player1 = it.player1.copy(name = name))
-                PlayerSlot.PLAYER2 -> it.copy(player2 = it.player2.copy(name = name))
-            }
+            it.copy(
+                player1 = it.player1.copy(name = player1Name),
+                player2 = it.player2.copy(name = player2Name),
+            )
         }
     }
 }
