@@ -19,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.beletskiy.ttt.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +43,7 @@ fun TicTacToeAppBar(
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = "More options"
+                        contentDescription = stringResource(R.string.more_options)
                     )
                 }
                 DropdownMenu(
@@ -49,14 +51,14 @@ fun TicTacToeAppBar(
                     onDismissRequest = { menuExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Reset Score") },
+                        text = { Text(stringResource(R.string.reset_score)) },
                         onClick = {
                             menuExpanded = false
                             onResetScoreClicked()
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Edit Names") },
+                        text = { Text(stringResource(R.string.edit_names)) },
                         onClick = {
                             menuExpanded = false
                             onEditNamesClicked()
@@ -72,7 +74,7 @@ fun TicTacToeAppBar(
 @Composable
 fun PreviewTopAppBarWithDropdown() {
     Scaffold(
-        topBar = { TicTacToeAppBar("Tic Tac Toe") },
+        topBar = { TicTacToeAppBar(stringResource(R.string.game_title)) },
     ) { innerPadding ->
         Box(
             modifier = Modifier

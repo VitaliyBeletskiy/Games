@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beletskiy.ttt.data.FakeTicTacToeGame
+import com.beletskiy.ttt.ui.R
 import com.beletskiy.ttt.ui.ui.components.BoardView
 import com.beletskiy.ttt.ui.ui.components.EditNamesDialog
 import com.beletskiy.ttt.ui.ui.components.ResetScoreDialog
@@ -57,10 +59,10 @@ fun GameScreen(viewModel: GameViewModel) {
 
     if (showResetScoreDialog) {
         ResetScoreDialog(
-            dialogTitle = "Reset Score",
-            dialogText = "Are you sure you want to reset the score?",
-            confirmText = "Confirm",
-            dismissText = "Dismiss",
+            dialogTitle = stringResource(R.string.reset_score),
+            dialogText = stringResource(R.string.are_you_sure_you_want_to_reset_the_score),
+            confirmText = stringResource(R.string.confirm),
+            dismissText = stringResource(R.string.dismiss),
             onDismissRequest = { showResetScoreDialog = false },
             onConfirmation = {
                 showResetScoreDialog = false
@@ -72,7 +74,7 @@ fun GameScreen(viewModel: GameViewModel) {
     Scaffold(
         topBar = {
             TicTacToeAppBar(
-                title = "Tic Tac Toe",
+                title = stringResource(R.string.game_title),
                 onResetScoreClicked = {
                     if (uiState.player1.score > 0 || uiState.player2.score > 0) {
                         showResetScoreDialog = true
@@ -141,9 +143,9 @@ fun GameStateView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val text = when {
-            isGameOver && isDraw -> "It's a draw!"
-            isGameOver && winner != null -> "${winner.name} won!"
-            else -> "${currentPlayer.name}'s turn ($currentMark)"
+            isGameOver && isDraw -> stringResource(R.string.it_s_a_draw)
+            isGameOver && winner != null -> stringResource(R.string.player_won, winner.name)
+            else -> stringResource(R.string.players_turn, currentPlayer.name, currentMark)
         }
         Text(
             text = text,
@@ -158,7 +160,7 @@ fun GameStateView(
             onClick = onNewGameClick,
             modifier = iconModifier,
         ) {
-            Icon(Icons.Default.Refresh, contentDescription = "New Game")
+            Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.new_game))
         }
     }
 }

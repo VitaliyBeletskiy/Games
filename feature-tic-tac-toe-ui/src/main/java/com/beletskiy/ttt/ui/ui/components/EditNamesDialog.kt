@@ -20,11 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.beletskiy.ttt.ui.R
 
 private const val MAX_NAME_LENGTH = 10
 
@@ -36,14 +39,15 @@ fun EditNamesDialog(
     onDismissRequest: () -> Unit = {},
     onConfirmation: (String, String) -> Unit = { _, _ -> },
 ) {
+    val context = LocalContext.current
     var name1 by remember { mutableStateOf(player1Name) }
     var name2 by remember { mutableStateOf(player2Name) }
     val name1Error = remember {
         derivedStateOf {
             if (name1.isBlank()) {
-                "Name cannot be empty"
+                context.getString(R.string.name_cannot_be_empty)
             } else if (name1.length > MAX_NAME_LENGTH) {
-                "Name is too long"
+                context.getString(R.string.name_is_too_long)
             } else {
                 null
             }
@@ -52,9 +56,9 @@ fun EditNamesDialog(
     val name2Error = remember {
         derivedStateOf {
             if (name2.isBlank()) {
-                "Name cannot be empty"
+                context.getString(R.string.name_cannot_be_empty)
             } else if (name2.length > MAX_NAME_LENGTH) {
-                "Name is too long"
+                context.getString(R.string.name_is_too_long)
             } else {
                 null
             }
@@ -70,7 +74,7 @@ fun EditNamesDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Edit Player Names",
+                    text = stringResource(R.string.edit_player_names),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(16.dp),
@@ -85,7 +89,7 @@ fun EditNamesDialog(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     isError = name1Error.value != null,
-                    label = { Text("Player 1") },
+                    label = { Text(stringResource(R.string.player_1)) },
                     singleLine = true,
                 )
                 name1Error.value?.let { error ->
@@ -109,7 +113,7 @@ fun EditNamesDialog(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     isError = name2Error.value != null,
-                    label = { Text("Player 2") },
+                    label = { Text(stringResource(R.string.player_2)) },
                     singleLine = true,
                 )
                 name2Error.value?.let { error ->
@@ -132,14 +136,14 @@ fun EditNamesDialog(
                         onClick = { onDismissRequest() },
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("Dismiss")
+                        Text(stringResource(R.string.dismiss))
                     }
                     TextButton(
                         onClick = { onConfirmation(name1, name2) },
                         enabled = name1Error.value == null && name2Error.value == null,
                         modifier = Modifier.padding(8.dp),
                     ) {
-                        Text("Confirm")
+                        Text(stringResource(R.string.confirm))
                     }
                 }
             }
