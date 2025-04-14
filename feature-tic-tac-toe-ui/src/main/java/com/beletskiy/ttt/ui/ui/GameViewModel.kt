@@ -105,4 +105,13 @@ class GameViewModel @Inject constructor(private val ticTacToeGame: ITicTacToeGam
             )
         }
     }
+
+    fun resetScore() {
+        _gameUiState.update {
+            it.copy(
+                player1 = it.player1.copy(score = 0),
+                player2 = it.player2.copy(score = 0),
+            )
+        }
+    }
 }

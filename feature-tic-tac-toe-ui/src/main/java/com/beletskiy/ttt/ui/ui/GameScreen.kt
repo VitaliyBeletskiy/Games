@@ -34,12 +34,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beletskiy.ttt.data.FakeTicTacToeGame
 import com.beletskiy.ttt.ui.ui.components.BoardView
 import com.beletskiy.ttt.ui.ui.components.EditNamesDialog
+import com.beletskiy.ttt.ui.ui.components.ResetScoreDialog
 import com.beletskiy.ttt.ui.ui.components.TicTacToeAppBar
 
 @Composable
 fun GameScreen(viewModel: GameViewModel) {
     val uiState by viewModel.gameUiState.collectAsStateWithLifecycle()
     var showEditNamesDialog by remember { mutableStateOf(false) }
+    var showResetScoreDialog by remember { mutableStateOf(false) }
 
     if (showEditNamesDialog) {
         EditNamesDialog(
@@ -53,11 +55,29 @@ fun GameScreen(viewModel: GameViewModel) {
         )
     }
 
+    if (showResetScoreDialog) {
+        ResetScoreDialog(
+            dialogTitle = "Reset Score",
+            dialogText = "Are you sure you want to reset the score?",
+            confirmText = "Confirm",
+            dismissText = "Dismiss",
+            onDismissRequest = { showResetScoreDialog = false },
+            onConfirmation = {
+                showResetScoreDialog = false
+                viewModel.resetScore()
+            },
+        )
+    }
+
     Scaffold(
         topBar = {
             TicTacToeAppBar(
                 title = "Tic Tac Toe",
-                onResetScoreClicked = {},
+                onResetScoreClicked = {
+                    if (uiState.player1.score > 0 || uiState.player2.score > 0) {
+                        showResetScoreDialog = true
+                    }
+                },
                 onEditNamesClicked = {
                     showEditNamesDialog = true
                 },
