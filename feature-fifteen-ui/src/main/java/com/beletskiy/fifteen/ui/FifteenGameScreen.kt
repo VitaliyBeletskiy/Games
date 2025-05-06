@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun FifteenGameScreen() {
-    Scaffold() {
+    Scaffold {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -23,6 +23,7 @@ fun FifteenGameScreen() {
             verticalArrangement = Arrangement.Center,
         ) {
             Text("FIFTEEN")
+            AnchoredDraggableSample()
         }
     }
 }
