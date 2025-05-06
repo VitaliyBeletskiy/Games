@@ -1,4 +1,4 @@
-package com.beletskiy.ttt.ui.ui.components
+package com.beletskiy.ttt.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -95,7 +96,7 @@ fun EditNamesDialog(
                 name1Error.value?.let { error ->
                     Text(
                         text = error,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.error,
                         fontSize = 12.sp,
                         modifier = Modifier
                             .align(Alignment.Start)
@@ -119,7 +120,7 @@ fun EditNamesDialog(
                 name2Error.value?.let { error ->
                     Text(
                         text = error,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.error,
                         fontSize = 12.sp,
                         modifier = Modifier
                             .align(Alignment.Start)

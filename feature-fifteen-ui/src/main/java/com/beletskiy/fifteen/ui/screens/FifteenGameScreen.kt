@@ -1,4 +1,4 @@
-package com.beletskiy.fifteen.ui
+package com.beletskiy.fifteen.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.beletskiy.fifteen.ui.components.AnchoredDraggableSample
 
 @Composable
 fun FifteenGameScreen() {

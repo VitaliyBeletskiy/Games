@@ -1,7 +1,7 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2"
 androidx-junit = "1.2.1"
-core-ktx = "1.15.0"
+core-ktx = "1.16.0"
 espresso-core = "3.6.1"
 hilt = "2.54"
 hiltNavigationCompose = "1.2.0"
@@ -12,7 +12,7 @@ kotlinxCoroutinesTest = "1.10.1"
 lifecycle = "2.8.7"
 navigation = "2.8.9"
 activityCompose = "1.10.1"
-composeBom = "2025.03.01"
+composeBom = "2025.04.01"
 turbine = "1.2.0"
 
 # Config Versions
@@ -22,8 +22,6 @@ targetSdk = "35"
 versionCode = "2"
 versionName = "1.1"
 java = "17"
-appcompat = "1.7.0"
-material = "1.12.0"
 
 [libraries]
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
@@ -48,8 +46,6 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

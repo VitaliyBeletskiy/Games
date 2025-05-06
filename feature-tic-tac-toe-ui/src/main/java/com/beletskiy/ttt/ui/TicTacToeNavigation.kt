@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.beletskiy.ttt.ui.ui.GameScreen
-import com.beletskiy.ttt.ui.ui.GameViewModel
+import com.beletskiy.ttt.ui.screens.GameScreen
+import com.beletskiy.ttt.ui.screens.GameViewModel
 
 object TicTacToeNav {
     const val ROUTE = "tic_tac_toe"

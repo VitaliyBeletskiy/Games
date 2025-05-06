@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.beletskiy.ttt.ui.ui
+package com.beletskiy.ttt.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,10 +34,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beletskiy.ttt.data.FakeTicTacToeGame
 import com.beletskiy.ttt.ui.R
-import com.beletskiy.ttt.ui.ui.components.BoardView
-import com.beletskiy.ttt.ui.ui.components.EditNamesDialog
-import com.beletskiy.ttt.ui.ui.components.ResetScoreDialog
-import com.beletskiy.ttt.ui.ui.components.TicTacToeAppBar
+import com.beletskiy.ttt.ui.components.BoardView
+import com.beletskiy.ttt.ui.components.EditNamesDialog
+import com.beletskiy.ttt.ui.components.ResetScoreDialog
+import com.beletskiy.ttt.ui.components.TicTacToeAppBar
 
 @Composable
 fun GameScreen(viewModel: GameViewModel) {

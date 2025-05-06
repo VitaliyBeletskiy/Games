@@ -1,4 +1,4 @@
-package com.beletskiy.bac.ui.ui.theme
+package com.beletskiy.bac.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

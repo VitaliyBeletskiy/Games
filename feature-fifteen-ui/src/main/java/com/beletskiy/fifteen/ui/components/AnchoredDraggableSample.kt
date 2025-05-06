@@ -1,4 +1,4 @@
-package com.beletskiy.fifteen.ui
+package com.beletskiy.fifteen.ui.components
 
 import android.util.Log
 import androidx.compose.animation.core.spring

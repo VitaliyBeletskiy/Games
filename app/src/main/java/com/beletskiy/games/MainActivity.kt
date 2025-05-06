@@ -18,7 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.beletskiy.bac.ui.BullsAndCowsNav
 import com.beletskiy.bac.ui.bullsAndCowsNavGraph
-import com.beletskiy.bac.ui.ui.theme.GamesTheme
+import com.beletskiy.bac.ui.theme.GamesTheme
 import com.beletskiy.fifteen.ui.FifteenNav
 import com.beletskiy.fifteen.ui.fifteenNavGraph
 import com.beletskiy.ttt.ui.TicTacToeNav

@@ -5,9 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.beletskiy.bac.ui.ui.screens.RulesScreen
-import com.beletskiy.bac.ui.ui.screens.GameScreen
-import com.beletskiy.bac.ui.ui.screens.GameViewModel
+import com.beletskiy.bac.ui.screens.RulesScreen
+import com.beletskiy.bac.ui.screens.GameScreen
+import com.beletskiy.bac.ui.screens.GameViewModel
 
 object BullsAndCowsNav {
     const val ROUTE = "bulls_and_cows"

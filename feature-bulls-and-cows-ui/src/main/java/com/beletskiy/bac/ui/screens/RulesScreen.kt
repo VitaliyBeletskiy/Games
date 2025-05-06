@@ -1,4 +1,4 @@
-package com.beletskiy.bac.ui.ui.screens
+package com.beletskiy.bac.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -22,8 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
-import com.beletskiy.bac.ui.ui.components.AppBar
-
+import com.beletskiy.bac.ui.components.AppBar
 
 @Composable
 fun RulesScreen(onNavigateUp: () -> Unit = {}) {

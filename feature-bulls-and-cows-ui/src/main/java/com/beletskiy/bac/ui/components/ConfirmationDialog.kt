@@ -1,4 +1,4 @@
-package com.beletskiy.bac.ui.ui.components
+package com.beletskiy.bac.ui.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults

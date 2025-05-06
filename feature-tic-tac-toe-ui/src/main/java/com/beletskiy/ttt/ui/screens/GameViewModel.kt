@@ -1,4 +1,4 @@
-package com.beletskiy.ttt.ui.ui
+package com.beletskiy.ttt.ui.screens
 
 import androidx.lifecycle.ViewModel
 import com.beletskiy.ttt.data.ITicTacToeGame

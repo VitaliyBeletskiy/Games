@@ -1,4 +1,4 @@
-package com.beletskiy.bac.ui.ui.screens
+package com.beletskiy.bac.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -35,12 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
-import com.beletskiy.bac.ui.ui.components.AppBar
-import com.beletskiy.bac.ui.ui.components.ConfirmationDialog
-import com.beletskiy.bac.ui.ui.components.GuessButton
-import com.beletskiy.bac.ui.ui.components.NumberPickerDialog
-import com.beletskiy.bac.ui.ui.components.GuessResultsView
-import com.beletskiy.bac.ui.ui.components.SquareButtonWithNumber
+import com.beletskiy.bac.ui.components.AppBar
+import com.beletskiy.bac.ui.components.ConfirmationDialog
+import com.beletskiy.bac.ui.components.GuessButton
+import com.beletskiy.bac.ui.components.GuessResultsView
+import com.beletskiy.bac.ui.components.NumberPickerDialog
+import com.beletskiy.bac.ui.components.SquareButtonWithNumber
 import com.beletskiy.bullscows.Guess
 import kotlinx.coroutines.delay
 

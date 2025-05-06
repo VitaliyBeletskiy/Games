@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.beletskiy.ttt.ui.ui.components
+package com.beletskiy.ttt.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D

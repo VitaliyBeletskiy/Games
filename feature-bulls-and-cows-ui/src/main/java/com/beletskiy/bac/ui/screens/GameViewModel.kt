@@ -1,4 +1,4 @@
-package com.beletskiy.bac.ui.ui.screens
+package com.beletskiy.bac.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
