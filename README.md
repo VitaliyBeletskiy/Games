@@ -1,15 +1,12 @@
-OLD README! IT WILL BE UPDATED SOON!
+# GAMES (WORK IN PROGRESS)
 
-<h1><img src="images/JustBullsAndCows_icon.png" alt="JustBullsAndCows" width="50"/> Just Bulls & Cow‪s‬</h1>
+This project contains four logic games:
+- [Just Bulls & Cows](readme/bulls_and_cows.md)
+- [Tic Tac Toe (Classic & Dynamic)](readme/tic_tac_toe.md)
+- Fifteen
+- Reversi
 
-**Just Bulls & Cows is a simple logical game. The goal of the game is to guess the the secret number with a minimal number of attempts.**
-<p float="left">
-  <img src="images/JustBullsAndCows_1.jpg" alt="JustBullsAndCows" width="200"/>
-  <img src="images/JustBullsAndCows_2.jpg" alt="JustBullsAndCows" width="200"/>
-  <img src="images/JustBullsAndCows_3.jpg" alt="JustBullsAndCows" width="200"/>
-  <img src="images/JustBullsAndCows_4.jpg" alt="JustBullsAndCows" width="200"/>
-</p>
+## Current Status
 
-**Demo:**
-
-<img src="images/demo.gif" alt="demo" width="250"/>
+- **Development:** Focused on implementing core game logic and ensuring correct behavior across all games.
+- **Design:** UI/UX design will be introduced later, pending review and input from a designer.
