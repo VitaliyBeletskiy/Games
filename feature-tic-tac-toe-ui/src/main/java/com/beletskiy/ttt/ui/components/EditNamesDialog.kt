@@ -32,6 +32,7 @@ import com.beletskiy.ttt.ui.R
 
 private const val MAX_NAME_LENGTH = 10
 
+@Suppress("detekt:LongMethod")
 @Composable
 fun EditNamesDialog(
     player1Name: String,
@@ -152,9 +153,10 @@ fun EditNamesDialog(
     }
 }
 
+@Suppress("detekt:UnusedPrivateMember")
 @Preview
 @Composable
-fun EditNamesDialogPreview() {
+private fun EditNamesDialogPreview() {
     EditNamesDialog(
         player1Name = "Player's name",
         player2Name = "Player 2",

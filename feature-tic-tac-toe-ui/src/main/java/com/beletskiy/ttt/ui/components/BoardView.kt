@@ -23,6 +23,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import com.beletskiy.ttt.data.Mark
+import com.beletskiy.ttt.data.Position
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,6 +44,7 @@ fun BoardView(
     board: List<List<Mark?>>,
     isGameOver: Boolean,
     modifier: Modifier = Modifier,
+    positionToBeRemoved: Position? = null,
     onCellClicked: (row: Int, column: Int) -> Unit = { _, _ -> },
 ) {
     var clickedCell: Pair<Int, Int>? by remember { mutableStateOf(null) }
@@ -118,6 +121,15 @@ fun BoardView(
                     val y2 = (1f - padding + rowIdx) * cellSize
                     val diameter = (1f - 2 * padding) * cellSize
 
+                    val pathEffect = if (positionToBeRemoved == rowIdx to colIdx) {
+                        PathEffect.dashPathEffect(
+                            intervals = floatArrayOf(15f, 25f),
+                            phase = 0f
+                        )
+                    } else {
+                        null
+                    }
+
                     if (player == Mark.O) {
                         drawArc(
                             color = Color.Green,
@@ -128,7 +140,8 @@ fun BoardView(
                             size = Size(diameter, diameter),
                             style = Stroke(
                                 width = 5.dp.toPx(),
-                                cap = StrokeCap.Round
+                                cap = StrokeCap.Round,
+                                pathEffect = pathEffect,
                             )
                         )
                     } else if (player == Mark.X) {
@@ -155,7 +168,8 @@ fun BoardView(
                             color = Color.Red,
                             style = Stroke(
                                 width = 5.dp.toPx(),
-                                cap = StrokeCap.Round
+                                cap = StrokeCap.Round,
+                                pathEffect = pathEffect,
                             )
                         )
                         drawPath(
@@ -163,7 +177,8 @@ fun BoardView(
                             color = Color.Red,
                             style = Stroke(
                                 width = 5.dp.toPx(),
-                                cap = StrokeCap.Round
+                                cap = StrokeCap.Round,
+                                pathEffect = pathEffect,
                             )
                         )
                     }
@@ -214,9 +229,10 @@ private fun detectClickedCell(size: IntSize, offset: Offset): Pair<Int, Int> {
     return row to column
 }
 
+@Suppress("detekt:UnusedPrivateMember")
 @Preview
 @Composable
-fun BoardViewPreview() {
+private fun BoardViewPreview() {
     BoardView(
         board = listOf(
             listOf(Mark.X, Mark.O, null),

@@ -30,6 +30,7 @@ fun TicTacToeAppBar(
     modifier: Modifier = Modifier,
     onResetScoreClicked: () -> Unit = {},
     onEditNamesClicked: () -> Unit = {},
+    onSelectGameTypeClicked: () -> Unit = {},
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
@@ -64,15 +65,23 @@ fun TicTacToeAppBar(
                             onEditNamesClicked()
                         }
                     )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.select_game_type)) },
+                        onClick = {
+                            menuExpanded = false
+                            onSelectGameTypeClicked()
+                        }
+                    )
                 }
             }
         }
     )
 }
 
+@Suppress("detekt:UnusedPrivateMember")
 @Preview(showBackground = true)
 @Composable
-fun PreviewTopAppBarWithDropdown() {
+private fun PreviewTopAppBarWithDropdown() {
     Scaffold(
         topBar = { TicTacToeAppBar(stringResource(R.string.game_title)) },
     ) { innerPadding ->

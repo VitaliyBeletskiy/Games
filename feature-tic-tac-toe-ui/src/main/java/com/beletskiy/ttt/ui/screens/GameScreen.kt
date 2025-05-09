@@ -33,17 +33,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beletskiy.ttt.data.FakeTicTacToeGame
+import com.beletskiy.ttt.data.GameType
 import com.beletskiy.ttt.ui.R
 import com.beletskiy.ttt.ui.components.BoardView
 import com.beletskiy.ttt.ui.components.EditNamesDialog
-import com.beletskiy.ttt.ui.components.ResetScoreDialog
+import com.beletskiy.ttt.ui.components.SegmentedButtonsDialog
 import com.beletskiy.ttt.ui.components.TicTacToeAppBar
+import com.beletskiy.ttt.ui.components.TwoButtonsDialog
 
+@Suppress("detekt:LongMethod")
 @Composable
 fun GameScreen(viewModel: GameViewModel) {
     val uiState by viewModel.gameUiState.collectAsStateWithLifecycle()
     var showEditNamesDialog by remember { mutableStateOf(false) }
     var showResetScoreDialog by remember { mutableStateOf(false) }
+    var showSelectGameTypeDialog by remember { mutableStateOf(false) }
 
     if (showEditNamesDialog) {
         EditNamesDialog(
@@ -58,7 +62,7 @@ fun GameScreen(viewModel: GameViewModel) {
     }
 
     if (showResetScoreDialog) {
-        ResetScoreDialog(
+        TwoButtonsDialog(
             dialogTitle = stringResource(R.string.reset_score),
             dialogText = stringResource(R.string.are_you_sure_you_want_to_reset_the_score),
             confirmText = stringResource(R.string.confirm),
@@ -68,6 +72,19 @@ fun GameScreen(viewModel: GameViewModel) {
                 showResetScoreDialog = false
                 viewModel.resetScore()
             },
+        )
+    }
+
+    if (showSelectGameTypeDialog) {
+        SegmentedButtonsDialog(
+            title = stringResource(R.string.select_game_type),
+            labels = GameType.entries.map { it.name },
+            initialIndex = viewModel.gameType.ordinal,
+            onDismissRequest = { showSelectGameTypeDialog = false },
+            onConfirmation = { index ->
+                showSelectGameTypeDialog = false
+                viewModel.setGameType(index)
+            }
         )
     }
 
@@ -83,6 +100,9 @@ fun GameScreen(viewModel: GameViewModel) {
                 onEditNamesClicked = {
                     showEditNamesDialog = true
                 },
+                onSelectGameTypeClicked = {
+                    showSelectGameTypeDialog = true
+                }
             )
         }
     ) {
@@ -115,7 +135,8 @@ fun GameScreen(viewModel: GameViewModel) {
                 BoardView(
                     board = uiState.board,
                     isGameOver = uiState.isGameOver,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp),
+                    positionToBeRemoved = uiState.positionToBeRemoved,
                 ) { row, column ->
                     viewModel.takeTurn(row, column)
                 }

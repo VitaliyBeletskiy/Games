@@ -8,4 +8,5 @@ data class GameState(
     val winner: Mark? = null,
     val isDraw: Boolean = false,
     val isGameOver: Boolean = false,
+    val positionToBeRemoved: Position? = null,
 )

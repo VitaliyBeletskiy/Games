@@ -1,8 +1,10 @@
 package com.beletskiy.ttt.ui.screens
 
 import androidx.lifecycle.ViewModel
+import com.beletskiy.ttt.data.GameType
 import com.beletskiy.ttt.data.ITicTacToeGame
 import com.beletskiy.ttt.data.Mark
+import com.beletskiy.ttt.data.Position
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,8 +33,9 @@ data class UiPlayer(
 data class GameUiState(
     val gameSessionId: Int = 0,
     val board: List<List<Mark?>> = List(3) { List(3) { null } },
-    val player1: UiPlayer = UiPlayer("Player1", PlayerSlot.PLAYER1),
-    val player2: UiPlayer = UiPlayer("Player2", PlayerSlot.PLAYER2),
+    val positionToBeRemoved: Position? = null,
+    val player1: UiPlayer = UiPlayer("Amy", PlayerSlot.PLAYER1),
+    val player2: UiPlayer = UiPlayer("Bob", PlayerSlot.PLAYER2),
     val winnerSlot: PlayerSlot? = null,
     val isDraw: Boolean = false,
     val isGameOver: Boolean = false,
@@ -51,10 +54,12 @@ class GameViewModel @Inject constructor(private val ticTacToeGame: ITicTacToeGam
     private var currentMark: Mark = Mark.X
     private val _gameUiState = MutableStateFlow(GameUiState())
     val gameUiState: StateFlow<GameUiState> = _gameUiState
+    var gameType: GameType = GameType.Classic
+        private set
 
     fun newGame() {
         currentMark = currentMark.other()
-        val gameState = ticTacToeGame.newGame(currentMark)
+        val gameState = ticTacToeGame.newGame(gameType, currentMark)
         _gameUiState.update {
             it.copy(
                 gameSessionId = it.gameSessionId + 1,
@@ -76,6 +81,7 @@ class GameViewModel @Inject constructor(private val ticTacToeGame: ITicTacToeGam
 
         var newGameUiState = _gameUiState.value.copy(
             board = gameState.board,
+            positionToBeRemoved = gameState.positionToBeRemoved,
             winnerSlot = winner,
             isDraw = gameState.isDraw,
             isGameOver = gameState.isGameOver,
@@ -113,5 +119,11 @@ class GameViewModel @Inject constructor(private val ticTacToeGame: ITicTacToeGam
                 player2 = it.player2.copy(score = 0),
             )
         }
+    }
+
+    fun setGameType(index: Int) {
+        if (index == gameType.ordinal) return
+        gameType = GameType.entries.toList()[index]
+        newGame()
     }
 }

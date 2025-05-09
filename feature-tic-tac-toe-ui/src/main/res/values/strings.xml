@@ -16,4 +16,5 @@
     <string name="player_won">%1$s won!</string>
     <string name="players_turn">%1$s\'s turn (%2$s)</string>
     <string name="new_game">New Game</string>
+    <string name="select_game_type">Select Game Type</string>
 </resources>
