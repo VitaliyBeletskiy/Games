@@ -54,7 +54,7 @@ class TicTacToeGameImpl : ITicTacToeGame {
 
         board[row][column] = currentMark
         val winner = if (checkIfWin(currentMark)) currentMark else null
-        val isDraw = checkIfDraw()
+        val isDraw = winner?.let { false } ?: checkIfDraw()
         isGameOver = winner != null || isDraw
         currentMark = currentMark.other()
 

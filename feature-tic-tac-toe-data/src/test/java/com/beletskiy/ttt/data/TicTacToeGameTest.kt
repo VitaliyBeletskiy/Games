@@ -190,5 +190,22 @@ class TicTacToeGameTest {
         val gameState = ticTacToeGame.makeMove(0, 2) // X
         assert(gameState?.isGameOver == true)
     }
+
+    @Test
+    fun `when Player X wins by filling the last cell then isDraw == false`() {
+        ticTacToeGame.newGame(gameType = GameType.Classic)
+        ticTacToeGame.makeMove(0, 0) // X
+        ticTacToeGame.makeMove(0, 2) // O
+        ticTacToeGame.makeMove(1, 1) // X
+        ticTacToeGame.makeMove(0, 1) // O
+        ticTacToeGame.makeMove(1, 2) // X
+        ticTacToeGame.makeMove(1, 0) // O
+        ticTacToeGame.makeMove(2, 0) // X
+        ticTacToeGame.makeMove(2, 1) // O
+        val gameState = ticTacToeGame.makeMove(2, 2) // X
+        assert(gameState?.isDraw == false)
+        assert(gameState?.isGameOver == true)
+        assert(gameState?.winner != null)
+    }
     //endregion
 }
