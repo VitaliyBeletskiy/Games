@@ -1,10 +1,12 @@
 package com.beletskiy.fifteen.ui
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.beletskiy.fifteen.ui.screens.FifteenGameScreen
+import com.beletskiy.fifteen.ui.screens.GameScreen
+import com.beletskiy.fifteen.ui.screens.GameViewModel
 
 object FifteenNav {
     const val ROUTE = "fifteen"
@@ -20,7 +22,7 @@ fun NavGraphBuilder.fifteenNavGraph(navController: NavHostController) {
         startDestination = FifteenScreen.FifteenGameScreen.name,
     ) {
         composable(FifteenScreen.FifteenGameScreen.name) {
-            FifteenGameScreen()
+            GameScreen(viewModel = hiltViewModel<GameViewModel>())
         }
     }
 }

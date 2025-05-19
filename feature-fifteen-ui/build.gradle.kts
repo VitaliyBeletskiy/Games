@@ -37,12 +37,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature-fifteen-data"))
 
     implementation(libs.core.ktx)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom)) // Compose BOM
     implementation(libs.androidx.material3) // Material Design 3
+    implementation(libs.androidx.ui.tooling) // Android Studio Preview support
     implementation(libs.androidx.ui.tooling.preview) // Android Studio Preview support
 //    implementation("androidx.lifecycle:lifecycle-viewmodel-compose") // Optional (if you're using ViewModels)
     implementation(libs.compose.navigation) // if you're navigating inside the module

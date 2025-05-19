@@ -2,6 +2,7 @@
 
 package com.beletskiy.ttt.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -225,6 +226,7 @@ private fun PlayerScoreView(
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun PreviewGameScreen() {
