@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(":feature-fifteen-data"))
+    implementation(project(":resources"))
 
     implementation(libs.core.ktx)
 

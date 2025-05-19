@@ -1,32 +1,35 @@
 package com.beletskiy.fifteen.ui.components
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
 
 private const val TILES = 4
 private const val GAPS = TILES - 1
 
+@Suppress("detekt:LongMethod")
 @Composable
 fun BoardView(
     board: List<List<Int>>,
@@ -62,7 +65,9 @@ fun BoardView(
 
         // This Box represents the entire board
         Box(
-            modifier = Modifier.size(tileSize * TILES + spacing * GAPS),
+            modifier = Modifier
+                .size(tileSize * TILES + spacing * GAPS)
+                .background(Color.LightGray),
         ) {
             tilePositions.forEach { (tile, position) ->
                 val (row, col) = position
@@ -93,14 +98,23 @@ fun BoardView(
                             IntOffset(animX.value.roundToInt(), animY.value.roundToInt())
                         }
                         .size(tileSize)
-                        .background(Color.Blue, RoundedCornerShape(8.dp))
-                        .clickable {
+                        .clickable(
+                            // Ripple removed: layout-based ripple conflicts with animated offset
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                        ) {
                             if (isGameOver) return@clickable
                             onTileClick(row, col)
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(tile.toString(), color = Color.White, fontSize = 24.sp)
+                    val drawable = numberToDrawable(tile)
+                    Image(
+                        painterResource(drawable),
+                        contentDescription = tile.toString(),
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.fillMaxSize(),
+                    )
                 }
             }
         }
