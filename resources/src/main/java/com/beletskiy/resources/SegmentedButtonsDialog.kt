@@ -1,4 +1,4 @@
-package com.beletskiy.ttt.ui.components
+package com.beletskiy.resources
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.SegmentedButton
@@ -14,8 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.beletskiy.ttt.data.GameType
-import com.beletskiy.ttt.ui.R
 
 @Suppress("detekt:LongParameterList")
 @Composable
@@ -73,7 +71,7 @@ private fun SingleChoiceSegmentedButton(
             SegmentedButton(
                 shape = SegmentedButtonDefaults.itemShape(
                     index = index,
-                    count = GameType.entries.size
+                    count = labels.size
                 ),
                 onClick = { onSelectedChange(index) },
                 selected = index == selected,

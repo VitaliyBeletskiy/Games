@@ -2,10 +2,10 @@ package com.beletskiy.bac.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.beletskiy.bullscows.Guess
-import com.beletskiy.bullscows.IGameController
-import com.beletskiy.bullscows.RepetitiveNumbersException
-import com.beletskiy.bullscows.ifFailure
+import com.beletskiy.bac.data.Guess
+import com.beletskiy.bac.data.IGameController
+import com.beletskiy.bac.data.RepetitiveNumbersException
+import com.beletskiy.bac.data.ifFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

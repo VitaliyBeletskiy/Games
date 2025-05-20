@@ -1,7 +1,7 @@
 package com.beletskiy.bac.ui.utils
 
+import com.beletskiy.bac.data.GuessResult
 import com.beletskiy.bac.ui.R
-import com.beletskiy.bullscows.GuessResult
 
 fun numberToDrawable(number: Int): Int = when (number) {
     0 -> R.drawable.ic_0

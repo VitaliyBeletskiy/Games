@@ -1,4 +1,4 @@
-package com.beletskiy.ttt.ui.components
+package com.beletskiy.resources
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api

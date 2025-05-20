@@ -28,8 +28,8 @@ fun AppBar(
 ) {
     val title = when {
         screen == BullsAndCowsScreen.Rules -> stringResource(id = R.string.rules_caption)
-        isGameOver -> stringResource(id = R.string.caption_when_game_is_over)
-        else -> stringResource(id = R.string.app_name)
+        isGameOver -> stringResource(id = R.string.you_win)
+        else -> stringResource(id = R.string.bulls_and_cows_game_title)
     }
 
     TopAppBar(

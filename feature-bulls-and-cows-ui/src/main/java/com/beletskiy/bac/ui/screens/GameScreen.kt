@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.beletskiy.bac.data.Guess
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
 import com.beletskiy.bac.ui.components.AppBar
@@ -41,7 +42,6 @@ import com.beletskiy.bac.ui.components.GuessButton
 import com.beletskiy.bac.ui.components.GuessResultsView
 import com.beletskiy.bac.ui.components.NumberPickerDialog
 import com.beletskiy.bac.ui.components.SquareButtonWithNumber
-import com.beletskiy.bullscows.Guess
 import kotlinx.coroutines.delay
 
 private const val LIST_ANIMATION_DELAY = 100L

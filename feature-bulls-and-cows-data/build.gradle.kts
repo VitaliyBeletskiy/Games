@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.beletskiy.bullscows"
+    namespace = "com.beletskiy.bac.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

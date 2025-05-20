@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.beletskiy.bullscows.resources"
+    namespace = "com.beletskiy.resources"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -34,4 +35,11 @@ android {
 }
 
 dependencies {
+    // Compose
+    implementation(platform(libs.androidx.compose.bom)) // Compose BOM
+    implementation(libs.androidx.material3) // Material Design 3
+    implementation(libs.androidx.ui) // main APIs for the underlying toolkit systems
+    implementation(libs.androidx.ui.tooling) // Android Studio Preview support
+    implementation(libs.androidx.ui.tooling.preview) // Android Studio Preview support
+    implementation(libs.androidx.ui.graphics) // ???
 }

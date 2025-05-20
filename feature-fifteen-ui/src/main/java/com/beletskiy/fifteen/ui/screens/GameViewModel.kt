@@ -2,6 +2,7 @@ package com.beletskiy.fifteen.ui.screens
 
 import androidx.lifecycle.ViewModel
 import com.beletskiy.fifteen.data.IFifteenGame
+import com.beletskiy.fifteen.data.MoveType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,8 @@ data class GameUiState(
 @HiltViewModel
 class GameViewModel @Inject constructor(private val fifteenGame: IFifteenGame) : ViewModel() {
 
+    var moveType = MoveType.SINGLE_TILE
+        private set
     private val _gameUiState = MutableStateFlow(GameUiState())
     val gameUiState: StateFlow<GameUiState> = _gameUiState
 
@@ -32,12 +35,16 @@ class GameViewModel @Inject constructor(private val fifteenGame: IFifteenGame) :
     }
 
     fun takeTurn(row: Int, col: Int) {
-        val gameStatus = fifteenGame.makeMove(row, col)
+        val gameStatus = fifteenGame.makeMove(row, col, moveType)
         _gameUiState.update {
             it.copy(
                 board = gameStatus.board,
                 isGameOver = gameStatus.isGameOver,
             )
         }
+    }
+
+    fun setMoveType(index: Int) {
+        moveType = MoveType.entries[index]
     }
 }

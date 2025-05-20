@@ -1,6 +1,6 @@
 package com.beletskiy.bac.ui.di
 
-import com.beletskiy.bullscows.IGameController
+import com.beletskiy.bac.data.IGameController
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

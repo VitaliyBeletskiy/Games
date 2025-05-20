@@ -12,8 +12,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.beletskiy.bac.data.GuessResult
 import com.beletskiy.bac.ui.utils.guessResultToDrawable
-import com.beletskiy.bullscows.GuessResult
 
 @Composable
 fun GuessResultsView(results: List<GuessResult>) {

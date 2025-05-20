@@ -1,11 +1,5 @@
-package com.beletskiy.bullsandcows
+package com.beletskiy.bac.data
 
-import com.beletskiy.bullscows.GameControllerImpl
-import com.beletskiy.bullscows.GuessResult
-import com.beletskiy.bullscows.MAX_NUMBER
-import com.beletskiy.bullscows.MIN_NUMBER
-import com.beletskiy.bullscows.Result
-import com.beletskiy.bullscows.SECRET_NUMBER_SIZE
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(":feature-tic-tac-toe-data"))
+    implementation(project(":resources"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

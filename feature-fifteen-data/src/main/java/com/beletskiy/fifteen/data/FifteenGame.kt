@@ -4,7 +4,7 @@ import com.beletskiy.fifteen.data.IFifteenGame.Companion.BOARD_SIZE
 
 interface IFifteenGame {
     fun newGame(): GameState
-    fun makeMove(row: Int, column: Int): GameState
+    fun makeMove(row: Int, column: Int, moveType: MoveType = MoveType.SINGLE_TILE): GameState
 
     companion object {
         fun getInstance() = FifteenGameImpl()
@@ -24,6 +24,10 @@ class FifteenGameImpl : IFifteenGame {
         )
     }
 
+    private enum class Vector {
+        NORTH, EAST, SOUTH, WEST
+    }
+
     private val board: Array<IntArray> = Array(BOARD_SIZE) { IntArray(BOARD_SIZE) }
 
     override fun newGame(): GameState {
@@ -33,18 +37,63 @@ class FifteenGameImpl : IFifteenGame {
         return GameState(boardToList(), false)
     }
 
-    override fun makeMove(row: Int, column: Int): GameState {
-        if (!canMove(row, column)) {
+    @Suppress("detekt:ReturnCount")
+    override fun makeMove(row: Int, column: Int, moveType: MoveType): GameState {
+        if (moveType == MoveType.SINGLE_TILE && !canMoveSingle(row, column)) {
+            return GameState(boardToList(), isGameOver = false)
+        } else if (moveType == MoveType.MULTI_TILE && !canMoveMany(row, column)) {
             return GameState(boardToList(), isGameOver = false)
         }
 
+        when (moveType) {
+            MoveType.SINGLE_TILE -> moveSingleTile(row, column)
+            MoveType.MULTI_TILE -> moveMultiTiles(row, column)
+        }
+        val isGameOver = isGameOver()
+        return GameState(boardToList(), isGameOver)
+    }
+
+    private fun moveMultiTiles(row: Int, column: Int) {
+        val emptyTile = findEmptyTile()
+        val vector = when {
+            row == emptyTile.first && column > emptyTile.second -> Vector.WEST
+            row == emptyTile.first && column < emptyTile.second -> Vector.EAST
+            column == emptyTile.second && row > emptyTile.first -> Vector.NORTH
+            column == emptyTile.second && row < emptyTile.first -> Vector.SOUTH
+            else -> error("Invalid row and column")
+        }
+        when (vector) {
+            Vector.EAST -> {
+                for (i in emptyTile.second downTo column + 1) {
+                    board[emptyTile.first][i] = board[emptyTile.first][i - 1]
+                }
+            }
+
+            Vector.WEST -> {
+                for (i in emptyTile.second until column) {
+                    board[emptyTile.first][i] = board[emptyTile.first][i + 1]
+                }
+            }
+
+            Vector.SOUTH -> {
+                for (i in emptyTile.first downTo row + 1) {
+                    board[i][emptyTile.second] = board[i - 1][emptyTile.second]
+                }
+            }
+
+            Vector.NORTH -> {
+                for (i in emptyTile.first until row) {
+                    board[i][emptyTile.second] = board[i + 1][emptyTile.second]
+                }
+            }
+        }
+        board[row][column] = 0
+    }
+
+    private fun moveSingleTile(row: Int, column: Int) {
         val emptyTile = findEmptyTile()
         board[emptyTile.first][emptyTile.second] = board[row][column]
         board[row][column] = 0
-
-        val isGameOver = isGameOver()
-
-        return GameState(boardToList(), isGameOver)
     }
 
     private fun isGameOver(): Boolean {
@@ -57,7 +106,7 @@ class FifteenGameImpl : IFifteenGame {
     }
 
     @Suppress("detekt:ReturnCount")
-    private fun canMove(row: Int, column: Int): Boolean {
+    private fun canMoveSingle(row: Int, column: Int): Boolean {
         val emptyTile = findEmptyTile()
         if (row == emptyTile.first) {
             return column == (emptyTile.second - 1) || column == (emptyTile.second + 1)
@@ -65,6 +114,11 @@ class FifteenGameImpl : IFifteenGame {
             return row == (emptyTile.first - 1) || row == (emptyTile.first + 1)
         }
         return false
+    }
+
+    private fun canMoveMany(row: Int, column: Int): Boolean {
+        val emptyTile = findEmptyTile()
+        return (row == emptyTile.first) || (column == emptyTile.second)
     }
 
     private fun findEmptyTile(): Pair<Int, Int> {

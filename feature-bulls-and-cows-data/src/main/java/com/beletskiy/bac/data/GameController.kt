@@ -1,4 +1,4 @@
-package com.beletskiy.bullscows
+package com.beletskiy.bac.data
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

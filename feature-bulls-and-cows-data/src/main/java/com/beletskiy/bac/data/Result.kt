@@ -1,4 +1,4 @@
-package com.beletskiy.bullscows
+package com.beletskiy.bac.data
 
 sealed class Result {
     data object Success : Result()

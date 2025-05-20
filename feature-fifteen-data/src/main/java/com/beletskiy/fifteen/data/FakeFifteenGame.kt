@@ -17,6 +17,7 @@ class FakeFifteenGame : IFifteenGame {
     override fun makeMove(
         row: Int,
         column: Int,
+        moveType: MoveType,
     ): GameState {
         return GameState(
             board = listOf(

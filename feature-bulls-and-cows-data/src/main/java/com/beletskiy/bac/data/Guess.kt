@@ -1,4 +1,4 @@
-package com.beletskiy.bullscows
+package com.beletskiy.bac.data
 
 data class Guess(
     val ordinal: Int,

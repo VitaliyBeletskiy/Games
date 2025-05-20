@@ -1,3 +1,3 @@
-package com.beletskiy.bullscows
+package com.beletskiy.bac.data
 
 class RepetitiveNumbersException : Exception()

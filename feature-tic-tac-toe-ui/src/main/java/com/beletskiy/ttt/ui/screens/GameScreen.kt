@@ -33,14 +33,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.beletskiy.resources.TwoButtonsDialog
 import com.beletskiy.ttt.data.FakeTicTacToeGame
 import com.beletskiy.ttt.data.GameType
 import com.beletskiy.ttt.ui.R
 import com.beletskiy.ttt.ui.components.BoardView
 import com.beletskiy.ttt.ui.components.EditNamesDialog
-import com.beletskiy.ttt.ui.components.SegmentedButtonsDialog
+import com.beletskiy.resources.SegmentedButtonsDialog
 import com.beletskiy.ttt.ui.components.TicTacToeAppBar
-import com.beletskiy.ttt.ui.components.TwoButtonsDialog
 
 @Suppress("detekt:LongMethod")
 @Composable
@@ -92,7 +92,7 @@ fun GameScreen(viewModel: GameViewModel) {
     Scaffold(
         topBar = {
             TicTacToeAppBar(
-                title = stringResource(R.string.game_title),
+                title = stringResource(R.string.tic_tac_toe_game_title),
                 onResetScoreClicked = {
                     if (uiState.player1.score > 0 || uiState.player2.score > 0) {
                         showResetScoreDialog = true
