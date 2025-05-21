@@ -29,9 +29,10 @@ import com.beletskiy.fifteen.data.MoveType
 import com.beletskiy.fifteen.ui.R
 import com.beletskiy.fifteen.ui.components.BoardView
 import com.beletskiy.fifteen.ui.components.FifteenAppBar
-import com.beletskiy.resources.PuzzleSolvedView
-import com.beletskiy.resources.SegmentedButtonsDialog
-import com.beletskiy.resources.TwoButtonsDialog
+import com.beletskiy.resources.components.PuzzleSolvedView
+import com.beletskiy.resources.components.SegmentedButtonsDialog
+import com.beletskiy.resources.components.TwoButtonsDialog
+import com.beletskiy.resources.theme.GamesTheme
 
 @Suppress("detekt:LongMethod")
 @Composable
@@ -48,8 +49,8 @@ fun GameScreen(viewModel: GameViewModel) {
 
     if (showRestartGameDialog) {
         TwoButtonsDialog(
-            dialogTitle = stringResource(R.string.restart_game),
-            dialogText = stringResource(R.string.are_you_sure_you_want_to_restart_the_game),
+            title = stringResource(R.string.restart_game),
+            message = stringResource(R.string.are_you_sure_you_want_to_restart_the_game),
             confirmText = stringResource(R.string.confirm),
             dismissText = stringResource(R.string.dismiss),
             onDismissRequest = { showRestartGameDialog = false },
@@ -133,8 +134,10 @@ fun GameScreen(viewModel: GameViewModel) {
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
-fun FifteenGameScreenPreview() {
-    val fakeGame = FakeFifteenGame()
-    val previewViewModel = GameViewModel(fakeGame)
-    GameScreen(viewModel = previewViewModel)
+private fun FifteenGameScreenPreview() {
+    GamesTheme {
+        val fakeGame = FakeFifteenGame()
+        val previewViewModel = GameViewModel(fakeGame)
+        GameScreen(viewModel = previewViewModel)
+    }
 }

@@ -9,15 +9,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.beletskiy.bac.ui.R
+import com.beletskiy.resources.theme.GamesTheme
 
-@Preview(heightDp = 100, widthDp = 100)
 @Composable
 fun GuessButton(
     modifier: Modifier = Modifier,
@@ -27,7 +28,7 @@ fun GuessButton(
         modifier = modifier
             .aspectRatio(1f)
             .background(
-                color = colorResource(id = R.color.button),
+                color = MaterialTheme.colorScheme.secondary,
                 shape = RoundedCornerShape(20)
             )
             .clickable { onClick() },
@@ -39,7 +40,18 @@ fun GuessButton(
             imageVector = Icons.Default.PlayArrow,
             contentDescription = stringResource(R.string.button_guess_text),
             modifier = Modifier.size(iconSize),
-            tint = colorResource(id = R.color.text)
+            tint = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@Preview(heightDp = 100, widthDp = 100)
+@Composable
+private fun GuessButtonPreview() {
+    GamesTheme {
+        GuessButton(
+            modifier = Modifier.background(Color.Red),
+            onClick = {}
         )
     }
 }

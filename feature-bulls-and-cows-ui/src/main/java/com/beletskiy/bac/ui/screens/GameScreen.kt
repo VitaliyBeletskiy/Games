@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,7 +29,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,11 +37,12 @@ import com.beletskiy.bac.data.Guess
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
 import com.beletskiy.bac.ui.components.AppBar
-import com.beletskiy.bac.ui.components.ConfirmationDialog
 import com.beletskiy.bac.ui.components.GuessButton
 import com.beletskiy.bac.ui.components.GuessResultsView
 import com.beletskiy.bac.ui.components.NumberPickerDialog
 import com.beletskiy.bac.ui.components.SquareButtonWithNumber
+import com.beletskiy.resources.components.TwoButtonsDialog
+import com.beletskiy.resources.theme.GamesTheme
 import kotlinx.coroutines.delay
 
 private const val LIST_ANIMATION_DELAY = 100L
@@ -57,11 +58,13 @@ fun GameScreen(
 
     when {
         openRestartDialog.value -> {
-            ConfirmationDialog(
+            TwoButtonsDialog(
                 title = "Restart game",
-                message = "The game is not over yet. Are you sure you want to restart?",
+                message = "Are you sure you want to restart the game?",
+                confirmText = stringResource(R.string.confirm),
+                dismissText = stringResource(R.string.dismiss),
                 onDismissRequest = { openRestartDialog.value = false },
-                onConfirm = {
+                onConfirmation = {
                     openRestartDialog.value = false
                     viewModel.restart()
                 },
@@ -85,7 +88,6 @@ fun GameScreen(
             }
         },
         modifier = Modifier.fillMaxSize(),
-        containerColor = colorResource(id = R.color.background_field),
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -160,7 +162,7 @@ private fun GuessOrdinalView(ordinal: String) {
         modifier = Modifier
             .size(25.dp)
             .background(
-                color = colorResource(id = R.color.background_main),
+                color = MaterialTheme.colorScheme.surface,
                 shape = CircleShape,
             ),
         contentAlignment = Alignment.Center,
@@ -188,7 +190,7 @@ private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = colorResource(id = R.color.background_main),
+        color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
             modifier = Modifier
@@ -223,5 +225,7 @@ private fun UserInputPanel(onTryClick: (List<Int>) -> Unit) {
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
 private fun GameScreenPreview() {
-    GameScreen(hiltViewModel<GameViewModel>())
+    GamesTheme {
+        GameScreen(hiltViewModel<GameViewModel>())
+    }
 }

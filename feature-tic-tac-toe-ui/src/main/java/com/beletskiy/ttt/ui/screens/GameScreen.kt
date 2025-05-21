@@ -33,13 +33,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.beletskiy.resources.TwoButtonsDialog
+import com.beletskiy.resources.components.TwoButtonsDialog
 import com.beletskiy.ttt.data.FakeTicTacToeGame
 import com.beletskiy.ttt.data.GameType
 import com.beletskiy.ttt.ui.R
 import com.beletskiy.ttt.ui.components.BoardView
 import com.beletskiy.ttt.ui.components.EditNamesDialog
-import com.beletskiy.resources.SegmentedButtonsDialog
+import com.beletskiy.resources.components.SegmentedButtonsDialog
+import com.beletskiy.resources.theme.GamesTheme
 import com.beletskiy.ttt.ui.components.TicTacToeAppBar
 
 @Suppress("detekt:LongMethod")
@@ -64,8 +65,8 @@ fun GameScreen(viewModel: GameViewModel) {
 
     if (showResetScoreDialog) {
         TwoButtonsDialog(
-            dialogTitle = stringResource(R.string.reset_score),
-            dialogText = stringResource(R.string.are_you_sure_you_want_to_reset_the_score),
+            title = stringResource(R.string.reset_score),
+            message = stringResource(R.string.are_you_sure_you_want_to_reset_the_score),
             confirmText = stringResource(R.string.confirm),
             dismissText = stringResource(R.string.dismiss),
             onDismissRequest = { showResetScoreDialog = false },
@@ -229,8 +230,10 @@ private fun PlayerScoreView(
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
-fun PreviewGameScreen() {
-    val fakeGame = FakeTicTacToeGame()
-    val previewViewModel = GameViewModel(fakeGame)
-    GameScreen(viewModel = previewViewModel)
+private fun PreviewGameScreen() {
+    GamesTheme {
+        val fakeGame = FakeTicTacToeGame()
+        val previewViewModel = GameViewModel(fakeGame)
+        GameScreen(viewModel = previewViewModel)
+    }
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.beletskiy.resources.theme.GamesTheme
 import com.beletskiy.ttt.ui.R
 
 private const val MAX_NAME_LENGTH = 10
@@ -153,14 +154,15 @@ fun EditNamesDialog(
     }
 }
 
-@Suppress("detekt:UnusedPrivateMember")
 @Preview
 @Composable
 private fun EditNamesDialogPreview() {
-    EditNamesDialog(
-        player1Name = "Player's name",
-        player2Name = "Player 2",
-        onDismissRequest = {},
-        onConfirmation = { _, _ -> },
-    )
+    GamesTheme {
+        EditNamesDialog(
+            player1Name = "Player's name",
+            player2Name = "Player 2",
+            onDismissRequest = {},
+            onConfirmation = { _, _ -> },
+        )
+    }
 }

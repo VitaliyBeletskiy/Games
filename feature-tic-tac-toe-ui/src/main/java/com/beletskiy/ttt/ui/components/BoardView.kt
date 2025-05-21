@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import com.beletskiy.resources.theme.GamesTheme
 import com.beletskiy.ttt.data.Mark
 import com.beletskiy.ttt.data.Position
 import kotlinx.coroutines.CoroutineScope
@@ -229,17 +230,18 @@ private fun detectClickedCell(size: IntSize, offset: Offset): Pair<Int, Int> {
     return row to column
 }
 
-@Suppress("detekt:UnusedPrivateMember")
 @Preview
 @Composable
 private fun BoardViewPreview() {
-    BoardView(
-        board = listOf(
-            listOf(Mark.X, Mark.O, null),
-            listOf(Mark.O, Mark.X, null),
-            listOf(null, null, null)
-        ),
-        isGameOver = false,
-        modifier = Modifier.size(300.dp),
-    )
+    GamesTheme {
+        BoardView(
+            board = listOf(
+                listOf(Mark.X, Mark.O, null),
+                listOf(Mark.O, Mark.X, null),
+                listOf(null, null, null)
+            ),
+            isGameOver = false,
+            modifier = Modifier.size(300.dp),
+        )
+    }
 }

@@ -6,16 +6,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.beletskiy.bac.ui.R
+import com.beletskiy.resources.theme.GamesTheme
 
 private val buttonModifier = Modifier.padding(vertical = 4.dp)
 
@@ -29,7 +27,6 @@ fun NumberPickerDialog(
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(0.7f),
-            colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.background_field)),
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -114,5 +111,7 @@ fun NumberPickerDialog(
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
 private fun DialogWithNumbersPreview() {
-    NumberPickerDialog()
+    GamesTheme {
+        NumberPickerDialog()
+    }
 }

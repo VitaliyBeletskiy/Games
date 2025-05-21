@@ -1,4 +1,4 @@
-package com.beletskiy.resources
+package com.beletskiy.resources.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -7,13 +7,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.beletskiy.resources.theme.GamesTheme
 
 @Suppress("detekt:LongParameterList")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TwoButtonsDialog(
-    dialogTitle: String,
-    dialogText: String,
+    title: String,
+    message: String,
     confirmText: String,
     dismissText: String,
     modifier: Modifier = Modifier,
@@ -23,10 +24,10 @@ fun TwoButtonsDialog(
     AlertDialog(
         modifier = modifier,
         title = {
-            Text(text = dialogTitle)
+            Text(text = title)
         },
         text = {
-            Text(text = dialogText)
+            Text(text = message)
         },
         onDismissRequest = {
             onDismissRequest()
@@ -52,16 +53,17 @@ fun TwoButtonsDialog(
     )
 }
 
-@Suppress("detekt:UnusedPrivateMember")
 @Preview
 @Composable
 private fun TwoButtonsDialogPreview() {
-    TwoButtonsDialog(
-        dialogTitle = "Title",
-        dialogText = "Text",
-        confirmText = "Confirm",
-        dismissText = "Dismiss",
-        onDismissRequest = {},
-        onConfirmation = {}
-    )
+    GamesTheme {
+        TwoButtonsDialog(
+            title = "Title",
+            message = "Text",
+            confirmText = "Confirm",
+            dismissText = "Dismiss",
+            onDismissRequest = {},
+            onConfirmation = {}
+        )
+    }
 }

@@ -10,7 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
 import com.beletskiy.bac.ui.components.AppBar
+import com.beletskiy.resources.theme.GamesTheme
 
 @Composable
 fun RulesScreen(onNavigateUp: () -> Unit = {}) {
@@ -31,7 +31,6 @@ fun RulesScreen(onNavigateUp: () -> Unit = {}) {
             AppBar(screen = BullsAndCowsScreen.Rules, onNavigateUp = onNavigateUp)
         },
         modifier = Modifier.fillMaxSize(),
-        containerColor = colorResource(id = R.color.background_field),
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -87,6 +86,8 @@ private fun makeAnnotatedStringForRules(): AnnotatedString {
 
 @Preview(showBackground = true, widthDp = 320, heightDp = 722)
 @Composable
-fun RulesScreenPreview() {
-    RulesScreen()
+private fun RulesScreenPreview() {
+    GamesTheme {
+        RulesScreen()
+    }
 }

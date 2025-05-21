@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import com.beletskiy.resources.theme.GamesTheme
 import kotlin.math.roundToInt
 
 private const val TILES = 4
@@ -67,7 +68,7 @@ fun BoardView(
         Box(
             modifier = Modifier
                 .size(tileSize * TILES + spacing * GAPS)
-                .background(Color.LightGray),
+//                .background(Color.LightGray),
         ) {
             tilePositions.forEach { (tile, position) ->
                 val (row, col) = position
@@ -124,16 +125,18 @@ fun BoardView(
 @Suppress("detekt:MagicNumber")
 @Preview
 @Composable
-fun BoardViewPreview(modifier: Modifier = Modifier) {
-    BoardView(
-        board = listOf(
-            listOf(1, 2, 3, 4),
-            listOf(5, 6, 7, 8),
-            listOf(9, 10, 11, 12),
-            listOf(13, 14, 15, 0)
-        ),
-        isGameOver = false,
-        modifier = modifier,
-    ) { _, _ ->
+private fun BoardViewPreview(modifier: Modifier = Modifier) {
+    GamesTheme {
+        BoardView(
+            board = listOf(
+                listOf(1, 2, 3, 4),
+                listOf(5, 6, 7, 8),
+                listOf(9, 10, 11, 12),
+                listOf(13, 14, 15, 0)
+            ),
+            isGameOver = false,
+            modifier = modifier,
+        ) { _, _ ->
+        }
     }
 }

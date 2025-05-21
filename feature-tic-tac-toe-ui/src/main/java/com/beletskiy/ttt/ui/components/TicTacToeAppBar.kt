@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.beletskiy.resources.theme.GamesTheme
 import com.beletskiy.ttt.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,17 +79,18 @@ fun TicTacToeAppBar(
     )
 }
 
-@Suppress("detekt:UnusedPrivateMember")
 @Preview(showBackground = true)
 @Composable
 private fun PreviewTopAppBarWithDropdown() {
-    Scaffold(
-        topBar = { TicTacToeAppBar(stringResource(R.string.tic_tac_toe_game_title)) },
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-        ) { }
+    GamesTheme {
+        Scaffold(
+            topBar = { TicTacToeAppBar(stringResource(R.string.tic_tac_toe_game_title)) },
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+            ) { }
+        }
     }
 }

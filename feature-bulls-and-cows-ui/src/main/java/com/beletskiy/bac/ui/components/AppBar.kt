@@ -7,15 +7,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
+import com.beletskiy.resources.theme.GamesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,12 +31,7 @@ fun AppBar(
         isGameOver -> stringResource(id = R.string.you_win)
         else -> stringResource(id = R.string.bulls_and_cows_game_title)
     }
-
     TopAppBar(
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = colorResource(id = R.color.background_main),
-            titleContentColor = colorResource(id = R.color.text),
-        ),
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
         navigationIcon = {
             if (screen == BullsAndCowsScreen.Game) return@TopAppBar
@@ -64,4 +59,17 @@ fun AppBar(
             }
         },
     )
+}
+
+@Preview
+@Composable
+private fun AppBarPreview() {
+    GamesTheme {
+        AppBar(
+            screen = BullsAndCowsScreen.Game,
+            onNavigateUp = {},
+            onNavigateToRules = {},
+            onRestart = {},
+        )
+    }
 }

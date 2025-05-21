@@ -1,4 +1,4 @@
-package com.beletskiy.resources
+package com.beletskiy.resources.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

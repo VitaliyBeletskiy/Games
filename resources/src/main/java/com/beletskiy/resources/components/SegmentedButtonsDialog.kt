@@ -1,4 +1,4 @@
-package com.beletskiy.resources
+package com.beletskiy.resources.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.SegmentedButton
@@ -14,6 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.beletskiy.resources.R
+import com.beletskiy.resources.theme.GamesTheme
 
 @Suppress("detekt:LongParameterList")
 @Composable
@@ -81,15 +83,16 @@ private fun SingleChoiceSegmentedButton(
     }
 }
 
-@Suppress("detekt:UnusedPrivateMember")
 @Preview
 @Composable
 private fun SegmentedButtonsDialogDialogPreview() {
-    SegmentedButtonsDialog(
-        title = "Select Game Type",
-        labels = listOf("Classic", "Dynamic"),
-        initialIndex = 0,
-        onDismissRequest = {},
-        onConfirmation = {}
-    )
+    GamesTheme {
+        SegmentedButtonsDialog(
+            title = "Select Game Type",
+            labels = listOf("Classic", "Dynamic"),
+            initialIndex = 0,
+            onDismissRequest = {},
+            onConfirmation = {}
+        )
+    }
 }
