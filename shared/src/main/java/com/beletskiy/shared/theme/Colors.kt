@@ -1,4 +1,4 @@
-package com.beletskiy.resources.theme
+package com.beletskiy.shared.theme
 
 import androidx.compose.ui.graphics.Color
 

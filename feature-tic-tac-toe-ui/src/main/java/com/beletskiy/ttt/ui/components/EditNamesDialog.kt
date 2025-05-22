@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 import com.beletskiy.ttt.ui.R
 
 private const val MAX_NAME_LENGTH = 10

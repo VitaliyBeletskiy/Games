@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation(project(":feature-fifteen-data"))
-    implementation(project(":resources"))
+    implementation(project(":shared"))
 
     implementation(libs.core.ktx)
 

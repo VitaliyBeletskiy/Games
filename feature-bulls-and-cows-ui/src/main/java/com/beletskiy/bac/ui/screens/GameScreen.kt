@@ -41,8 +41,8 @@ import com.beletskiy.bac.ui.components.GuessButton
 import com.beletskiy.bac.ui.components.GuessResultsView
 import com.beletskiy.bac.ui.components.NumberPickerDialog
 import com.beletskiy.bac.ui.components.SquareButtonWithNumber
-import com.beletskiy.resources.components.TwoButtonsDialog
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.components.TwoButtonsDialog
+import com.beletskiy.shared.theme.GamesTheme
 import kotlinx.coroutines.delay
 
 private const val LIST_ANIMATION_DELAY = 100L

@@ -29,10 +29,10 @@ import com.beletskiy.fifteen.data.MoveType
 import com.beletskiy.fifteen.ui.R
 import com.beletskiy.fifteen.ui.components.BoardView
 import com.beletskiy.fifteen.ui.components.FifteenAppBar
-import com.beletskiy.resources.components.OneButtonDialog
-import com.beletskiy.resources.components.SegmentedButtonsDialog
-import com.beletskiy.resources.components.TwoButtonsDialog
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.components.OneButtonDialog
+import com.beletskiy.shared.components.SegmentedButtonsDialog
+import com.beletskiy.shared.components.TwoButtonsDialog
+import com.beletskiy.shared.theme.GamesTheme
 
 @Suppress("detekt:LongMethod")
 @Composable

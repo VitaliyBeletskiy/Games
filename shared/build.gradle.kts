@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.beletskiy.resources"
+    namespace = "com.beletskiy.shared"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

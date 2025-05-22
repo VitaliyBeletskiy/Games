@@ -1,4 +1,4 @@
-package com.beletskiy.resources.components
+package com.beletskiy.shared.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 
 @Composable
 fun OneButtonDialog(

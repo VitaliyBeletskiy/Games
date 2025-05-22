@@ -1,4 +1,4 @@
-package com.beletskiy.resources.components
+package com.beletskiy.shared.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -8,7 +8,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 
 @Suppress("detekt:LongParameterList")
 @OptIn(ExperimentalMaterial3Api::class)

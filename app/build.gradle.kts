@@ -59,7 +59,7 @@ dependencies {
     implementation(project(":feature-bulls-and-cows-ui"))
     implementation(project(":feature-tic-tac-toe-ui"))
     implementation(project(":feature-fifteen-ui"))
-    implementation(project(":resources"))
+    implementation(project(":shared"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

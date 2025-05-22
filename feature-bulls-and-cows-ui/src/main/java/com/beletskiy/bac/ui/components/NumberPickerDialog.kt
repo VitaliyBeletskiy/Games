@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 
 private val buttonModifier = Modifier.padding(vertical = 4.dp)
 

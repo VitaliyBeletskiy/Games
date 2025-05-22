@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
 import com.beletskiy.bac.ui.components.BullsAndCowsAppBar
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 
 @Composable
 fun RulesScreen(onNavigateUp: () -> Unit = {}) {

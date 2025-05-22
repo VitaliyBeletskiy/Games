@@ -33,15 +33,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.beletskiy.resources.components.TwoButtonsDialog
 import com.beletskiy.ttt.data.FakeTicTacToeGame
 import com.beletskiy.ttt.data.GameType
 import com.beletskiy.ttt.ui.R
 import com.beletskiy.ttt.ui.components.BoardView
 import com.beletskiy.ttt.ui.components.EditNamesDialog
-import com.beletskiy.resources.components.SegmentedButtonsDialog
-import com.beletskiy.resources.theme.GamesTheme
 import com.beletskiy.ttt.ui.components.TicTacToeAppBar
+import com.beletskiy.shared.components.SegmentedButtonsDialog
+import com.beletskiy.shared.components.TwoButtonsDialog
+import com.beletskiy.shared.theme.GamesTheme
 
 @Suppress("detekt:LongMethod")
 @Composable

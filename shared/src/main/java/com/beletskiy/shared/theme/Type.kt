@@ -1,4 +1,4 @@
-package com.beletskiy.resources.theme
+package com.beletskiy.shared.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

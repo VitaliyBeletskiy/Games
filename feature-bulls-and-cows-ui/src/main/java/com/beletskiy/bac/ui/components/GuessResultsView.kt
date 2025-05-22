@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.beletskiy.bac.data.GuessResult
 import com.beletskiy.bac.ui.utils.guessResultToDrawable
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 
 @Composable
 fun GuessResultsView(results: List<GuessResult>) {

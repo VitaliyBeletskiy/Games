@@ -33,7 +33,7 @@ import com.beletskiy.bac.ui.BullsAndCowsNav
 import com.beletskiy.bac.ui.bullsAndCowsNavGraph
 import com.beletskiy.fifteen.ui.FifteenNav
 import com.beletskiy.fifteen.ui.fifteenNavGraph
-import com.beletskiy.resources.theme.GamesTheme
+import com.beletskiy.shared.theme.GamesTheme
 import com.beletskiy.ttt.ui.TicTacToeNav
 import com.beletskiy.ttt.ui.ticTacToeNavGraph
 import dagger.hilt.android.AndroidEntryPoint
