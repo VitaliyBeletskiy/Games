@@ -16,13 +16,19 @@ enum class FifteenScreen {
     FifteenGameScreen,
 }
 
-fun NavGraphBuilder.fifteenNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.fifteenNavGraph(
+    navController: NavHostController,
+    onMenuClick: () -> Unit,
+) {
     navigation(
         route = FifteenNav.ROUTE,
         startDestination = FifteenScreen.FifteenGameScreen.name,
     ) {
         composable(FifteenScreen.FifteenGameScreen.name) {
-            GameScreen(viewModel = hiltViewModel<GameViewModel>())
+            GameScreen(
+                viewModel = hiltViewModel<GameViewModel>(),
+                onMenuClick = onMenuClick,
+            )
         }
     }
 }

@@ -16,7 +16,10 @@ enum class TicTacToeScreen {
     Game,
 }
 
-fun NavGraphBuilder.ticTacToeNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.ticTacToeNavGraph(
+    navController: NavHostController,
+    onMenuClick: () -> Unit,
+) {
     navigation(
         route = TicTacToeNav.ROUTE,
         startDestination = TicTacToeScreen.Game.name,
@@ -24,6 +27,7 @@ fun NavGraphBuilder.ticTacToeNavGraph(navController: NavHostController) {
         composable(TicTacToeScreen.Game.name) {
             GameScreen(
                 viewModel = hiltViewModel<GameViewModel>(),
+                onMenuClick = onMenuClick,
             )
         }
     }

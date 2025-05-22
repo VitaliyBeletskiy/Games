@@ -13,11 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.beletskiy.resources.theme.GamesTheme
 
 @Composable
-fun PuzzleSolvedView(
+fun OneButtonDialog(
     text: String,
     buttonText: String,
     modifier: Modifier = Modifier,
@@ -30,7 +32,7 @@ fun PuzzleSolvedView(
         Surface(
             shape = RoundedCornerShape(12.dp),
             tonalElevation = 8.dp,
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.background,
             modifier = Modifier.padding(32.dp)
         ) {
             Column(
@@ -40,9 +42,24 @@ fun PuzzleSolvedView(
                 Text(text, fontSize = 20.sp)
                 Spacer(Modifier.height(16.dp))
                 Button(onClick = onPlayAgain) {
-                    Text(buttonText)
+                    Text(
+                        buttonText,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun OneButtonDialogPreview() {
+    GamesTheme {
+        OneButtonDialog(
+            text = "Game Over",
+            buttonText = "Play Again",
+            onPlayAgain = {}
+        )
     }
 }

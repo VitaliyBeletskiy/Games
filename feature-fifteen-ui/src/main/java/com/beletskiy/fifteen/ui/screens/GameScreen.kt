@@ -29,14 +29,17 @@ import com.beletskiy.fifteen.data.MoveType
 import com.beletskiy.fifteen.ui.R
 import com.beletskiy.fifteen.ui.components.BoardView
 import com.beletskiy.fifteen.ui.components.FifteenAppBar
-import com.beletskiy.resources.components.PuzzleSolvedView
+import com.beletskiy.resources.components.OneButtonDialog
 import com.beletskiy.resources.components.SegmentedButtonsDialog
 import com.beletskiy.resources.components.TwoButtonsDialog
 import com.beletskiy.resources.theme.GamesTheme
 
 @Suppress("detekt:LongMethod")
 @Composable
-fun GameScreen(viewModel: GameViewModel) {
+fun GameScreen(
+    viewModel: GameViewModel,
+    onMenuClick: () -> Unit = {},
+) {
     val uiState by viewModel.gameUiState.collectAsStateWithLifecycle()
     var showRestartGameDialog by remember { mutableStateOf(false) }
     var showSelectMoveTypeDialog by remember { mutableStateOf(false) }
@@ -67,7 +70,7 @@ fun GameScreen(viewModel: GameViewModel) {
             labels = segmentedButtonsLabels,
             initialIndex = viewModel.moveType.ordinal,
             onDismissRequest = { showSelectMoveTypeDialog = false },
-            onConfirmation = {
+            onConfirm = {
                 showSelectMoveTypeDialog = false
                 viewModel.setMoveType(it)
             },
@@ -86,10 +89,11 @@ fun GameScreen(viewModel: GameViewModel) {
         topBar = {
             FifteenAppBar(
                 title = stringResource(R.string.fifteen_game_title),
-                onRestartGameClicked = {
+                onMenu = onMenuClick,
+                onRestartGame = {
                     showRestartGameDialog = true
                 },
-                onSelectMoveTypeClicked = {
+                onSelectMoveType = {
                     showSelectMoveTypeDialog = true
                 },
             )
@@ -116,7 +120,7 @@ fun GameScreen(viewModel: GameViewModel) {
             }
 
             if (uiState.isGameOver) {
-                PuzzleSolvedView(
+                OneButtonDialog(
                     text = stringResource(R.string.puzzle_solved),
                     buttonText = stringResource(R.string.play_again),
                     modifier = Modifier

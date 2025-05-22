@@ -19,7 +19,10 @@ enum class BullsAndCowsScreen {
 }
 
 
-fun NavGraphBuilder.bullsAndCowsNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.bullsAndCowsNavGraph(
+    navController: NavHostController,
+    onMenuClick: () -> Unit,
+) {
     navigation(
         route = BullsAndCowsNav.ROUTE,
         startDestination = BullsAndCowsScreen.Game.name
@@ -27,6 +30,7 @@ fun NavGraphBuilder.bullsAndCowsNavGraph(navController: NavHostController) {
         composable(BullsAndCowsScreen.Game.name) {
             GameScreen(
                 viewModel = hiltViewModel<GameViewModel>(),
+                onMenuClick = onMenuClick,
                 onNavigateUp = { navController.navigateUp() },
                 onNavigateToRules = { navController.navigate(BullsAndCowsScreen.Rules.name) },
             )

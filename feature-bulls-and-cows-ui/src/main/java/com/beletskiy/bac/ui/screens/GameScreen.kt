@@ -36,7 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.beletskiy.bac.data.Guess
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
-import com.beletskiy.bac.ui.components.AppBar
+import com.beletskiy.bac.ui.components.BullsAndCowsAppBar
 import com.beletskiy.bac.ui.components.GuessButton
 import com.beletskiy.bac.ui.components.GuessResultsView
 import com.beletskiy.bac.ui.components.NumberPickerDialog
@@ -50,6 +50,7 @@ private const val LIST_ANIMATION_DELAY = 100L
 @Composable
 fun GameScreen(
     viewModel: GameViewModel,
+    onMenuClick: () -> Unit = {},
     onNavigateUp: () -> Unit = {},
     onNavigateToRules: () -> Unit = {},
 ) {
@@ -74,9 +75,10 @@ fun GameScreen(
 
     Scaffold(
         topBar = {
-            AppBar(
+            BullsAndCowsAppBar(
                 screen = BullsAndCowsScreen.Game,
                 isGameOver = uiState.isGameOver,
+                onMenu = onMenuClick,
                 onNavigateUp = onNavigateUp,
                 onNavigateToRules = onNavigateToRules,
             ) {

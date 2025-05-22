@@ -2,6 +2,7 @@ package com.beletskiy.resources.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,11 +24,14 @@ fun TwoButtonsDialog(
 ) {
     AlertDialog(
         modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.background,
+        titleContentColor = MaterialTheme.colorScheme.onBackground,
+        textContentColor = MaterialTheme.colorScheme.onBackground,
         title = {
-            Text(text = title)
+            Text(text = title, style = MaterialTheme.typography.titleLarge)
         },
         text = {
-            Text(text = message)
+            Text(text = message, style = MaterialTheme.typography.bodyLarge)
         },
         onDismissRequest = {
             onDismissRequest()
@@ -38,7 +42,7 @@ fun TwoButtonsDialog(
                     onConfirmation()
                 }
             ) {
-                Text(confirmText)
+                Text(confirmText, style = MaterialTheme.typography.labelLarge)
             }
         },
         dismissButton = {
@@ -47,7 +51,7 @@ fun TwoButtonsDialog(
                     onDismissRequest()
                 }
             ) {
-                Text(dismissText)
+                Text(dismissText, style = MaterialTheme.typography.labelLarge)
             }
         }
     )
@@ -58,8 +62,8 @@ fun TwoButtonsDialog(
 private fun TwoButtonsDialogPreview() {
     GamesTheme {
         TwoButtonsDialog(
-            title = "Title",
-            message = "Text",
+            title = "Reset the game?",
+            message = "Your current score will be lost. Do you want to continue?",
             confirmText = "Confirm",
             dismissText = "Dismiss",
             onDismissRequest = {},

@@ -11,6 +11,7 @@
     <string name="must_contain_unique_numbers">Your guess must contain unique numbers</string>
     <string name="description_rules">Rules</string>
     <string name="description_back">Back</string>
+    <string name="description_menu">Menu</string>
     <string name="description_restart">Restart</string>
     <string name="fifteen_game_title">Fifteen</string>
     <string name="more_options">More options</string>

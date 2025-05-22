@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.beletskiy.bac.ui.BullsAndCowsScreen
 import com.beletskiy.bac.ui.R
-import com.beletskiy.bac.ui.components.AppBar
+import com.beletskiy.bac.ui.components.BullsAndCowsAppBar
 import com.beletskiy.resources.theme.GamesTheme
 
 @Composable
 fun RulesScreen(onNavigateUp: () -> Unit = {}) {
     Scaffold(
         topBar = {
-            AppBar(screen = BullsAndCowsScreen.Rules, onNavigateUp = onNavigateUp)
+            BullsAndCowsAppBar(screen = BullsAndCowsScreen.Rules, onNavigateUp = onNavigateUp)
         },
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->

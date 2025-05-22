@@ -45,7 +45,10 @@ import com.beletskiy.ttt.ui.components.TicTacToeAppBar
 
 @Suppress("detekt:LongMethod")
 @Composable
-fun GameScreen(viewModel: GameViewModel) {
+fun GameScreen(
+    viewModel: GameViewModel,
+    onMenuClick: () -> Unit = {},
+) {
     val uiState by viewModel.gameUiState.collectAsStateWithLifecycle()
     var showEditNamesDialog by remember { mutableStateOf(false) }
     var showResetScoreDialog by remember { mutableStateOf(false) }
@@ -83,7 +86,7 @@ fun GameScreen(viewModel: GameViewModel) {
             labels = GameType.entries.map { it.name },
             initialIndex = viewModel.gameType.ordinal,
             onDismissRequest = { showSelectGameTypeDialog = false },
-            onConfirmation = { index ->
+            onConfirm = { index ->
                 showSelectGameTypeDialog = false
                 viewModel.setGameType(index)
             }
@@ -94,15 +97,16 @@ fun GameScreen(viewModel: GameViewModel) {
         topBar = {
             TicTacToeAppBar(
                 title = stringResource(R.string.tic_tac_toe_game_title),
-                onResetScoreClicked = {
+                onMenu = onMenuClick,
+                onResetScore = {
                     if (uiState.player1.score > 0 || uiState.player2.score > 0) {
                         showResetScoreDialog = true
                     }
                 },
-                onEditNamesClicked = {
+                onEditNames = {
                     showEditNamesDialog = true
                 },
-                onSelectGameTypeClicked = {
+                onSelectGameType = {
                     showSelectGameTypeDialog = true
                 }
             )

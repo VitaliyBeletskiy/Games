@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
@@ -29,9 +30,10 @@ import com.beletskiy.ttt.ui.R
 fun TicTacToeAppBar(
     title: String,
     modifier: Modifier = Modifier,
-    onResetScoreClicked: () -> Unit = {},
-    onEditNamesClicked: () -> Unit = {},
-    onSelectGameTypeClicked: () -> Unit = {},
+    onMenu: () -> Unit = {},
+    onResetScore: () -> Unit = {},
+    onEditNames: () -> Unit = {},
+    onSelectGameType: () -> Unit = {},
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
@@ -40,6 +42,14 @@ fun TicTacToeAppBar(
             Text(title)
         },
         modifier = modifier,
+        navigationIcon = {
+            IconButton(onClick = onMenu) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = stringResource(id = R.string.description_menu),
+                )
+            }
+        },
         actions = {
             Box {
                 IconButton(onClick = { menuExpanded = true }) {
@@ -56,21 +66,21 @@ fun TicTacToeAppBar(
                         text = { Text(stringResource(R.string.reset_score)) },
                         onClick = {
                             menuExpanded = false
-                            onResetScoreClicked()
+                            onResetScore()
                         }
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.edit_names)) },
                         onClick = {
                             menuExpanded = false
-                            onEditNamesClicked()
+                            onEditNames()
                         }
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.select_game_type)) },
                         onClick = {
                             menuExpanded = false
-                            onSelectGameTypeClicked()
+                            onSelectGameType()
                         }
                     )
                 }
@@ -81,7 +91,7 @@ fun TicTacToeAppBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewTopAppBarWithDropdown() {
+private fun TicTacToeAppBarPreview() {
     GamesTheme {
         Scaffold(
             topBar = { TicTacToeAppBar(stringResource(R.string.tic_tac_toe_game_title)) },
