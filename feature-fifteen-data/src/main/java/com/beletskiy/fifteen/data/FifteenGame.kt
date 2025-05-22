@@ -157,7 +157,26 @@ class FifteenGameImpl : IFifteenGame {
         }
     }
 
-    private fun boardToList(): List<List<Int>> {
+    internal fun boardToList(): List<List<Int>> {
         return board.map { it.toList() }
     }
+
+    // region For Tests
+    internal fun setBoard(board: List<List<Int>>) {
+        for (i in 0 until BOARD_SIZE) {
+            for (j in 0 until BOARD_SIZE) {
+                this.board[i][j] = board[i][j]
+            }
+        }
+    }
+
+    internal fun compareBoards(board: List<List<Int>>): Boolean {
+        for (i in 0 until BOARD_SIZE) {
+            for (j in 0 until BOARD_SIZE) {
+                if (this.board[i][j] != board[i][j]) return false
+            }
+        }
+        return true
+    }
+    // endregion
 }
