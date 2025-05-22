@@ -32,7 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import com.beletskiy.shared.theme.Accent
 import com.beletskiy.shared.theme.GamesTheme
+import com.beletskiy.shared.theme.Primary
 import com.beletskiy.ttt.data.Mark
 import com.beletskiy.ttt.data.Position
 import kotlinx.coroutines.CoroutineScope
@@ -89,7 +91,7 @@ fun BoardView(
             for (i in 1..2) {
                 // vertical dividers
                 drawLine(
-                    color = Color.Black,
+                    color = Accent,
                     start = Offset(i * cellSize, 0f),
                     end = Offset(i * cellSize, sizePx),
                     strokeWidth = 5.dp.toPx(),
@@ -97,7 +99,7 @@ fun BoardView(
                 )
                 // horizontal dividers
                 drawLine(
-                    color = Color.Black,
+                    color = Accent,
                     start = Offset(0f, i * cellSize),
                     end = Offset(sizePx, i * cellSize),
                     strokeWidth = 5.dp.toPx(),
@@ -133,7 +135,7 @@ fun BoardView(
 
                     if (player == Mark.O) {
                         drawArc(
-                            color = Color.Green,
+                            color = Color.White,
                             startAngle = 0f,
                             sweepAngle = animations[rowIdx][colIdx].value * 360f,
                             useCenter = false,
@@ -166,7 +168,7 @@ fun BoardView(
                         }
                         drawPath(
                             path = outPath1,
-                            color = Color.Red,
+                            color = Primary,
                             style = Stroke(
                                 width = 5.dp.toPx(),
                                 cap = StrokeCap.Round,
@@ -175,7 +177,7 @@ fun BoardView(
                         )
                         drawPath(
                             path = outPath2,
-                            color = Color.Red,
+                            color = Primary,
                             style = Stroke(
                                 width = 5.dp.toPx(),
                                 cap = StrokeCap.Round,
