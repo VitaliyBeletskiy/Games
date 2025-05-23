@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":feature-bulls-and-cows-ui"))
     implementation(project(":feature-tic-tac-toe-ui"))
     implementation(project(":feature-fifteen-ui"))
+    implementation(project(":feature-reversi-ui"))
     implementation(project(":shared"))
 
     implementation(libs.core.ktx)

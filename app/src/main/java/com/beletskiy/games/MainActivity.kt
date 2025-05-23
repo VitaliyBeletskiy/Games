@@ -33,6 +33,8 @@ import com.beletskiy.bac.ui.BullsAndCowsNav
 import com.beletskiy.bac.ui.bullsAndCowsNavGraph
 import com.beletskiy.fifteen.ui.FifteenNav
 import com.beletskiy.fifteen.ui.fifteenNavGraph
+import com.beletskiy.reversi.ui.ReversiNav
+import com.beletskiy.reversi.ui.reversiNavGraph
 import com.beletskiy.shared.theme.GamesTheme
 import com.beletskiy.ttt.ui.TicTacToeNav
 import com.beletskiy.ttt.ui.ticTacToeNavGraph
@@ -64,10 +66,10 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
 
     val drawerItems = listOf(
-        "Bulls and Cows" to BullsAndCowsNav.ROUTE,
-        "Tic Tac Toe" to TicTacToeNav.ROUTE,
-        "Fifteen" to FifteenNav.ROUTE
-//        "Reversi" to ReversiNav.ROUTE,
+        stringResource(R.string.bulls_and_cows_game_title) to BullsAndCowsNav.ROUTE,
+        stringResource(R.string.tic_tac_toe_game_title) to TicTacToeNav.ROUTE,
+        stringResource(R.string.fifteen_game_title) to FifteenNav.ROUTE,
+        stringResource(R.string.reversi_game_title) to ReversiNav.ROUTE,
     )
 
     ModalNavigationDrawer(
@@ -134,7 +136,7 @@ fun AppNavHost(navController: NavHostController, onMenuClick: () -> Unit) {
         bullsAndCowsNavGraph(navController, onMenuClick)
         ticTacToeNavGraph(navController, onMenuClick)
         fifteenNavGraph(navController, onMenuClick)
-//        reversiNavGraph(navController)
+        reversiNavGraph(navController, onMenuClick)
     }
 }
 
