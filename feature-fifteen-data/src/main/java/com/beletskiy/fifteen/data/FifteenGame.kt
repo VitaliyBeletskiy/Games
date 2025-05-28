@@ -14,9 +14,9 @@ interface IFifteenGame {
 
 class FifteenGameImpl : IFifteenGame {
 
-    companion object {
-        private const val SHUFFLE_COUNT = 1_000
-        private val initialBoard = listOf(
+    private companion object {
+        const val SHUFFLE_COUNT = 1_000
+        val initialBoard = listOf(
             listOf(1, 2, 3, 4),
             listOf(5, 6, 7, 8),
             listOf(9, 10, 11, 12),
