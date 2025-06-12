@@ -10,7 +10,7 @@ enum class MoveOption {
 }
 
 data class Cell(
-    val disc: Disc,
+    val disc: Disc = Disc.NONE,
     val moveOption: MoveOption = MoveOption.NONE,
 ) {
     fun isOccupied() = disc != Disc.NONE

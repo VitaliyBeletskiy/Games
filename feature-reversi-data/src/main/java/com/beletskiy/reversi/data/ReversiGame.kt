@@ -1,10 +1,13 @@
 package com.beletskiy.reversi.data
 
 interface IReversiGame {
+
     fun newGame(): GameState
     fun makeMove(row: Int, column: Int): GameState
 
     companion object {
+        const val BOARD_SIZE: Int = 8
+
         fun getInstance(): IReversiGame {
             return ReversiGameImpl()
         }

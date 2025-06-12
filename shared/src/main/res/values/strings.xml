@@ -40,4 +40,10 @@
     <string name="many_tiles">Many</string>
     <string name="puzzle_solved">Puzzle solved!</string>
     <string name="play_again">Play Again</string>
+    <string name="score">Score</string>
+    <string name="black_wins">Black wins!</string>
+    <string name="white_wins">White wins!</string>
+    <string name="black_turn">Black’s turn</string>
+    <string name="white_turn">White’s turn</string>
+    <string name="start_new_game">Start new game</string>
 </resources>

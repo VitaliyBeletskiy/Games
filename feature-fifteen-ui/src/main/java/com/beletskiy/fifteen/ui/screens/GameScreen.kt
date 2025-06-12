@@ -1,14 +1,16 @@
 package com.beletskiy.fifteen.ui.screens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,7 +21,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,8 +30,8 @@ import com.beletskiy.fifteen.data.MoveType
 import com.beletskiy.fifteen.ui.R
 import com.beletskiy.fifteen.ui.components.BoardView
 import com.beletskiy.fifteen.ui.components.FifteenAppBar
-import com.beletskiy.shared.components.OneButtonDialog
 import com.beletskiy.shared.components.SegmentedButtonsDialog
+import com.beletskiy.shared.components.StartNewGameView
 import com.beletskiy.shared.components.TwoButtonsDialog
 import com.beletskiy.shared.theme.GamesTheme
 
@@ -99,37 +100,54 @@ fun GameScreen(
             )
         }
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Box(
                 modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize()
-                    .wrapContentSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+                    .weight(1f)
+                    .fillMaxWidth(),
             ) {
-                key(uiState.gameSessionId) {
-                    BoardView(
-                        board = uiState.board,
-                        isGameOver = uiState.isGameOver,
-                        modifier = Modifier.padding(8.dp),
-                    ) { row, column ->
-                        viewModel.takeTurn(row, column)
-                    }
+                if (uiState.isGameOver) {
+                    Text(
+                        text = stringResource(R.string.puzzle_solved),
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.Center),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
                 }
             }
 
-            if (uiState.isGameOver) {
-                OneButtonDialog(
-                    text = stringResource(R.string.puzzle_solved),
-                    buttonText = stringResource(R.string.play_again),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f)),
-                    onPlayAgain = {
+            key(uiState.gameSessionId) {
+                BoardView(
+                    board = uiState.board,
+                    isGameOver = uiState.isGameOver,
+                    modifier = Modifier.padding(8.dp),
+                ) { row, column ->
+                    viewModel.takeTurn(row, column)
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+            ) {
+                if (uiState.isGameOver) {
+                    StartNewGameView(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.Center),
+                        text = stringResource(R.string.play_again)
+                    ) {
                         viewModel.newGame()
-                    },
-                )
+                    }
+                }
             }
         }
     }

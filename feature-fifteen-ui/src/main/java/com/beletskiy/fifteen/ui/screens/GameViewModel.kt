@@ -24,22 +24,22 @@ class GameViewModel @Inject constructor(private val fifteenGame: IFifteenGame) :
     val gameUiState: StateFlow<GameUiState> = _gameUiState
 
     fun newGame() {
-        val gameStatus = fifteenGame.newGame()
+        val gameState = fifteenGame.newGame()
         _gameUiState.update {
             it.copy(
                 gameSessionId = it.gameSessionId + 1,
-                board = gameStatus.board,
-                isGameOver = gameStatus.isGameOver,
+                board = gameState.board,
+                isGameOver = gameState.isGameOver,
             )
         }
     }
 
     fun takeTurn(row: Int, col: Int) {
-        val gameStatus = fifteenGame.makeMove(row, col, moveType)
+        val gameState = fifteenGame.makeMove(row, col, moveType)
         _gameUiState.update {
             it.copy(
-                board = gameStatus.board,
-                isGameOver = gameStatus.isGameOver,
+                board = gameState.board,
+                isGameOver = gameState.isGameOver,
             )
         }
     }
