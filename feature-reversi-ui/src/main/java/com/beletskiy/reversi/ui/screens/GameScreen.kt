@@ -2,9 +2,11 @@ package com.beletskiy.reversi.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +28,7 @@ import com.beletskiy.shared.theme.GamesTheme
 import com.beletskiy.reversi.ui.R
 import com.beletskiy.reversi.ui.components.BoardView
 import com.beletskiy.reversi.ui.components.ScoreBoardView
+import com.beletskiy.shared.components.StartNewGameView
 import com.beletskiy.shared.components.TwoButtonsDialog
 
 @Composable
@@ -69,39 +72,62 @@ fun GameScreen(
             )
         }
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
         ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+            ) {
+                ScoreBoardView(
+                    blackScore = uiState.blackScore,
+                    whiteScore = uiState.whiteScore,
+                    currentDisc = uiState.currentPlayerDisc,
+                    isGameOver = uiState.isGameOver,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.Center)
+                        .padding(8.dp),
+                )
+            }
+
             key(uiState.gameSessionId) {
                 BoardView(
                     board = uiState.board,
                     isGameOver = uiState.isGameOver,
                     currentDisc = uiState.currentPlayerDisc,
                     modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.Center),
+                        .padding(8.dp),
                 ) { row, column ->
                     viewModel.takeTurn(row, column)
                 }
             }
 
-            ScoreBoardView(
-                blackScore = uiState.blackScore,
-                whiteScore = uiState.whiteScore,
-                currentDisc = uiState.currentPlayerDisc,
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter)
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-            )
+                    .weight(1f)
+                    .fillMaxWidth(),
+            ) {
+                if (uiState.isGameOver) {
+                    StartNewGameView(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.Center),
+                    ) {
+                        viewModel.newGame()
+                    }
+                }
+            }
         }
     }
 }
 
+
 @SuppressLint("ViewModelConstructorInComposable")
-@Preview(showSystemUi = true, showBackground = true, widthDp = 360, heightDp = 722)
+@Preview(widthDp = 360, heightDp = 722)
 @Composable
 private fun PreviewGameScreen() {
     GamesTheme {

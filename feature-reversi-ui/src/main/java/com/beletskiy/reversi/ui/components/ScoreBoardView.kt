@@ -31,6 +31,7 @@ fun ScoreBoardView(
     blackScore: Int,
     whiteScore: Int,
     currentDisc: PlayerDisc,
+    isGameOver: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -54,11 +55,20 @@ fun ScoreBoardView(
 
         Spacer(modifier = Modifier.height(12.dp))
 
+        val text = if (isGameOver) {
+            when {
+                blackScore > whiteScore -> stringResource(R.string.black_wins)
+                whiteScore > blackScore -> stringResource(R.string.white_wins)
+                else -> stringResource(R.string.it_s_a_draw)
+            }
+        } else {
+            when (currentDisc) {
+                PlayerDisc.BLACK -> stringResource(R.string.black_turn)
+                PlayerDisc.WHITE -> stringResource(R.string.white_turn)
+            }
+        }
         Text(
-            text = when (currentDisc) {
-                PlayerDisc.BLACK -> "Black’s turn" // FIXME: temporary, shouldn't be a String
-                PlayerDisc.WHITE -> "White’s turn" // FIXME: temporary, shouldn't be a String
-            },
+            text = text,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
         )
@@ -94,12 +104,13 @@ private fun ScoreCircle(
 
 @Preview
 @Composable
-private fun PreviewScoreBoard() {
+private fun ScoreBoardPreview() {
     GamesTheme {
         ScoreBoardView(
             blackScore = 2,
             whiteScore = 3,
             currentDisc = PlayerDisc.BLACK,
+            isGameOver = false,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
