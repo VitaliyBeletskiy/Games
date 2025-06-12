@@ -40,4 +40,5 @@
     <string name="many_tiles">Many</string>
     <string name="puzzle_solved">Puzzle solved!</string>
     <string name="play_again">Play Again</string>
+    <string name="score">Score</string>
 </resources>
