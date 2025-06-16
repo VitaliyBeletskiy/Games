@@ -1,11 +1,18 @@
 package com.beletskiy.reversi.ui.components
 
+import android.util.Log
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -14,6 +21,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +33,9 @@ import com.beletskiy.reversi.data.MoveOption
 import com.beletskiy.reversi.data.PlayerDisc
 import com.beletskiy.shared.theme.Accent
 import com.beletskiy.shared.theme.GamesTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 private const val BOARD_SIZE = 8
 private const val DIVIDER_WIDTH = 3
@@ -37,6 +48,16 @@ fun BoardView(
     modifier: Modifier = Modifier,
     onTileClick: (Int, Int) -> Unit,
 ) {
+    val tiles = remember { mutableStateMapOf<Pair<Int, Int>, Disc>() }
+
+    if (tiles.isEmpty()) {
+        for (row in 0 until BOARD_SIZE) {
+            for (col in 0 until BOARD_SIZE) {
+                tiles[row to col] = board[row][col].disc
+            }
+        }
+    }
+
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth(),
     )
@@ -66,6 +87,7 @@ fun BoardView(
                 rowData.forEachIndexed { col, cell ->
                     val offsetX = col * tileSizePx
                     val offsetY = row * tileSizePx
+                    val key = row to col
 
                     when (cell.disc) {
                         Disc.NONE -> {
@@ -79,32 +101,48 @@ fun BoardView(
                             }
                         }
 
-                        Disc.BLACK -> {
-                            drawCircle(
-                                color = cell.disc.toColor(),
-                                radius = tileSizePx * 0.8f / 2f,
-                                center = Offset(
-                                    offsetX + tileSizePx / 2f,
-                                    offsetY + tileSizePx / 2f
+                        Disc.BLACK, Disc.WHITE -> {
+                            if (cell.disc == tiles[key]) {
+                                drawDisc(
+                                    offsetX = offsetX,
+                                    offsetY = offsetY,
+                                    tileSizePx = tileSizePx,
+                                    color = cell.disc.toColor(),
                                 )
-                            )
-                        }
-
-                        Disc.WHITE -> {
-                            drawCircle(
-                                color = cell.disc.toColor(),
-                                radius = tileSizePx * 0.8f / 2f,
-                                center = Offset(
-                                    offsetX + tileSizePx / 2f,
-                                    offsetY + tileSizePx / 2f
+                            } else {
+                                // TODO: handle animation from from tiles[key].toColor()
+                                // to cell.disc.toColor()
+                                // For now, we just draw the disc without animation
+                                drawDisc(
+                                    offsetX = offsetX,
+                                    offsetY = offsetY,
+                                    tileSizePx = tileSizePx,
+                                    color = cell.disc.toColor(),
                                 )
-                            )
+                            }
+                            tiles[key] = cell.disc
                         }
                     }
                 }
             }
         }
     }
+}
+
+private fun DrawScope.drawDisc(
+    offsetX: Float,
+    offsetY: Float,
+    tileSizePx: Float,
+    color: Color,
+) {
+    drawCircle(
+        color = color,
+        radius = tileSizePx * 0.8f / 2f,
+        center = Offset(
+            offsetX + tileSizePx / 2f,
+            offsetY + tileSizePx / 2f
+        )
+    )
 }
 
 private fun DrawScope.drawPossibleDisc(
@@ -162,6 +200,12 @@ private fun DrawScope.drawBoardGrid(
     }
 }
 
+private fun detectClickedCell(tileSizePx: Float, offset: Offset): Pair<Int, Int> {
+    val row = (offset.y / tileSizePx).toInt()
+    val column = (offset.x / tileSizePx).toInt()
+    return row to column
+}
+
 @Preview(showBackground = true, backgroundColor = 0xFFAAAAAA)
 @Composable
 private fun BoardViewPreview(modifier: Modifier = Modifier) {
@@ -201,10 +245,4 @@ private fun BoardViewPreview(modifier: Modifier = Modifier) {
         ) { _, _ ->
         }
     }
-}
-
-private fun detectClickedCell(tileSizePx: Float, offset: Offset): Pair<Int, Int> {
-    val row = (offset.y / tileSizePx).toInt()
-    val column = (offset.x / tileSizePx).toInt()
-    return row to column
 }
