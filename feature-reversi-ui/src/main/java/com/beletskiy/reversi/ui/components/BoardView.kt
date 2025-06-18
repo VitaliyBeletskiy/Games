@@ -1,175 +1,94 @@
 package com.beletskiy.reversi.ui.components
 
-import android.util.Log
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.withTransform
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import com.beletskiy.reversi.data.Cell
 import com.beletskiy.reversi.data.Disc
-import com.beletskiy.reversi.data.MoveOption
 import com.beletskiy.reversi.data.PlayerDisc
 import com.beletskiy.shared.theme.Accent
 import com.beletskiy.shared.theme.GamesTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 private const val BOARD_SIZE = 8
 private const val DIVIDER_WIDTH = 3
 
 @Composable
 fun BoardView(
-    board: List<List<Cell>>,
-    isGameOver: Boolean,
+    board: List<List<Disc>>,
+    possibleMoves: Set<Pair<Int, Int>>,
     currentDisc: PlayerDisc,
     modifier: Modifier = Modifier,
     onTileClick: (Int, Int) -> Unit,
 ) {
-    val tiles = remember { mutableStateMapOf<Pair<Int, Int>, Disc>() }
+    val previousBoard = remember { mutableStateMapOf<Pair<Int, Int>, Disc>() }
 
-    if (tiles.isEmpty()) {
-        for (row in 0 until BOARD_SIZE) {
-            for (col in 0 until BOARD_SIZE) {
-                tiles[row to col] = board[row][col].disc
+    if (previousBoard.isEmpty()) {
+        for (row in board.indices) {
+            for (col in board[row].indices) {
+                previousBoard[row to col] = board[row][col]
+            }
+        }
+    }
+    LaunchedEffect(board) {
+        previousBoard.clear()
+        board.forEachIndexed { row, rowData ->
+            rowData.forEachIndexed { col, cell ->
+                previousBoard[row to col] = cell
             }
         }
     }
 
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth(),
-    )
-    {
+    ) {
         val boardSizeDp = min(this.maxWidth, this.maxHeight)
-        val tileSizeDp = boardSizeDp / BOARD_SIZE
-        val tileSizePx = with(LocalDensity.current) { tileSizeDp.toPx() }
 
         Canvas(
             modifier = Modifier
-                .size(boardSizeDp)
-                .pointerInput(true) {
-                    detectTapGestures { clickOffset ->
-                        if (isGameOver) return@detectTapGestures
-                        val (row, column) = detectClickedCell(tileSizePx, clickOffset)
-                        onTileClick(row, column)
-                    }
-                },
+                .size(boardSizeDp),
         ) {
             drawBoardGrid(
                 boardSize = BOARD_SIZE,
                 gridThickness = DIVIDER_WIDTH,
                 color = Accent,
             )
+        }
 
-            board.forEachIndexed { row, rowData ->
-                rowData.forEachIndexed { col, cell ->
-                    val offsetX = col * tileSizePx
-                    val offsetY = row * tileSizePx
-                    val key = row to col
-
-                    when (cell.disc) {
-                        Disc.NONE -> {
-                            if (cell.moveOption == MoveOption.POSSIBLE) {
-                                drawPossibleDisc(
-                                    offsetX = offsetX,
-                                    offsetY = offsetY,
-                                    tileSizePx = tileSizePx,
-                                    color = currentDisc.toColor(),
-                                )
-                            }
-                        }
-
-                        Disc.BLACK, Disc.WHITE -> {
-                            if (cell.disc == tiles[key]) {
-                                drawDisc(
-                                    offsetX = offsetX,
-                                    offsetY = offsetY,
-                                    tileSizePx = tileSizePx,
-                                    color = cell.disc.toColor(),
-                                )
-                            } else {
-                                // TODO: handle animation from from tiles[key].toColor()
-                                // to cell.disc.toColor()
-                                // For now, we just draw the disc without animation
-                                drawDisc(
-                                    offsetX = offsetX,
-                                    offsetY = offsetY,
-                                    tileSizePx = tileSizePx,
-                                    color = cell.disc.toColor(),
-                                )
-                            }
-                            tiles[key] = cell.disc
+        Column {
+            repeat(BOARD_SIZE) { row ->
+                Row {
+                    repeat(BOARD_SIZE) { col ->
+                        TileView(
+                            fromCell = previousBoard[row to col] ?: Disc.NONE,
+                            toCell = board[row][col],
+                            playerDisc = currentDisc,
+                            isPossibleMove = possibleMoves.contains(row to col),
+                            modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f),
+                        ) {
+                            onTileClick(row, col)
                         }
                     }
                 }
             }
         }
     }
-}
-
-private fun DrawScope.drawDisc(
-    offsetX: Float,
-    offsetY: Float,
-    tileSizePx: Float,
-    color: Color,
-) {
-    drawCircle(
-        color = color,
-        radius = tileSizePx * 0.8f / 2f,
-        center = Offset(
-            offsetX + tileSizePx / 2f,
-            offsetY + tileSizePx / 2f
-        )
-    )
-}
-
-private fun DrawScope.drawPossibleDisc(
-    offsetX: Float,
-    offsetY: Float,
-    tileSizePx: Float,
-    color: Color,
-) {
-    val strokeWidth = 3.dp.toPx()
-    val radius = tileSizePx * 0.7f / 2f
-    val topLeft = Offset(
-        offsetX + tileSizePx / 2 - radius,
-        offsetY + tileSizePx / 2 - radius,
-    )
-
-    drawArc(
-        color = color.copy(alpha = 0.6f),
-        startAngle = 0f,
-        sweepAngle = 360f,
-        useCenter = false,
-        topLeft = topLeft,
-        size = Size(radius * 2, radius * 2),
-        style = Stroke(
-            width = strokeWidth,
-            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f))
-        )
-    )
 }
 
 private fun DrawScope.drawBoardGrid(
@@ -200,47 +119,41 @@ private fun DrawScope.drawBoardGrid(
     }
 }
 
-private fun detectClickedCell(tileSizePx: Float, offset: Offset): Pair<Int, Int> {
-    val row = (offset.y / tileSizePx).toInt()
-    val column = (offset.x / tileSizePx).toInt()
-    return row to column
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFAAAAAA)
+@Preview(showBackground = true, backgroundColor = 0xFFE8D0C1)
 @Composable
 private fun BoardViewPreview(modifier: Modifier = Modifier) {
     GamesTheme {
         BoardView(
             board = listOf(
-                listOf(Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell()),
-                listOf(Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell()),
-                listOf(Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell()),
+                List(BOARD_SIZE) { Disc.NONE },
+                List(BOARD_SIZE) { Disc.NONE },
+                List(BOARD_SIZE) { Disc.NONE },
                 listOf(
-                    Cell(),
-                    Cell(),
-                    Cell(moveOption = MoveOption.POSSIBLE),
-                    Cell(disc = Disc.BLACK),
-                    Cell(),
-                    Cell(),
-                    Cell(),
-                    Cell()
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.BLACK,
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.NONE,
                 ),
                 listOf(
-                    Cell(),
-                    Cell(),
-                    Cell(),
-                    Cell(),
-                    Cell(disc = Disc.WHITE),
-                    Cell(),
-                    Cell(),
-                    Cell()
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.WHITE,
+                    Disc.NONE,
+                    Disc.NONE,
+                    Disc.NONE,
                 ),
-                listOf(Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell()),
-                listOf(Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell()),
-                listOf(Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell(), Cell()),
+                List(BOARD_SIZE) { Disc.NONE },
+                List(BOARD_SIZE) { Disc.NONE },
+                List(BOARD_SIZE) { Disc.NONE },
             ),
-            isGameOver = false,
             currentDisc = PlayerDisc.BLACK,
+            possibleMoves = setOf(0 to 0),
             modifier = modifier,
         ) { _, _ ->
         }

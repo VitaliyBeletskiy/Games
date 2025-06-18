@@ -23,34 +23,30 @@ class ReversiGameTest {
 
     @Test
     fun `setBoard() works`() {
-        val emptyBoard = emptyBoard()
+        val emptyBoard = makeEmptyBoard()
         game.setBoard(emptyBoard)
-        assertTrue(compareDiscsOnBoards(game.getBoard(), emptyBoard))
+        assertTrue(compareBoards(game.getBoard(), emptyBoard))
     }
 
     @Test
     fun `newGame() returns correct GameState`() {
         val gameState = game.newGame()
-        val expectedBoard = emptyBoard().apply {
-            this[3][3] = Cell(disc = Disc.WHITE)
-            this[4][4] = Cell(disc = Disc.WHITE)
-            this[3][4] = Cell(disc = Disc.BLACK)
-            this[4][3] = Cell(disc = Disc.BLACK)
-        }
-        assertTrue(compareDiscsOnBoards(gameState.board, expectedBoard))
+        val expectedBoard = makeInitialBoard()
+        assertTrue(compareBoards(gameState.board, expectedBoard))
         assertEquals(PlayerDisc.BLACK, gameState.currentPlayer)
         assertFalse(gameState.isGameOver)
         assertEquals(2, gameState.blackScore)
         assertEquals(2, gameState.whiteScore)
         assertEquals(null, gameState.winner)
+        assertEquals(4, gameState.possibleMoves.size)
     }
 
     @Test
     fun `makeMove on empty board should not change the board`() {
         game.newGame()
-        val initialBoard = game.getBoard()
+        val initialBoard = makeInitialBoard()
         val gameState = game.makeMove(0, 0)
-        assertTrue(compareDiscsOnBoards(gameState.board, initialBoard))
+        assertTrue(compareBoards(gameState.board, initialBoard))
         assertEquals(PlayerDisc.BLACK, gameState.currentPlayer)
         assertFalse(gameState.isGameOver)
         assertEquals(2, gameState.blackScore)
@@ -66,14 +62,14 @@ class ReversiGameTest {
         assertEquals(4, gameState.blackScore)
         assertEquals(1, gameState.whiteScore)
 
-        val expectedBoard = emptyBoard().apply {
-            this[3][2] = Cell(disc = Disc.BLACK)
-            this[3][3] = Cell(disc = Disc.BLACK)
-            this[3][4] = Cell(disc = Disc.BLACK)
-            this[4][3] = Cell(disc = Disc.BLACK)
-            this[4][4] = Cell(disc = Disc.WHITE)
+        val expectedBoard = makeEmptyBoard().apply {
+            this[3][2] = Disc.BLACK
+            this[3][3] = Disc.BLACK
+            this[3][4] = Disc.BLACK
+            this[4][3] = Disc.BLACK
+            this[4][4] = Disc.WHITE
         }
-        assertTrue(compareDiscsOnBoards(gameState.board, expectedBoard))
+        assertTrue(compareBoards(gameState.board, expectedBoard))
     }
 
     @Test
@@ -86,25 +82,25 @@ class ReversiGameTest {
         assertEquals(3, gameState.blackScore)
         assertEquals(3, gameState.whiteScore)
 
-        val expectedBoard = emptyBoard().apply {
-            this[3][2] = Cell(disc = Disc.BLACK)
-            this[3][3] = Cell(disc = Disc.BLACK)
-            this[4][3] = Cell(disc = Disc.BLACK)
-            this[2][4] = Cell(disc = Disc.WHITE)
-            this[3][4] = Cell(disc = Disc.WHITE)
-            this[4][4] = Cell(disc = Disc.WHITE)
+        val expectedBoard = makeEmptyBoard().apply {
+            this[3][2] = Disc.BLACK
+            this[3][3] = Disc.BLACK
+            this[4][3] = Disc.BLACK
+            this[2][4] = Disc.WHITE
+            this[3][4] = Disc.WHITE
+            this[4][4] = Disc.WHITE
         }
-        assertTrue(compareDiscsOnBoards(gameState.board, expectedBoard))
+        assertTrue(compareBoards(gameState.board, expectedBoard))
     }
 
     @Test
     fun `if opponent has no moves the player can make a move again`() {
         game.newGame()
-        val board = emptyBoard()
-        board[0][0] = Cell(disc = Disc.BLACK)
-        board[1][0] = Cell(disc = Disc.BLACK)
-        board[0][1] = Cell(disc = Disc.WHITE)
-        board[1][1] = Cell(disc = Disc.WHITE)
+        val board = makeEmptyBoard()
+        board[0][0] = Disc.BLACK
+        board[1][0] = Disc.BLACK
+        board[0][1] = Disc.WHITE
+        board[1][1] = Disc.WHITE
         game.setBoard(board)
         val gameState = game.makeMove(0, 2)
         assertEquals(PlayerDisc.BLACK, gameState.currentPlayer)
@@ -116,11 +112,12 @@ class ReversiGameTest {
     @Test
     fun `if there are no moves then the game is over`() {
         game.newGame()
-        val board = emptyBoard()
-        board[0][0] = Cell(disc = Disc.BLACK)
-        board[1][0] = Cell(disc = Disc.BLACK)
-        board[0][1] = Cell(disc = Disc.WHITE)
-        board[1][1] = Cell(disc = Disc.WHITE)
+        val board = makeEmptyBoard().apply {
+            this[0][0] = Disc.BLACK
+            this[1][0] = Disc.BLACK
+            this[0][1] = Disc.WHITE
+            this[1][1] = Disc.WHITE
+        }
         game.setBoard(board)
         game.makeMove(0, 2)
         val gameState = game.makeMove(1, 2)
@@ -133,31 +130,32 @@ class ReversiGameTest {
     @Test
     fun `newGame() returns correct positions for possible moves`() {
         val gameState = game.newGame()
-        val possibleMoves = gameState.board.flatMapIndexed { rowIndex, row ->
-            row.mapIndexedNotNull { colIndex, cell ->
-                if (cell.moveOption == MoveOption.POSSIBLE) 1 else null
-            }
-        }.sumOf {
-            it
+        assertEquals(4, gameState.possibleMoves.size)
+        assertTrue(gameState.possibleMoves.contains(3 to 2))
+        assertTrue(gameState.possibleMoves.contains(2 to 3))
+        assertTrue(gameState.possibleMoves.contains(4 to 5))
+        assertTrue(gameState.possibleMoves.contains(5 to 4))
+    }
+
+    private fun makeEmptyBoard(): MutableList<MutableList<Disc>> {
+        return MutableList(8) { MutableList(8) { Disc.NONE } }
+    }
+
+    private fun makeInitialBoard(): List<List<Disc>> {
+        return makeEmptyBoard().apply {
+            this[3][3] = Disc.WHITE
+            this[4][4] = Disc.WHITE
+            this[3][4] = Disc.BLACK
+            this[4][3] = Disc.BLACK
         }
-        assertEquals(4, possibleMoves)
-        assertEquals(MoveOption.POSSIBLE, gameState.board[3][2].moveOption)
-        assertEquals(MoveOption.POSSIBLE, gameState.board[2][3].moveOption)
-        assertEquals(MoveOption.POSSIBLE, gameState.board[4][5].moveOption)
-        assertEquals(MoveOption.POSSIBLE, gameState.board[5][4].moveOption)
     }
 
-
-    private fun emptyBoard(): MutableList<MutableList<Cell>> {
-        return MutableList(8) { MutableList(8) { Cell(disc = Disc.NONE) } }
-    }
-
-    private fun compareDiscsOnBoards(board1: List<List<Cell>>, board2: List<List<Cell>>): Boolean {
+    private fun compareBoards(board1: List<List<Disc>>, board2: List<List<Disc>>): Boolean {
         if (board1.size != board2.size) return false
         for (i in board1.indices) {
             if (board1[i].size != board2[i].size) return false
             for (j in board1[i].indices) {
-                if (board1[i][j].disc != board2[i][j].disc) return false
+                if (board1[i][j] != board2[i][j]) return false
             }
         }
         return true

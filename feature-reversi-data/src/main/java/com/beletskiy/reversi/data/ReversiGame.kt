@@ -32,7 +32,7 @@ class ReversiGameImpl : IReversiGame {
         val BOARD_RANGE = 0 until BOARD_SIZE
     }
 
-    private val board: Array<Array<Cell>> = Array(8) { Array(8) { Cell(disc = Disc.NONE) } }
+    private val board: Array<Array<Disc>> = Array(BOARD_SIZE) { Array(BOARD_SIZE) { Disc.NONE } }
     private var currentPlayerDisc: PlayerDisc = PlayerDisc.BLACK
     private var isGameOver: Boolean = false
     private var blackScore: Int = 0
@@ -61,11 +61,11 @@ class ReversiGameImpl : IReversiGame {
         flipCapturedDiscs(row, column, capturingDirections)
 
         // place the player's disc in the specified cell
-        board[row][column] = Cell(disc = currentPlayerDisc.toDisc())
+        board[row][column] = currentPlayerDisc.toDisc()
 
         // update scores
-        blackScore = board.sumOf { row -> row.count { it.disc == Disc.BLACK } }
-        whiteScore = board.sumOf { row -> row.count { it.disc == Disc.WHITE } }
+        blackScore = board.sumOf { row -> row.count { it == Disc.BLACK } }
+        whiteScore = board.sumOf { row -> row.count { it == Disc.WHITE } }
 
         // if the next player can make a move, switch players
         if (canMakeMove(currentPlayerDisc.opposite())) {
@@ -93,18 +93,18 @@ class ReversiGameImpl : IReversiGame {
     private fun getCapturingDirections(
         row: Int,
         col: Int,
-        currentPlayer: PlayerDisc = this.currentPlayerDisc,
+        playerDisc: PlayerDisc = this.currentPlayerDisc,
     ): List<Direction> {
         val directions = mutableListOf<Direction>()
-        val playerDisc = currentPlayer.toDisc()
-        val opponentDisc = currentPlayer.opposite().toDisc()
+        val currentDisc = playerDisc.toDisc()
+        val opponentDisc = playerDisc.opposite().toDisc()
 
         val directionsWithOpponent = mutableListOf<Direction>()
         Direction.entries.forEach { direction ->
             val newRow = row + direction.offsetRow
             val newCol = col + direction.offsetCol
             if (newRow in BOARD_RANGE && newCol in BOARD_RANGE) {
-                if (board[newRow][newCol].disc == opponentDisc) {
+                if (board[newRow][newCol] == opponentDisc) {
                     directionsWithOpponent.add(direction)
                 }
             }
@@ -115,7 +115,7 @@ class ReversiGameImpl : IReversiGame {
             var newCol = col + direction.offsetCol
 
             while (newRow in BOARD_RANGE && newCol in BOARD_RANGE && board[newRow][newCol].isOccupied()) {
-                if (board[newRow][newCol].disc == playerDisc) {
+                if (board[newRow][newCol] == currentDisc) {
                     directions.add(direction)
                     break
                 }
@@ -135,8 +135,8 @@ class ReversiGameImpl : IReversiGame {
             var newRow = row + direction.offsetRow
             var newCol = column + direction.offsetCol
 
-            while (newRow in BOARD_RANGE && newCol in BOARD_RANGE && board[newRow][newCol].disc == opponentDisc) {
-                board[newRow][newCol] = board[newRow][newCol].copy(disc = currentDisc)
+            while (newRow in BOARD_RANGE && newCol in BOARD_RANGE && board[newRow][newCol] == opponentDisc) {
+                board[newRow][newCol] = currentDisc
                 newRow += direction.offsetRow
                 newCol += direction.offsetCol
             }
@@ -145,12 +145,12 @@ class ReversiGameImpl : IReversiGame {
 
     private fun canMakeMove(playerDisc: PlayerDisc): Boolean {
         var canMakeMove = false
-        for (i in BOARD_RANGE) {
-            for (j in BOARD_RANGE) {
-                if (board[i][j].disc == Disc.NONE && getCapturingDirections(
-                        i,
-                        j,
-                        playerDisc
+        for (row in BOARD_RANGE) {
+            for (col in BOARD_RANGE) {
+                if (board[row][col] == Disc.NONE && getCapturingDirections(
+                        row = row,
+                        col = col,
+                        playerDisc = playerDisc,
                     ).isNotEmpty()
                 ) {
                     canMakeMove = true
@@ -170,54 +170,53 @@ class ReversiGameImpl : IReversiGame {
             }
         } else null
 
-        // Update move options for each cell
+        // Update possible moves for every empty cell
+        val possibleMoves = mutableSetOf<Pair<Int, Int>>()
         for (row in BOARD_RANGE) {
             for (col in BOARD_RANGE) {
-                if (board[row][col].disc == Disc.NONE) {
-                    val canMove = getCapturingDirections(row, col).isNotEmpty()
-                    board[row][col] =
-                        board[row][col].copy(moveOption = if (canMove) MoveOption.POSSIBLE else MoveOption.NONE)
-                } else {
-                    // If the cell is occupied, reset the move option
-                    board[row][col] = board[row][col].copy(moveOption = MoveOption.NONE)
+                if (board[row][col] == Disc.NONE) {
+                    if (getCapturingDirections(row, col).isNotEmpty()) {
+                        possibleMoves.add(row to col)
+                    }
                 }
             }
         }
 
         return GameState(
-            board.map { it.toList() },
-            currentPlayerDisc,
-            isGameOver,
-            blackScore,
-            whiteScore,
-            winner,
+            board = board.map { it.toList() },
+            currentPlayer = currentPlayerDisc,
+            isGameOver = isGameOver,
+            blackScore = blackScore,
+            whiteScore = whiteScore,
+            winner = winner,
+            possibleMoves = possibleMoves,
         )
     }
 
     private fun initializeBoard() {
-        for (i in BOARD_RANGE) {
-            for (j in BOARD_RANGE) {
-                board[i][j] = Cell(disc = Disc.NONE)
+        for (row in BOARD_RANGE) {
+            for (col in BOARD_RANGE) {
+                board[row][col] = Disc.NONE
             }
         }
-        board[3][3] = Cell(disc = Disc.WHITE)
-        board[3][4] = Cell(disc = Disc.BLACK)
-        board[4][3] = Cell(disc = Disc.BLACK)
-        board[4][4] = Cell(disc = Disc.WHITE)
+        board[3][3] = Disc.WHITE
+        board[4][4] = Disc.WHITE
+        board[3][4] = Disc.BLACK
+        board[4][3] = Disc.BLACK
     }
 
     // region For testing
-    internal fun setBoard(newBoard: List<List<Cell>>? = null) {
+    internal fun setBoard(newBoard: List<List<Disc>>? = null) {
         newBoard?.let {
-            for (i in BOARD_RANGE) {
-                for (j in BOARD_RANGE) {
-                    board[i][j] = newBoard[i][j]
+            for (row in BOARD_RANGE) {
+                for (col in BOARD_RANGE) {
+                    board[row][col] = newBoard[row][col]
                 }
             }
         } ?: initializeBoard()
     }
 
-    internal fun getBoard(): List<List<Cell>> {
+    internal fun getBoard(): List<List<Disc>> {
         return board.map { it.toList() }
     }
 
@@ -226,7 +225,7 @@ class ReversiGameImpl : IReversiGame {
         for (i in BOARD_RANGE) {
             val strBuilder = StringBuilder()
             for (j in BOARD_RANGE) {
-                val symbol = when (board[i][j].disc) {
+                val symbol = when (board[i][j]) {
                     Disc.BLACK -> "⚫"
                     Disc.WHITE -> "⚪"
                     else -> "·"
@@ -236,6 +235,29 @@ class ReversiGameImpl : IReversiGame {
             println(strBuilder.toString())
         }
         println("========")
+    }
+
+    internal fun boardPrettyString(): String {
+        val gameState = getGameState()
+        val strBuilder = StringBuilder()
+        for (row in BOARD_RANGE) {
+            for (col in BOARD_RANGE) {
+                val symbol = when (gameState.board[row][col]) {
+                    Disc.BLACK -> "X "
+                    Disc.WHITE -> "O "
+                    else -> {
+                        if (gameState.possibleMoves.contains(row to col)) {
+                            "? "
+                        } else {
+                            ". "
+                        }
+                    }
+                }
+                strBuilder.append(symbol)
+            }
+            strBuilder.append("\n")
+        }
+        return strBuilder.toString()
     }
     // endregion
 }

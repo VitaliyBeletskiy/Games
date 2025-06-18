@@ -97,7 +97,7 @@ fun GameScreen(
             key(uiState.gameSessionId) {
                 BoardView(
                     board = uiState.board,
-                    isGameOver = uiState.isGameOver,
+                    possibleMoves = uiState.possibleMoves,
                     currentDisc = uiState.currentPlayerDisc,
                     modifier = Modifier
                         .padding(8.dp),

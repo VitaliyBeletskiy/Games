@@ -1,7 +1,8 @@
 package com.beletskiy.reversi.ui.screens
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.beletskiy.reversi.data.Cell
+import com.beletskiy.reversi.data.Disc
 import com.beletskiy.reversi.data.IReversiGame
 import com.beletskiy.reversi.data.PlayerDisc
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,11 +13,12 @@ import javax.inject.Inject
 
 data class GameUiState(
     val gameSessionId: Int = 0,
-    val board: List<List<Cell>> = List(IReversiGame.BOARD_SIZE) { List(IReversiGame.BOARD_SIZE) { Cell() } },
+    val board: List<List<Disc>> = List(IReversiGame.BOARD_SIZE) { List(IReversiGame.BOARD_SIZE) { Disc.NONE } },
     val currentPlayerDisc: PlayerDisc = PlayerDisc.BLACK,
     val blackScore: Int = 0,
     val whiteScore: Int = 0,
     val isGameOver: Boolean = false,
+    val possibleMoves: Set<Pair<Int, Int>> = emptySet(),
 )
 
 @HiltViewModel
@@ -27,6 +29,7 @@ class GameViewModel @Inject constructor(private val reversiGame: IReversiGame) :
 
     fun newGame() {
         val gameState = reversiGame.newGame()
+        Log.d("vitDebug", "Update GameUiState")
         _gameUiState.update {
             it.copy(
                 gameSessionId = it.gameSessionId + 1,
@@ -35,12 +38,14 @@ class GameViewModel @Inject constructor(private val reversiGame: IReversiGame) :
                 blackScore = gameState.blackScore,
                 whiteScore = gameState.whiteScore,
                 isGameOver = gameState.isGameOver,
+                possibleMoves = gameState.possibleMoves,
             )
         }
     }
 
     fun takeTurn(row: Int, col: Int) {
         val gameState = reversiGame.makeMove(row, col)
+        Log.d("vitDebug", "Update GameUiState")
         _gameUiState.update {
             it.copy(
                 board = gameState.board,
@@ -48,6 +53,7 @@ class GameViewModel @Inject constructor(private val reversiGame: IReversiGame) :
                 blackScore = gameState.blackScore,
                 whiteScore = gameState.whiteScore,
                 isGameOver = gameState.isGameOver,
+                possibleMoves = gameState.possibleMoves,
             )
         }
     }
