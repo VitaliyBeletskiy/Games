@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.beletskiy.reversi.data.Disc
 import com.beletskiy.reversi.data.FakeReversiGame
 import com.beletskiy.reversi.ui.components.ReversiAppBar
 import com.beletskiy.shared.theme.GamesTheme
@@ -30,6 +31,7 @@ import com.beletskiy.reversi.ui.components.BoardView
 import com.beletskiy.reversi.ui.components.ScoreBoardView
 import com.beletskiy.shared.components.StartNewGameView
 import com.beletskiy.shared.components.TwoButtonsDialog
+import kotlin.collections.indices
 
 @Composable
 fun GameScreen(
@@ -38,6 +40,7 @@ fun GameScreen(
 ) {
     val uiState by viewModel.gameUiState.collectAsStateWithLifecycle()
     var showRestartGameDialog by remember { mutableStateOf(false) }
+    val previousBoard = remember { mutableMapOf<Pair<Int, Int>, Disc>() }
 
     if (showRestartGameDialog) {
         TwoButtonsDialog(
@@ -58,6 +61,22 @@ fun GameScreen(
         isTheFirstLaunch = false
         LaunchedEffect(Unit) {
             viewModel.newGame()
+        }
+    }
+
+    if (previousBoard.isEmpty()) {
+        for (row in uiState.board.indices) {
+            for (col in uiState.board[row].indices) {
+                previousBoard[row to col] = uiState.board[row][col]
+            }
+        }
+    }
+    LaunchedEffect(uiState.board) {
+        previousBoard.clear()
+        uiState.board.forEachIndexed { row, rowData ->
+            rowData.forEachIndexed { col, cell ->
+                previousBoard[row to col] = cell
+            }
         }
     }
 
@@ -97,6 +116,7 @@ fun GameScreen(
             key(uiState.gameSessionId) {
                 BoardView(
                     board = uiState.board,
+                    previousBoard = previousBoard,
                     possibleMoves = uiState.possibleMoves,
                     currentDisc = uiState.currentPlayerDisc,
                     modifier = Modifier

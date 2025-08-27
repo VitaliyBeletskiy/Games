@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -30,29 +27,12 @@ private const val DIVIDER_WIDTH = 3
 @Composable
 fun BoardView(
     board: List<List<Disc>>,
+    previousBoard: Map<Pair<Int, Int>, Disc>,
     possibleMoves: Set<Pair<Int, Int>>,
     currentDisc: PlayerDisc,
     modifier: Modifier = Modifier,
     onTileClick: (Int, Int) -> Unit,
 ) {
-    val previousBoard = remember { mutableStateMapOf<Pair<Int, Int>, Disc>() }
-
-    if (previousBoard.isEmpty()) {
-        for (row in board.indices) {
-            for (col in board[row].indices) {
-                previousBoard[row to col] = board[row][col]
-            }
-        }
-    }
-    LaunchedEffect(board) {
-        previousBoard.clear()
-        board.forEachIndexed { row, rowData ->
-            rowData.forEachIndexed { col, cell ->
-                previousBoard[row to col] = cell
-            }
-        }
-    }
-
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -74,8 +54,8 @@ fun BoardView(
                 Row {
                     repeat(BOARD_SIZE) { col ->
                         TileView(
-                            fromCell = previousBoard[row to col] ?: Disc.NONE,
-                            toCell = board[row][col],
+                            fromDisc = previousBoard[row to col] ?: Disc.NONE,
+                            toDisc = board[row][col],
                             playerDisc = currentDisc,
                             isPossibleMove = possibleMoves.contains(row to col),
                             modifier = Modifier
@@ -152,6 +132,7 @@ private fun BoardViewPreview(modifier: Modifier = Modifier) {
                 List(BOARD_SIZE) { Disc.NONE },
                 List(BOARD_SIZE) { Disc.NONE },
             ),
+            previousBoard = emptyMap(),
             currentDisc = PlayerDisc.BLACK,
             possibleMoves = setOf(0 to 0),
             modifier = modifier,

@@ -1,6 +1,5 @@
 package com.beletskiy.reversi.ui.screens
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.beletskiy.reversi.data.Disc
 import com.beletskiy.reversi.data.IReversiGame
@@ -29,7 +28,6 @@ class GameViewModel @Inject constructor(private val reversiGame: IReversiGame) :
 
     fun newGame() {
         val gameState = reversiGame.newGame()
-        Log.d("vitDebug", "Update GameUiState")
         _gameUiState.update {
             it.copy(
                 gameSessionId = it.gameSessionId + 1,
@@ -45,7 +43,6 @@ class GameViewModel @Inject constructor(private val reversiGame: IReversiGame) :
 
     fun takeTurn(row: Int, col: Int) {
         val gameState = reversiGame.makeMove(row, col)
-        Log.d("vitDebug", "Update GameUiState")
         _gameUiState.update {
             it.copy(
                 board = gameState.board,

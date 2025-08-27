@@ -1,9 +1,13 @@
 package com.beletskiy.reversi.ui.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -19,15 +23,28 @@ import com.beletskiy.reversi.data.Disc
 import com.beletskiy.reversi.data.PlayerDisc
 import kotlin.math.abs
 
+private const val ANIM_DURATION = 1_000
+
 @Composable
 fun TileView(
-    fromCell: Disc,
-    toCell: Disc,
+    fromDisc: Disc,
+    toDisc: Disc,
     playerDisc: PlayerDisc,
     isPossibleMove: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
+    val progress = remember { Animatable(1f) }
+
+    LaunchedEffect(fromDisc, toDisc) {
+        if (fromDisc == toDisc) {
+            progress.snapTo(1f)
+        } else {
+            progress.snapTo(0f)
+            progress.animateTo(1f, tween(durationMillis = ANIM_DURATION))
+        }
+    }
+
     Canvas(
         modifier = modifier
             .fillMaxSize()
@@ -39,27 +56,34 @@ fun TileView(
     ) {
         val tileSizePx = size.minDimension
 
-        if (toCell == Disc.NONE) {
-            if (isPossibleMove) {
+        when {
+            toDisc == Disc.NONE && isPossibleMove -> {
                 drawPossibleDisc(
                     tileSizePx = tileSizePx,
                     color = playerDisc.toColor(),
                 )
             }
-        } else {
-//            if (fromCell.disc == toCell.disc) {
+            fromDisc == Disc.NONE && toDisc != Disc.NONE -> {
+                drawNewDisc(
+                    tileSizePx= tileSizePx,
+                    toDisc = toDisc,
+                    flipProgress = progress.value,
+                )
+            }
+            fromDisc != toDisc && toDisc != Disc.NONE -> {
+                flipDisc(
+                    tileSizePx = tileSizePx,
+                    fromDisc = fromDisc,
+                    toDisc = toDisc,
+                    flipProgress = progress.value,
+                )
+            }
+            fromDisc == toDisc -> {
                 drawDisc(
                     tileSizePx = tileSizePx,
-                    color = toCell.toColor(),
+                    color = toDisc.toColor(),
                 )
-//            } else {
-//                animateDisc(
-//                    tileSizePx = tileSizePx,
-//                    fromDisc = fromCell.disc,
-//                    toDisc = toCell.disc,
-//                    flipProgress = 1f, // TODO: replace with actual animation progress
-//                )
-//            }
+            }
         }
     }
 }
@@ -104,7 +128,7 @@ private fun DrawScope.drawDisc(
     )
 }
 
-private fun DrawScope.animateDisc(
+private fun DrawScope.flipDisc(
     tileSizePx: Float,
     fromDisc: Disc,
     toDisc: Disc,
@@ -112,7 +136,7 @@ private fun DrawScope.animateDisc(
 ) {
     val center = Offset(tileSizePx / 2f, tileSizePx / 2f)
     val radius = tileSizePx * 0.8f / 2f
-    val scaleX = 1f - abs(flipProgress - 0.5f) * 2
+    val scaleX = abs(2* flipProgress - 1)
     val currentDisc = if (flipProgress < 0.5f) fromDisc else toDisc
 
     withTransform({
@@ -120,6 +144,25 @@ private fun DrawScope.animateDisc(
     }) {
         drawCircle(
             color = currentDisc.toColor(),
+            radius = radius,
+            center = center
+        )
+    }
+}
+
+private fun DrawScope.drawNewDisc(
+    tileSizePx: Float,
+    toDisc: Disc,
+    flipProgress: Float,
+) {
+    val center = Offset(tileSizePx / 2f, tileSizePx / 2f)
+    val radius = tileSizePx * 0.8f / 2f
+
+    withTransform({
+        scale(scaleX = flipProgress, scaleY = flipProgress, pivot = center)
+    }) {
+        drawCircle(
+            color = toDisc.toColor(),
             radius = radius,
             center = center
         )
