@@ -34,7 +34,7 @@ import com.beletskiy.shared.components.TwoButtonsDialog
 import kotlin.collections.indices
 
 @Composable
-fun GameScreen(
+internal fun GameScreen(
     viewModel: GameViewModel,
     onMenuClick: () -> Unit = {},
 ) {

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -61,6 +62,8 @@ dependencies {
     implementation(project(":feature-fifteen-ui"))
     implementation(project(":feature-reversi-ui"))
     implementation(project(":shared"))
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -37,7 +37,7 @@ import com.beletskiy.shared.theme.GamesTheme
 
 @Suppress("detekt:LongMethod")
 @Composable
-fun GameScreen(
+internal fun GameScreen(
     viewModel: GameViewModel,
     onMenuClick: () -> Unit = {},
 ) {
