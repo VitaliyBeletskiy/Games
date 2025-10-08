@@ -1,11 +1,15 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
+
+val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
 
 android {
     namespace = "com.beletskiy.bac.ui"
@@ -27,13 +31,16 @@ android {
             )
         }
     }
-    val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
-    kotlinOptions {
-        jvmTarget = javaVersion.toString()
+}
+kotlin {
+    jvmToolchain(javaVersion.majorVersion.toInt())
+
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
     }
 }
 
@@ -51,11 +58,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview) // Android Studio Preview support
     implementation(libs.androidx.ui.graphics) // ???
     implementation(libs.compose.navigation) // Compose Navigation
+    implementation(libs.compose.icon.core)
 
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose) // Hilt and Navigation
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
 }

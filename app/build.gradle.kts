@@ -1,11 +1,15 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
+
+val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
 
 android {
     namespace = "com.beletskiy.games"
@@ -34,13 +38,9 @@ android {
             )
         }
     }
-    val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
-    }
-    kotlinOptions {
-        jvmTarget = javaVersion.toString()
     }
     buildFeatures {
         compose = true
@@ -55,6 +55,13 @@ android {
         }
     }
 }
+kotlin {
+    jvmToolchain(javaVersion.majorVersion.toInt())
+
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
+    }
+}
 
 dependencies {
     implementation(project(":feature-bulls-and-cows-ui"))
@@ -62,8 +69,6 @@ dependencies {
     implementation(project(":feature-fifteen-ui"))
     implementation(project(":feature-reversi-ui"))
     implementation(project(":shared"))
-
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,6 +86,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose) // Hilt and Navigation
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
 
     // Unit Testing
     testImplementation(libs.junit)

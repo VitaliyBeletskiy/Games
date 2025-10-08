@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
@@ -5,6 +7,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
+
+val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
 
 android {
     namespace = "com.beletskiy.reversi.ui"
@@ -26,13 +30,16 @@ android {
             )
         }
     }
-    val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
-    kotlinOptions {
-        jvmTarget = javaVersion.toString()
+}
+kotlin {
+    jvmToolchain(javaVersion.majorVersion.toInt())
+
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
     }
 }
 
@@ -50,6 +57,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview) // Android Studio Preview support
     implementation(libs.androidx.ui.graphics) // ???
     implementation(libs.compose.navigation) // Compose Navigation
+    implementation(libs.compose.icon.core)
 
     // Hilt
     implementation(libs.hilt.android)

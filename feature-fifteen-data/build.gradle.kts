@@ -1,7 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
 }
+
+val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
 
 android {
     namespace = "com.beletskiy.fifteen.data"
@@ -23,13 +27,16 @@ android {
             )
         }
     }
-    val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
-    kotlinOptions {
-        jvmTarget = javaVersion.toString()
+}
+kotlin {
+    jvmToolchain(javaVersion.majorVersion.toInt())
+
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
     }
 }
 
